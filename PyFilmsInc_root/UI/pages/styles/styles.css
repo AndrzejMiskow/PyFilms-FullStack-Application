@@ -100,3 +100,11 @@ a:hover {
     font-size: 12px;
 }
 
+
+.chart-wrapper {
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+}
+
+
