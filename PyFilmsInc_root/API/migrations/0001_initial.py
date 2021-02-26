@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('screening_start', models.DateTimeField(default=datetime.datetime(2021, 2, 23, 18, 58, 24, 495916, tzinfo=utc))),
-                ('room_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API_reservations.room')),
+                ('room_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.room')),
             ],
         ),
         migrations.CreateModel(
@@ -53,26 +53,26 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('row', models.IntegerField()),
                 ('number', models.IntegerField()),
-                ('room_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API_reservations.room')),
+                ('room_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.room')),
             ],
         ),
         migrations.CreateModel(
             name='SeatReserved',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('reservation_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API_reservations.reservation')),
-                ('screening_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API_reservations.screening')),
-                ('seat_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API_reservations.seat')),
+                ('reservation_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.reservation')),
+                ('screening_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.screening')),
+                ('seat_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.seat')),
             ],
         ),
         migrations.AddField(
             model_name='reservation',
             name='reservation_type_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API_reservations.reservationtype'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.reservationtype'),
         ),
         migrations.AddField(
             model_name='reservation',
             name='screening_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API_reservations.screening'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='API.screening'),
         ),
     ]

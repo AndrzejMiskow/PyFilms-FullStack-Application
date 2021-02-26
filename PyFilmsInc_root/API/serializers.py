@@ -30,10 +30,17 @@ class RoomSerializer(serializers.HyperlinkedModelSerializer):
 class SeatSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Seat
-        fields = ('row', 'seat_no')
+        fields = ('row', 'number', 'room_id')
 
 
 class SeatReservedSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SeatReserved
         fields = ('seat_id', 'reservation_id', 'screening_id')
+
+
+class MovieSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ('movie_id', 'title', 'director', 'cast_members', 'description',
+                  'movie_duration', 'tickets_sold')

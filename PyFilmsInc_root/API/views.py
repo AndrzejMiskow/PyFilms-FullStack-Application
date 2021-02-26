@@ -35,3 +35,7 @@ class SeatReservedViewSet(viewsets.ModelViewSet):
     queryset = SeatReserved.objects.all().order_by('reservation_id')
     serializer_class = SeatReservedSerializer
 
+
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all().order_by('movie_id')
+    serializer_class = MovieSerializer
