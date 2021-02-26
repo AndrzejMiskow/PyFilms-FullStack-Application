@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 # Create your models here.
 class Movie(models.Model):
+    objects = models.Manager()
     movie_id = models.IntegerField(default=0 , primary_key = True)
     title = models.CharField(max_length=256)
     director = models.CharField(max_length=256)
