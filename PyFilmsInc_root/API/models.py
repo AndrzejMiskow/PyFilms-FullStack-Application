@@ -3,7 +3,7 @@ from django.utils.timezone import now
 # from API_movies import Movie
 # from API_users import User
 
-
+# database classes for Reservation tables
 class Reservation(models.Model):
     objects = models.Manager()
     screening_id = models.ForeignKey('Screening', on_delete=models.CASCADE)
@@ -47,6 +47,7 @@ class SeatReserved(models.Model):
     screening_id = models.ForeignKey(Screening, on_delete=models.CASCADE)
 
 
+# database classes for Movie tables
 class Movie(models.Model):
     objects = models.Manager()
     movie_id = models.IntegerField(default=0, primary_key=True)
