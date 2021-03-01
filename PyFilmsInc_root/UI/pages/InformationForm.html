@@ -57,6 +57,42 @@
 </nav>
 
 
+    <script type="text/javascript">
+        function confirmEmail() {
+            var email = document.getElementById("email").value
+            var confemail = document.getElementById("confemail").value
+            if (email != confemail) {
+                alert('Email Not Matching!');
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function agecheck() {
+            var age = document.getElementById("age").value;
+            var childticket = 5;
+            var adultticket = 7;
+            var seniorticket = 6;
+
+            var ticketprice;
+
+            if (age >= 65) {
+                ticketprice = seniorticket;
+
+            }
+
+            if (age < 16) {
+                ticketprice = childticket;
+            }
+
+            if (age > 15 && age < 65) {
+                ticketprice = adultticket;
+
+            }
+        }
+    </script>
+
+
     <div class="container d-flex flex-column justify-content-center align-items-center">
         <form>
             <div class="form-group">
@@ -85,7 +121,7 @@
             <div class="form-group">
                 <label for="confemailLabel">Confirm email address</label>
                 <input type="confemail" class="form-control" id="confemail" name="confemail"
-                       aria-describedby="emailHelp" placeholder="Confirm email">
+                       aria-describedby="emailHelp" placeholder="Confirm email" onblur="confirmEmail()">
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                     else.</small>
             </div>
@@ -102,6 +138,6 @@
 
     </form>
 </div>
-</body>
+
             
             
