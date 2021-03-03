@@ -12,10 +12,6 @@ The following should show in the terminal
 > Starting development server at http://127.0.0.1:8000/
 > 
 > Quit the server with CONTROL-C.
-> 
-> Not Found: /
-> 
-> [date and time] "GET / HTTP/1.1" 404 2031
 
 
 
