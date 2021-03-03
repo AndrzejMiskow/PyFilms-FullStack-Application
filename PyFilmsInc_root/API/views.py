@@ -11,11 +11,6 @@ class ReservationViewSet(viewsets.ModelViewSet):
     serializer_class = ReservationSerializer
 
 
-class ReservationTypeViewSet(viewsets.ModelViewSet):
-    queryset = ReservationType.objects.all().order_by('reservation_type')
-    serializer_class = ReservationTypeSerializer
-
-
 class ScreeningViewSet(viewsets.ModelViewSet):
     queryset = Screening.objects.all().order_by('screening_start')
     serializer_class = ScreeningSerializer

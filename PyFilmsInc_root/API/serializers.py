@@ -8,12 +8,6 @@ class ReservationSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('screening_id', 'reservation_type_id', 'reservation_contact', 'reserved', 'paid', 'cancelled')
 
 
-class ReservationTypeSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = ReservationType
-        fields = ('reservation_type', )
-
-
 class ScreeningSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Screening

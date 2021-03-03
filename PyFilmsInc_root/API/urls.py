@@ -4,7 +4,6 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'reservation', views.ReservationViewSet)
-router.register(r'reservationtype', views.ReservationTypeViewSet)
 router.register(r'screening', views.ScreeningViewSet)
 router.register(r'room', views.RoomViewSet)
 router.register(r'seat', views.SeatViewSet)
