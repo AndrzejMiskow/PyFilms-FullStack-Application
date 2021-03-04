@@ -15,7 +15,7 @@ class ReservationViewSet(viewsets.ModelViewSet):
 
 
 class ScreeningViewSet(viewsets.ModelViewSet):
-    queryset = Screening.objects.all().order_by('screening_start')
+    queryset = Screening.objects.all().order_by('movie_id')
     serializer_class = ScreeningSerializer
 
 

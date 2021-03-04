@@ -15,8 +15,8 @@ class ApiTestCase(TestCase):
     # test adding a reservation to DB
     # def test_put_reservation(self):
 
-    # test retrieving reservation entries from DB
-    def test_get_reservation(self):
+    # test retrieving movie entries from DB
+    def test_get_movie(self):
         film = Movie.objects.get(movie_id=12)
         self.assertEqual(film.title, "Avengers 7")
         self.assertEqual(film.director, "Johnny Deep")

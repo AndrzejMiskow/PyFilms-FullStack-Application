@@ -93,4 +93,4 @@ class Movie(models.Model):
     tickets_sold = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.movie_text
+        return self.title
