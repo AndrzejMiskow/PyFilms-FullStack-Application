@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'customer/css/style.css' %}">
 
+{% block title %}
+Movie: {{ movie.title }}
+{% endblock %}
 
 {% block content %}
 
@@ -8,7 +13,7 @@
     <div class="row">
         <!-- title -->
         <div class="col-12">
-            <h1 class="details-title">{{ movie.tilte }}</h1>
+            <h1 class="details-title">{{ movie.title }}</h1>
         </div>
 
         <div class="row">
@@ -17,13 +22,14 @@
                 <div class="details-content">
                     <div class="details-tags">
                         <ul class="tag-list">
-                            <li><span>Genere:</span> <a href="#">Action</a><a href="#">Triler</a></li>
+                            </li>
                             <li><span>Director: {{ movie.director}}</span>
+                            <li><span>Cast Members: {{ movie.cast_members}}</span>
                         </ul>
                     </div>
                 </div>
                 <div class="details-image">
-                    <img src="../../static/pictures/test.jpg" alt="">
+                    <img src="/static/customer/img/default_movie.jpg" class="img-fluid" alt="Responsive image">
                 </div>
                 <div class="details-description">
                     {{ movie.description }}

@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 
 {% block content %}
 
@@ -7,7 +9,7 @@
     {% for movie in object_list %}
     <!-- Copy this code to add more movie cards-->
     <div class="movie-card">
-        <div class="movie-header" style = "background: url(../../static/pictures/test.jpg); background-size: cover"></div>
+        <div class="movie-header" style = "background: url(/static/customer/img/default_movie.jpg); background-size: cover"></div>
         <!--movie-header-->
         <div class="movie-content">
             <div class="movie-content-header">
