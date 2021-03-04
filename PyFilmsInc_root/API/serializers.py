@@ -43,7 +43,7 @@ class MovieSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Movie
         fields = ('movie_id', 'title', 'director', 'cast_members', 'description',
-                  'movie_duration', 'tickets_sold')
+                  'movie_duration', 'tickets_sold', 'certificate')
 
 
 class TransactionSerializer(serializers.HyperlinkedModelSerializer):
