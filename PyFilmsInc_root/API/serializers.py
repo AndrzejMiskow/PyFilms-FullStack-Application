@@ -2,6 +2,10 @@ from rest_framework import serializers
 from .models import *
 
 
+# Serializers translate models and databases into Python datatypes which can be rendered into JSON for the API
+# Model = the model to be serialized
+# Fields = the fields of the model to appear in the API
+
 class ReservationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Reservation

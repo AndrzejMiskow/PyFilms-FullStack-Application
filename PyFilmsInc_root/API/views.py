@@ -5,7 +5,10 @@ from .serializers import *
 from .models import *
 
 
-# Create your views here.
+# Each view corresponds to a serialized model - it decides what will be displayed to the user
+# Queryset = which entries in the model to be displayed by default and how to order them
+# Serializer_class = the serializer from serializers.py used for processing the model
+
 class ReservationViewSet(viewsets.ModelViewSet):
     queryset = Reservation.objects.all().order_by('screening_id')
     serializer_class = ReservationSerializer
