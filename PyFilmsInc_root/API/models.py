@@ -23,6 +23,8 @@ class Transaction(models.Model):
 
 class User(models.Model):
     objects = models.Manager()
+    first_name = models.CharField(max_length=32, null=True)
+    last_name = models.CharField(max_length=32, null=True)
     user_name = models.CharField(max_length=32, null=False, blank=False)
     email = models.EmailField(max_length=32, null=False, blank=False)
     password = models.CharField(max_length=32, validators=[MinLengthValidator(8)])
@@ -86,13 +88,13 @@ class SeatReserved(models.Model):
 # database classes for Movie tables
 class Movie(models.Model):
     objects = models.Manager()
-    movie_id = models.IntegerField(default=0, primary_key=True)
-    title = models.CharField(max_length=256)
-    director = models.CharField(max_length=256)
-    cast_members = models.CharField(max_length=256)
-    description = models.CharField(max_length=256)
+    movie_id = models.AutoField(primary_key=True, default=0)
+    title = models.CharField(max_length=256, null=False, blank=False)
+    director = models.CharField(max_length=256, null=False, blank=False)
+    cast_members = models.CharField(max_length=256, null=False, blank=False)
+    description = models.TextField(null=False, blank=False)
     # movie_poster = models.ImageField(upload_to='Movie_images', blank=True)
-    movie_duration = models.IntegerField(default=1)
+    movie_duration = models.IntegerField(null=False, blank=False)  # in minutes
     tickets_sold = models.IntegerField(default=0)
 
     def __str__(self):
