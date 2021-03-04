@@ -59,7 +59,7 @@
         <!--movie-header-->
         <div class="movie-content">
             <div class="movie-content-header">
-                <a href="movieDetails.html">
+                <a href="{% url 'movieDetails' movie.pk %}">
                     <h3 class="movie-title">{{ movie.title }}</h3>
                 </a>
             </div>

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="../../static/styles/styles.css">
+    <link rel="stylesheet" href="/static/styles/styles.css">
     <title>PyFilms</title>
 </head>
 <body>
@@ -62,7 +62,7 @@
     <div class="row">
         <!-- title -->
         <div class="col-12">
-            <h1 class="details-title">Inception</h1>
+            <h1 class="details-title">{{ movie.tilte }}</h1>
         </div>
 
         <div class="row">
@@ -72,7 +72,7 @@
                     <div class="details-tags">
                         <ul class="tag-list">
                             <li><span>Genere:</span> <a href="#">Action</a><a href="#">Triler</a></li>
-                            <li><span>Director:</span> <a href="#">Christopher Nolan</a>
+                            <li><span>Director: {{ movie.director}}</span>
                         </ul>
                     </div>
                 </div>
@@ -80,12 +80,7 @@
                     <img src="../../static/pictures/test.jpg" alt="">
                 </div>
                 <div class="details-description">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                    with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                    publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    {{ movie.description }}
                 </div>
 
             </div>

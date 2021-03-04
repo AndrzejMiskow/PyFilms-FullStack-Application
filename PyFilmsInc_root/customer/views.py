@@ -9,3 +9,7 @@ class HomeView(ListView):
     model = Movie
     template_name = 'home.html'
 
+
+class MovieDetailView(DetailView):
+    model = Movie
+    template_name = "movieDetails.html"
