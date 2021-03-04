@@ -65,6 +65,9 @@ class Room(models.Model):
     name = models.CharField(max_length=32, null=False, blank=False)
     seats_no = models.IntegerField()
 
+    def __str__(self):
+        return self.name
+
 
 class Seat(models.Model):
     objects = models.Manager()

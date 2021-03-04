@@ -14,6 +14,7 @@ class ReservationSerializer(serializers.HyperlinkedModelSerializer):
 
 class ScreeningSerializer(serializers.HyperlinkedModelSerializer):
     movie_id = serializers.StringRelatedField()
+    room_id = serializers.StringRelatedField()
 
     class Meta:
         model = Screening
