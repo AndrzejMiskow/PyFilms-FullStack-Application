@@ -9,8 +9,9 @@ router.register(r'room', views.RoomViewSet)
 router.register(r'seat', views.SeatViewSet)
 router.register(r'seatreserved', views.SeatReservedViewSet)
 router.register(r'movie', views.MovieViewSet)
+router.register(r'transaction', views.TransactionViewSet)
+router.register(r'user', views.UserViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('', include(router.urls))
 ]

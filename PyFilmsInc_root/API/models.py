@@ -17,7 +17,7 @@ class Transaction(models.Model):
                                         choices=PAY_CHOICES, default=CARD)
     date_time = models.DateTimeField(default=now())
     amount = models.FloatField()
-    used_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
     successful = models.BooleanField(default=False, null=False)
 
 

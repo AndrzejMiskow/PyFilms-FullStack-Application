@@ -37,3 +37,15 @@ class MovieSerializer(serializers.HyperlinkedModelSerializer):
         model = Movie
         fields = ('movie_id', 'title', 'director', 'cast_members', 'description',
                   'movie_duration', 'tickets_sold')
+
+
+class TransactionSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ('transaction_type', 'date_time', 'amount', 'user_id', 'successful')
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('user_name', 'email', 'password')
