@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<!-- Movie Thumbmails -->
+<div class="container-movies">
+    {% for movie in object_list %}
+    <!-- Copy this code to add more movie cards-->
+    <div class="movie-card">
+        <div class="movie-header" style = "background: url(/static/customer/img/default_movie.jpg); background-size: cover"></div>
+        <!--movie-header-->
+        <div class="movie-content">
+            <div class="movie-content-header">
+                <a href="{% url 'movieDetails' movie.pk %}">
+                    <h3 class="movie-title">{{ movie.title }}</h3>
+                </a>
+            </div>
+            <div class="movie-info">
+                <div class="info-section">
+                    <label>Director</label>
+                    <span>{{ movie.director }}</span>
+                </div>
+                <div class="info-section">
+                    <label>Age Rating</label>
+                    <span>16+</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
