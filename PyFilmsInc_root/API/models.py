@@ -64,11 +64,11 @@ class Screening(models.Model):
 
 class Room(models.Model):
     objects = models.Manager()
-    name = models.CharField(max_length=32, null=False, blank=False)
+    name = models.IntegerField()
     seats_no = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Seat(models.Model):

@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_extensions',
     'API.apps.ApiConfig',
     'customer.apps.CustomerConfig',
     'business.apps.BusinessConfig',
