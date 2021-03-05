@@ -1,11 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
-from API.models import Movie
+from API.models import Movie, Reservation
 
 
 class HomeView(ListView):
@@ -18,14 +18,17 @@ class MovieDetailView(DetailView):
     template_name = "movieDetails.html"
 
 
-def render_ticket_view(request):
+def render_ticket_view(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+    reservation = get_object_or_404(Reservation, pk=pk)
+
     template_path = 'ticket.html'
     context = {
-        'name': 'Marsellus Wallace',
-        'movie': 'Pulp Fiction',
-        'date_time': 'tomorrow sometime',
-        'room_id': '1',
-        'res_type': 'Student'
+        'name': reservation.user_id.first_name + " " + reservation.user_id.last_name,
+        'movie': reservation.screening_id.movie_id.title,
+        'date_time': reservation.screening_id.screening_start,
+        'room_id': reservation.screening_id.room_id,
+        'res_type': reservation.reservation_type
     }
 
     # Create a Django response object, and specify content_type as pdf

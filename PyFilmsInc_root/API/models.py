@@ -45,6 +45,7 @@ class Reservation(models.Model):
     ]
 
     objects = models.Manager()
+    # reservation_id = models.AutoField(primary_key=True, default=0)
     screening_id = models.ForeignKey('Screening', on_delete=models.CASCADE)
     reservation_type = models.CharField(max_length=32, null=False, blank=False,
                                         choices=RES_CHOICES, default=AD)
