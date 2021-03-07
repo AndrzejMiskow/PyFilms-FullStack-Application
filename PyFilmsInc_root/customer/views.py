@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django.core.mail inport send_mail
+from django.core.mail import send_mail, EmailMessage
 
 from API.models import Movie, Reservation
 
@@ -35,6 +35,9 @@ def render_ticket_view(request, *args, **kwargs):
 
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
+    
+    # create file to contain the pdf
+    ticket = open("ticket.pdf", "w+b")
 
     # Uncomment next line to save as file
     # response['Content-Disposition'] = 'attachment; filename="ticket.pdf"'
@@ -44,18 +47,19 @@ def render_ticket_view(request, *args, **kwargs):
     html = template.render(context)
 
     # Create a pdf
-    pisa_status = pisa.CreatePDF(html, dest=response)
+    pisa_status = pisa.CreatePDF(html, dest=ticket)
     # if error then show alternative view
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
     
-    # emailing ticket to user 
-    #send_mail(
-    #    "Cinema booking ticket",
-    #    "Dear Customer,\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
-    #    None,
-    #    [reservation.user_id.email],
-    #    fail_silently=False,)
     
-    return response
+    # emailing ticket to user 
+    mail = EmailMessage(
+        "Cinema booking ticket",
+        "Dear Customer,\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
+        None,
+        [reservation.user_id.email],)
+    
+    mail.attach('ticket.pdf', ticket)
+    mail.send()
     
