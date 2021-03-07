@@ -37,7 +37,8 @@ def render_ticket_view(request, *args, **kwargs):
     response = HttpResponse(content_type='application/pdf')
     
     # create file to contain the pdf
-    ticket = open("ticket.pdf", "w+b")
+    filename = "ticket" + str(pk) + ".pdf"
+    ticket = open("static/customer/tickets/"+filename, "w+b")
 
     # Uncomment next line to save as file
     # response['Content-Disposition'] = 'attachment; filename="ticket.pdf"'
@@ -48,6 +49,8 @@ def render_ticket_view(request, *args, **kwargs):
 
     # Create a pdf
     pisa_status = pisa.CreatePDF(html, dest=ticket)
+    ticket.close()
+
     # if error then show alternative view
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
@@ -55,11 +58,14 @@ def render_ticket_view(request, *args, **kwargs):
     
     # emailing ticket to user 
     mail = EmailMessage(
-        "Cinema booking ticket",
+        "Ticket(s) for " + reservation.screening_id.movie_id.title +
+        " screening " + reservation.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
         "Dear Customer,\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
         None,
         [reservation.user_id.email],)
     
-    mail.attach('ticket.pdf', ticket)
+    #mail.attach('ticket.pdf', "static/customer/tickets/"+filename)
+    mail.attach_file('static/customer/tickets/'+filename)
     mail.send()
     
+    return HttpResponse("<center><h1>Ticket sent to customer</h1></center>")
