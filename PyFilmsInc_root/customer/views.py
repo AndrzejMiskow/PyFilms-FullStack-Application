@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.core.mail import send_mail, EmailMessage
@@ -33,15 +33,9 @@ def render_ticket_view(request, *args, **kwargs):
         'qrcode': reservation.qr_code,
     }
 
-    # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='application/pdf')
-    
     # create file to contain the pdf
     filename = "ticket" + str(pk) + ".pdf"
     ticket = open("static/customer/tickets/"+filename, "w+b")
-
-    # Uncomment next line to save as file
-    # response['Content-Disposition'] = 'attachment; filename="ticket.pdf"'
 
     # Find the template and render it
     template = get_template(template_path)
@@ -54,18 +48,18 @@ def render_ticket_view(request, *args, **kwargs):
     # if error then show alternative view
     if pisa_status.err:
         return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    
-    
-    # emailing ticket to user 
+
+
+    # emailing ticket to user
     mail = EmailMessage(
         "Ticket(s) for " + reservation.screening_id.movie_id.title +
         " screening " + reservation.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
         "Dear Customer,\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
         None,
         [reservation.user_id.email],)
-    
+
     #mail.attach('ticket.pdf', "static/customer/tickets/"+filename)
     mail.attach_file('static/customer/tickets/'+filename)
     mail.send()
-    
-    return HttpResponse("<center><h1>Ticket sent to customer</h1></center>")
+
+    return HttpResponseRedirect('/customer/')
