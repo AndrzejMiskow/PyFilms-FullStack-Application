@@ -93,9 +93,7 @@ class Movie(models.Model):
     director = models.CharField(max_length=256, null=False, blank=False)
     cast_members = models.CharField(max_length=256, null=False, blank=False)
     description = models.TextField(null=False, blank=False)
-    poster_img = models.ImageField(upload_to='static/customer/img/',
-                                   default='static/customer/img/default_movie.jpg',
-                                   blank=False, null=False)
+    # movie_poster = models.ImageField(upload_to='Movie_images', blank=True)
     movie_duration = models.IntegerField(null=False, blank=False)  # in minutes
     tickets_sold = models.IntegerField(default=0)
     certificate = models.CharField(max_length=2, default="U", null=False, blank=False)
