@@ -7,6 +7,8 @@ from PIL import Image, ImageDraw
 from io import BytesIO
 
 
+
+
 class Transaction(models.Model):
     CARD = "CARD"
     CASH = "CASH"
