@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'customer/css/style.css' %}">
+
+{% block title %}
+Checkout
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h4>Select Number of Tickets </h4>
+    <form>
+        <div class="row mb-3">
+            <label for="inputAdult" class="col-sm-2 col-form-label">Adult (18+)</label>
+                <select class="form-select" aria-label="Default select example" id="inputAdult">
+                    <option selected>Select Number of Tickets</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+        </div>
+        <div class="row mb-3">
+            <label for="inputChild" class="col-sm-2 col-form-label">Child (>18)</label>
+            <select class="form-select" aria-label="Default select example" id="inputChild">
+                <option selected>Select Number of Tickets</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+        <div class="row mb-3">
+            <label for="inputSenior" class="col-sm-2 col-form-label">Senior (65+)</label>
+            <select class="form-select" aria-label="Default select example" id="inputSenior">
+                <option selected>Select Number of Tickets</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
+
+    <h4>Select Seats</h4>
+
+
+    <h4>Checkout</h4>
+
+</div>
+
+{% endblock %}

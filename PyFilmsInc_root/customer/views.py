@@ -13,3 +13,8 @@ class HomeView(ListView):
 class MovieDetailView(DetailView):
     model = Movie
     template_name = "movieDetails.html"
+
+
+class BuyTickets(ListView):
+    model = Movie
+    template_name = 'buyTickets.html'
