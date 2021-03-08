@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils.timezone import now
 from django.core.validators import MinLengthValidator
+import qrcode
+from django.core.files import File
+from PIL import Image, ImageDraw
+from io import BytesIO
 
 
 class Transaction(models.Model):
@@ -53,6 +57,27 @@ class Reservation(models.Model):
     paid = models.BooleanField(default=False, null=False)
     cancelled = models.BooleanField(default=False, null=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    qr_code = models.ImageField(upload_to='static/customer/img/qr_codes', blank=True)
+
+    # Overriding save function to generate a QR code when a reservation is saved
+    def save(self, *args, **kwargs):
+        # Generate a QR code with the primary key and user last name
+        qrcode_img = qrcode.make(str(self.pk) + ':' + self.user_id.last_name)
+
+        # Create a canvas on which to put the QR code
+        canvas = Image.new('RGB', (290, 290), 'white')
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(qrcode_img)
+        fname = f'qr_code-{str(self.pk)}'+'.png'
+        buffer = BytesIO()
+        canvas.save(buffer, 'PNG')
+
+        # Save the file as a png in the static folder
+        self.qr_code.save(fname, File(buffer), save=False)
+        canvas.close()
+
+        # Continue with the usual saving
+        super().save(*args, **kwargs)
 
 
 class Screening(models.Model):
@@ -64,11 +89,11 @@ class Screening(models.Model):
 
 class Room(models.Model):
     objects = models.Manager()
-    name = models.CharField(max_length=32, null=False, blank=False)
+    name = models.IntegerField()
     seats_no = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Seat(models.Model):

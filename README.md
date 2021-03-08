@@ -27,7 +27,7 @@ To test that it works , go to your browser and enter in the url http://127.0.0.1
 - Django 1.1 installation supports python 2.7 however if using pip to install package would lead to issues hence the use of python3 
 
 2. **virtualenv (Optional)**
-- Using a virtual environment may prove useful if you don't want to or can't install Django universally on your local machine. It creates a Python environment solely for use in this project.
+- Using a virtual environment may prove useful if you don't want to or can't install Django and the other libraries/toolkits universally on your local machine. It creates a Python environment solely for use in this project.
 - To install use `sudo pip install virtualenv`, then `virtualenv newenv` (or a name of your choice), then execute `source newenv/bin/activate`
 - You can then install Django as per the instructions below
 - To exit the enviornment just enter `deactivate`
@@ -38,10 +38,17 @@ To test that it works , go to your browser and enter in the url http://127.0.0.1
         If any issues follow the guide here for the set-up
         https://docs.djangoproject.com/en/3.1/intro/tutorial01/
 
+5. **Pillow**
+- An imaging library useed for managing ticket generation and movie images
+- Installed by `pip3 install Pillow`
 
-4. **Atom (Optional)**
-- Used Atom as allowed for split terminal window plugin , (Preference -> Install -> Search(Terminal Platform) --> install platformio-ide-terminal)
+6. **qrcode**
+- A python library which generates QR codes
+- Installed by `pip3 install qrcode` or `pip3 install qrcode[pil]` if you don't already have pillow
 
+7. **XHTML2PDF**
+- A toolkit for converting HTML into PDF files, used in the generation of tickets
+- Installed by `pip3 install xhtml2pdf`
 
 ### Structure Overview
 PyFilmsInc_root is the main directory we'll be working from. Within this individual apps can be created for different purposes. Apps can be easily
