@@ -10,7 +10,12 @@ Checkout
 
 <div class="container">
 
-    <h4>Select Number of Tickets </h4>
+    <!-- Number of Tickets Section:
+        Input labels Id's: "qChild" quantity of Children Tickets
+                            "qAdult" quantity of Adults Tickets
+                            "qSenior" quantity of Senior Tickets
+ -->
+    <h3>Select Number of Tickets </h3>
     <form>
         <div class="form-group row">
             <label for="qChild" class="col-sm-2 col-form-label">Child (18 <)</label>
@@ -37,10 +42,98 @@ Checkout
 
     </form>
 
-    <h4>Select Seats</h4>
+    <h3>Select Seats</h3>
+    <div class="seat-structure">
+            <table id="seatsBlock">
+                <tr>
+                    <td colspan="14"><div class="screen">SCREEN</div></td>
+                    <td rowspan="20">
+                        <div class="seatBox greenBox">Selected Seat</div> <br/>
+                        <div class="seatBox redBox">Reserved Seat</div><br/>
+                        <div class="seatBox emptyBox">Empty Seat</div><br/>
+                    </td>
+                    <br/>
+                </tr>
+
+                <!-- Seat layout Top Line-->
+                <tr>
+                    <td></td>
+                    <td>1</td><td>2</td><td>3</td>
+                    <td></td>
+                    <td>4</td><td>5</td><td>6</td>
+                </tr>
+
+                <tr>
+                    <td>A</td>
+                    <td><input type="checkbox" class="seats" value="A1"></td>
+                    <td><input type="checkbox" class="seats" value="A2"></td>
+                    <td><input type="checkbox" class="seats" value="A3"></td>
+                    <td></td>
+                    <td><input type="checkbox" class="seats" value="A4"></td>
+                    <td><input type="checkbox" class="seats" value="A5"></td>
+                    <td><input type="checkbox" class="seats" value="A6"></td>
+                </tr>
+
+                <tr>
+                    <td>B</td>
+                    <td><input type="checkbox" class="seats" value="B1"></td>
+                    <td><input type="checkbox" class="seats" value="B2"></td>
+                    <td><input type="checkbox" class="seats" value="B3"></td>
+                    <td></td>
+                    <td><input type="checkbox" class="seats" value="B4"></td>
+                    <td><input type="checkbox" class="seats" value="B5"></td>
+                    <td><input type="checkbox" class="seats" value="B6"></td>
+                </tr>
+
+                <tr>
+                    <td>C</td>
+                    <td><input type="checkbox" class="seats" value="C1"></td>
+                    <td><input type="checkbox" class="seats" value="C2"></td>
+                    <td><input type="checkbox" class="seats" value="C3"></td>
+                    <td></td>
+                    <td><input type="checkbox" class="seats" value="C4"></td>
+                    <td><input type="checkbox" class="seats" value="C5"></td>
+                    <td><input type="checkbox" class="seats" value="C6"></td>
+                </tr>
+
+                <tr class="verticalGap"></tr>
+
+                <tr>
+                    <td>D</td>
+                    <td><input type="checkbox" class="seats" value="D1"></td>
+                    <td><input type="checkbox" class="seats" value="D2"></td>
+                    <td><input type="checkbox" class="seats" value="D3"></td>
+                    <td class="seatGap"></td>
+                    <td><input type="checkbox" class="seats" value="D4"></td>
+                    <td><input type="checkbox" class="seats" value="D5"></td>
+                    <td><input type="checkbox" class="seats" value="D6"></td>
+                </tr>
+
+                <tr>
+                    <td>E</td>
+                    <td><input type="checkbox" class="seats" value="E1"></td>
+                    <td><input type="checkbox" class="seats" value="E2"></td>
+                    <td><input type="checkbox" class="seats" value="E3"></td>
+                    <td class="seatGap"></td>
+                    <td><input type="checkbox" class="seats" value="E4"></td>
+                    <td><input type="checkbox" class="seats" value="E5"></td>
+                    <td><input type="checkbox" class="seats" value="E6"></td>
+                </tr>
 
 
+                <tr>
+                    <td>F</td>
+                    <td><input type="checkbox" class="seats" value="F1"></td>
+                    <td><input type="checkbox" class="seats" value="F2"></td>
+                    <td><input type="checkbox" class="seats" value="F3"></td>
+                    <td></td>
+                    <td><input type="checkbox" class="seats" value="F4"></td>
+                    <td><input type="checkbox" class="seats" value="F5"></td>
+                    <td><input type="checkbox" class="seats" value="F6"></td>
+                </tr>
+            </table>
 
+        </div>
 
 
 
@@ -51,7 +144,7 @@ Checkout
                                 "cExpiration" for Card Expiration Date
                                 "cCVV" For cards cvv Number
      -->
-    <h4>Checkout</h4>
+    <h3>Checkout</h3>
 
         <div class="row mb-6">
             <div class="col-md-6 mb-3">

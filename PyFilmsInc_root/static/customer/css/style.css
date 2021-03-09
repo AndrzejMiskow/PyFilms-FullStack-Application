@@ -1,3 +1,4 @@
+/* Formatting used for Home Page and Movie Details section*/
 a {
     text-decoration: none;
     color: inherit;
@@ -111,3 +112,95 @@ a:hover {
 .details-image {
     max-width: 400px;
 }
+
+
+/* Formatting used for Buy Tickets Page */
+
+/* Seat Selection CSS */
+.seat-structure{
+    margin: auto;
+    width: 50%;
+}
+
+.screen
+{
+    width:100%;
+    height:20px;
+    background:#4388cc;
+    color:#fff;
+    line-height:20px;
+    font-size:15px;
+}
+
+.seatBox::before
+{
+    content:".";
+    width:15px;
+    height:15px;
+    float:left;
+    margin-right:10px;
+    margin-left:10px;
+}
+.greenBox::before
+{
+    content:"";
+    background:Green;
+}
+
+.redBox::before
+{
+    content:"";
+    background:Red;
+}
+.emptyBox::before
+{
+    content:"";
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+    background-color:#ccc;
+}
+
+.seats
+{
+    border:1px solid red;background:yellow;
+}
+
+.seatGap
+{
+    width:30px;
+}
+
+.verticalGap
+{
+    height:40px;
+}
+
+table
+{
+    text-align:center;
+}
+
+
+input[type=checkbox] {
+    width:0;
+    margin-right:18px;
+}
+
+input[type=checkbox]:before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align:middle;
+    text-align: center;
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+    background-color:#ccc;
+}
+
+input[type=checkbox]:checked:before {
+    background-color:Green;
+    font-size: 15px;
+}
+
+
+
+
