@@ -27,7 +27,11 @@ endobj
 <<
 /Contents 11 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 10 0 R /Resources <<
 /Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ] /XObject <<
+<<<<<<< HEAD
 /FormXob.67f57f69d491ebd1a9d1bfe24f0165cb 4 0 R
+=======
+/FormXob.889f1650c32acf9bae32617485ffd6a1 4 0 R
+>>>>>>> parent of a63d5d9... Redirect to home page on ticket generation, code tidied up
 >>
 >> /Rotate 0 /Trans <<
 
@@ -42,7 +46,11 @@ endobj
 endobj
 7 0 obj
 <<
+<<<<<<< HEAD
 /Author () /CreationDate (D:20210308231650+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20210308231650+00'00') /Producer (xhtml2pdf <https://github.com/xhtml2pdf/xhtml2pdf/>) 
+=======
+/Author () /CreationDate (D:20210307181928+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20210307181928+00'00') /Producer (xhtml2pdf <https://github.com/xhtml2pdf/xhtml2pdf/>) 
+>>>>>>> parent of a63d5d9... Redirect to home page on ticket generation, code tidied up
   /Subject () /Title (Ticket) /Trapped /False
 >>
 endobj
@@ -66,7 +74,11 @@ endobj
 /Filter [ /ASCII85Decode /FlateDecode ] /Length 462
 >>
 stream
+<<<<<<< HEAD
 Gau1*>u/<k'Sc)N/'at03V9[o]5]2a/e"*YCXgOU,/T^@Pka]aa%)5%a_mDV9lo0nn+1_#"O%@UkG/(p)X*4gLkEg#I.Y6Ki8/\tDe:(P]ZgNm^@E$&:h$@_fl,2IK&32QTb[Y>@-?4&l/Y8AM$kZG'L3:B5[6@Frg5cA"Bmj9<f^u*=)[2E"_NlJZgBW;%kopPC0!^H)UL<2_<ms'9f(aE0@2N[9%I7#7jt[n$_YP=a9M-1Ah[JToD)I'.S2%2=&dZ>B48'"X!h,fb9AN^XgnSPTX3*n8uaFH0@o^q9VX(_#>VbDR@B%!KE\gH[-b[j423rA!2qK0$Gm:BCu=`drVa)foksCa0l=IK`KBKKHb&Z+3BL;,XuJ1N@BA<-QW<QZ`i*u3FfrU2%k3E8MSbV;4QCn98BE-3;/,tJ64/rp5F^(]e5ps:1,J0?jNpIN=78i_QP$kpTCDn2~>endstream
+=======
+Gau1*b>,r/&4Q?hMHL"T;pRFPUcYU)"Y*%X7_gdT8I1E4L.B5?A#E-<Ue9<><\/$(id7ga-4kW&2eP"`fYMN!5RadqMD5;oK6%j2U:Gd;kA@XU@i]>=M8DY:q/:IfK#(4d'-f)5=@[gMg3SlH@OWS4)G$R-`$uT5V]7O-N=,ZZ)f5mOpWZ29Y0*@-pLA/<i(a@']Ru[A5r4I_rF-k;&Mi#<6SiD`lF7+LTu^=8!F;OE5(\\>L[e#9Q>aI9'VR:;U:P/).uuQ:8[E'>XVT0m2jY4l%sD..=e"TtC0?ST12X?f?oeH,@3u"(f%?J@[tcrqq/&)]5^dXZ9b,fdRtc^mY?1a&cR(S,f9\#=N,84Fb>lIplpCYp`@-t+nbR4Y[.R_rJCZ%NBdGOVBiZJiBeEPPM6/7bKh_q$NVD<D;PFNqq38^h]@+$fR9T#I:4a1#%<hA.)'Sh\DuBXH~>endstream
+>>>>>>> parent of a63d5d9... Redirect to home page on ticket generation, code tidied up
 endobj
 xref
 0 12
@@ -85,7 +97,11 @@ xref
 trailer
 <<
 /ID 
+<<<<<<< HEAD
 [<ad1e8b891c49377535af7820b87a29a8><ad1e8b891c49377535af7820b87a29a8>]
+=======
+[<d82fe7e2a0fac14b2996495f94a6682f><d82fe7e2a0fac14b2996495f94a6682f>]
+>>>>>>> parent of a63d5d9... Redirect to home page on ticket generation, code tidied up
 % ReportLab generated PDF document -- digest (http://www.reportlab.com)
 
 /Info 7 0 R
