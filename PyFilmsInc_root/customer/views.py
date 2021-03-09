@@ -23,6 +23,7 @@ def render_ticket_view(request, *args, **kwargs):
     pk = kwargs.get('pk')
     reservation = get_object_or_404(Reservation, pk=pk)
 
+    #adding data to the ticket template
     template_path = 'ticket.html'
     context = {
         'name': reservation.user_id.first_name + " " + reservation.user_id.last_name,
@@ -54,12 +55,13 @@ def render_ticket_view(request, *args, **kwargs):
     mail = EmailMessage(
         "Ticket(s) for " + reservation.screening_id.movie_id.title +
         " screening " + reservation.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
-        "Dear Customer,\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
+        "Dear " + reservation.user_id.first_name + ",\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
         None,
         [reservation.user_id.email],)
 
-    #mail.attach('ticket.pdf', "static/customer/tickets/"+filename)
+    # attaching the ticket.pdf to the email & sending it
     mail.attach_file('static/customer/tickets/'+filename)
     mail.send()
-
+    
+    #return to customer homepage
     return HttpResponseRedirect('/customer/')
