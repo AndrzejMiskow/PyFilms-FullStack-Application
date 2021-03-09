@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_extensions',
     'API.apps.ApiConfig',
     'customer.apps.CustomerConfig',
     'business.apps.BusinessConfig',
@@ -121,3 +122,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     ]
+
+
+# email config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'pyfilmsnoreply@gmail.com'
+EMAIL_HOST_PASSWORD = 'Pyfilms21'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = 'pyfilmsnoreply@gmail.com'
