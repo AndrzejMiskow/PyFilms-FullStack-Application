@@ -3,6 +3,8 @@ from django.utils.timezone import now
 from django.core.validators import MinLengthValidator
 
 
+
+
 class Transaction(models.Model):
     CARD = "CARD"
     CASH = "CASH"
