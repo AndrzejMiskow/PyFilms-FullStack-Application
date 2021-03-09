@@ -1,12 +1,12 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.core.mail import send_mail, EmailMessage
 
-from API.models import Movie, Reservation
+from API.models import Movie
 
 
 class HomeView(ListView):
