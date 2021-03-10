@@ -22,6 +22,7 @@ function takeData()
     }
 }
 
+//Updates the number of selected Seats Can be used to update the database
 function updateSelected (){
     const selectedSeats = document.querySelectorAll('.row-seat .selected');
 
@@ -31,10 +32,6 @@ function updateSelected (){
     selectedSeatsCount = selectedSeats.length;
 };
 
-function deselect(){
-    updateSelected();
-
-}
 
 // Function to select seats, if the number of tickets is bigger than 0
 //The click contains a seat and is not occupied then it will be selected
@@ -48,8 +45,9 @@ seatLayout.addEventListener('click', e => {
             e.target.classList.toggle('selected');
             updateSelected();
         }
-        else
+        else //if the number of selected seats is greater than the total number of tickets
             {
+                //We need to deselect a selected seat to be able to allocate another
                 if(e.target.classList.contains('selected')){
                     e.target.classList.toggle('selected');
                     updateSelected();

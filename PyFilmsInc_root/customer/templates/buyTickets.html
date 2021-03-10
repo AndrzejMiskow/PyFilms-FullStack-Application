@@ -41,12 +41,14 @@ Checkout
             </div>
         </div>
 
+        <!-- Used to get the total number of tickets selected above this is sent to takeData() function-->
         <button type="button" class="btn btn-primary" onclick="takeData()">Confirm Number of Tickets</button>
 
     </form>
 
     <h3>Select Seats</h3>
     <div class="container p-3 my-3 border">
+        <!-- Key for the seat selection model-->
         <ul class="seatSelectionKey">
             <li>
                 <div class="seat"></div>
@@ -62,6 +64,8 @@ Checkout
             </li>
         </ul>
 
+        <!-- 2 modes for a seat normal seat or seat reserved
+             When a seat is in reserve mode it cannot be selected-->
         <div class="seatLayout">
             <div class="screen"></div>
             <div class="row-seat">
@@ -74,7 +78,6 @@ Checkout
                 <div class="seat"></div>
                 <div class="seat"></div>
             </div>
-
             <div class="row-seat">
                 <div class="seat"></div>
                 <div class="seat"></div>
@@ -109,6 +112,8 @@ Checkout
             </div>
         </div>
     </div>
+
+    <!-- We need a submit function which will add items to the database updateSelected () can be used for this-->
 
     {% load static %}
     <script src="{%static 'customer/js/seatLayout.js' %}" type="text/javascript"></script>
