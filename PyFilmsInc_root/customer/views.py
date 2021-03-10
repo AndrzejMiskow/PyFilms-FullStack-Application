@@ -19,6 +19,11 @@ class MovieDetailView(DetailView):
     template_name = "movieDetails.html"
 
 
+class BuyTickets(ListView):
+    model = Movie
+    template_name = 'buyTickets.html'
+
+
 def render_ticket_view(request, *args, **kwargs):
     pk = kwargs.get('pk')
     reservation = get_object_or_404(Reservation, pk=pk)
