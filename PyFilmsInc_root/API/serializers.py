@@ -28,6 +28,8 @@ class RoomSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SeatSerializer(serializers.HyperlinkedModelSerializer):
+    room_id = serializers.StringRelatedField()
+
     class Meta:
         model = Seat
         fields = ('row', 'number', 'room_id')
