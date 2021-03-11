@@ -39,9 +39,17 @@ To test that it works , go to your browser and enter in the url http://127.0.0.1
         https://docs.djangoproject.com/en/3.1/intro/tutorial01/
 
 
-4. **Atom (Optional)**
-- Used Atom as allowed for split terminal window plugin , (Preference -> Install -> Search(Terminal Platform) --> install platformio-ide-terminal)
+4. **Pillow**
+- Used for image processing, `pip install pillow`
 
+5. **QRCode**
+- Generates QR codes, `pip install qrcode`
+
+6. **xhtml2pdf**
+- Used for making pdf tickets `pip install xhtml2pdf`
+
+7. **django extensions**
+- Adds features to django like scripts `pip install django-extensions`
 
 ### Structure Overview
 PyFilmsInc_root is the main directory we'll be working from. Within this individual apps can be created for different purposes. Apps can be easily
