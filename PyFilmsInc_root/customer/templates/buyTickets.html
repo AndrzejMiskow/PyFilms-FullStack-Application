@@ -68,48 +68,13 @@ Checkout
              When a seat is in reserve mode it cannot be selected-->
         <div class="seatLayout">
             <div class="screen"></div>
-            <div class="row-seat">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
-            <div class="row-seat">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat reserved"></div>
-                <div class="seat reserved"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
-
-            <div class="row-seat">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat reserved"></div>
-                <div class="seat reserved"></div>
-            </div>
-
-            <div class="row-seat">
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-                <div class="seat"></div>
-            </div>
+            {% for row in layout %}
+                <div class ="row-seat">
+                    {% for seat in row %}
+                        <div class="{{ seat }}"></div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
         </div>
     </div>
 
