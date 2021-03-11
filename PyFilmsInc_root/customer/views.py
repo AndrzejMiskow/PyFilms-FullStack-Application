@@ -6,7 +6,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.core.mail import send_mail, EmailMessage
 
-from API.models import Movie, Reservation
+from API.models import Movie, Reservation, Screening
 
 
 class HomeView(ListView):
@@ -22,6 +22,21 @@ class MovieDetailView(DetailView):
 class BuyTickets(ListView):
     model = Movie
     template_name = 'buyTickets.html'
+
+
+def render_purchase_view(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+    screening = get_object_or_404(Screening, pk=pk)
+
+    template_path = 'buyTickets.html'
+    context = {
+        'movie': screening.movie_id.title
+    }
+
+    template = get_template(template_path)
+    html = template.render(context)
+
+    return HttpResponse(html)
 
 
 def render_ticket_view(request, *args, **kwargs):
