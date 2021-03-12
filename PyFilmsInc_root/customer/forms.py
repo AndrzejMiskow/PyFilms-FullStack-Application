@@ -2,11 +2,15 @@ from django import forms
 
 class ReservationForm(forms.Form):
 	# quantities of seats for reservation
-	qAdult = forms.IntegerField(label="qAdult", initial=2)
-	qChild = forms.IntegerField(label="qChild", initial=2)
-	qSenior = forms.IntegerField(label="qSenior", initial=2)
+	qAdult = forms.IntegerField(label="qAdult")
+	qChild = forms.IntegerField(label="qChild")
+	qSenior = forms.IntegerField(label="qSenior")
 	
 	# seat numbers
+	SelectedSeatsID = forms.CharField(label="SelectedSeatsID")
 	
 	# card details
-	
+	cName = forms.CharField(label="cName")
+	cNumber = forms.IntegerField(label="cNumber")
+	cExpiration = forms.CharField(label="cExpiration")
+	cCVV = forms.IntegerField(label="cCVV")

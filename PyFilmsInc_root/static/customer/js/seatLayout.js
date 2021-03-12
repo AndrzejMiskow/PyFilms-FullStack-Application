@@ -2,7 +2,7 @@
 const seatLayout = document.querySelector('.seatLayout');
 
 //All seats which are not reserved
-const seats = document.querySelectorAll('.row .seat:not(.reserved)');
+const seats = document.querySelectorAll('.row-seat .seat:not(.reserved)');
 
 //number of tickets
 var totalTickets = 0;
@@ -26,11 +26,18 @@ function takeData()
 function updateSelected (){
     const selectedSeats = document.querySelectorAll('.row-seat .selected');
 
+    selectedSeatsCount = selectedSeats.length;
+};
+
+function confirmSeats(){
+    const selectedSeats = document.querySelectorAll('.row-seat .selected');
+
     //We can use seatsIndex to store a seat in the DB as selected (after confirmation)
     const seatsIndex = [...selectedSeats].map(seat => [...seats].indexOf(seat));
 
-    selectedSeatsCount = selectedSeats.length;
-};
+    document.getElementById("SelectedSeatsID").value = seatsIndex.toString();
+
+}
 
 
 // Function to select seats, if the number of tickets is bigger than 0
@@ -56,10 +63,6 @@ seatLayout.addEventListener('click', e => {
                     alert("Deselect A seat to pick a new one");
                 }
         }
-
     }
 
 });
-
-
-

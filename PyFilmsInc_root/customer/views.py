@@ -52,7 +52,7 @@ def render_purchase_view(request, *args, **kwargs):
     template_path = 'buyTickets.html'
     context = {
         'movie': screening.movie_id.title,
-        'layout': layout
+        'layout': layout,
         'pk': pk
     }
 
@@ -117,7 +117,7 @@ def retrieve_make_reservation(request, *args, **kwargs):
     if request.method == 'POST':
         
         form = ReservationForm(request.POST)
-                
+         
         if form.is_valid():
             # create reservation entry
             #res = Reservation(screening_id=pk, reservation_type=,
@@ -127,6 +127,7 @@ def retrieve_make_reservation(request, *args, **kwargs):
             # create transaction entry for reservation
             
             # create seatReserved entries
+            return HttpResponseRedirect('/customer/ticket/' + str(form.cleaned_data['cNumber']))
     
     # redirect to ticket creation
-    return HttpResponseRedirect('/customer/ticket/' + RESERVATION_PK)
+    # return HttpResponseRedirect('/customer/ticket/1')
