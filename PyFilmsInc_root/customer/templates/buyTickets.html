@@ -114,6 +114,10 @@ Checkout
     </div>
 
     <!-- We need a submit function which will add items to the database updateSelected () can be used for this-->
+    <label for="SelectedSeatsID">Selected Seats</label>
+    <input type="text" class="form-control" id="SelectedSeatsID" placeholder="" required="">
+
+    <button type="button" class="btn btn-primary" onclick="confirmSeats()">Confirm Selected Seats</button>
 
     {% load static %}
     <script src="{%static 'customer/js/seatLayout.js' %}" type="text/javascript"></script>
