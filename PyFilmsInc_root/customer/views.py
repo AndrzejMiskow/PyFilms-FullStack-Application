@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.core.mail import send_mail, EmailMessage
+from .forms import *
+from django.template import RequestContext
 
 from API.models import Movie, Reservation, Screening, Seat, SeatReserved
 
@@ -51,6 +53,7 @@ def render_purchase_view(request, *args, **kwargs):
     context = {
         'movie': screening.movie_id.title,
         'layout': layout
+        'pk': pk
     }
 
     # Renders and returns the template with the context
@@ -104,3 +107,26 @@ def render_ticket_view(request, *args, **kwargs):
 
     # return to customer homepage
     return HttpResponseRedirect('/customer/')
+
+
+# create entries for reservation
+def retrieve_make_reservation(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+    
+    # get data
+    if request.method == 'POST':
+        
+        form = ReservationForm(request.POST)
+                
+        if form.is_valid():
+            # create reservation entry
+            #res = Reservation(screening_id=pk, reservation_type=,
+            #                  reservation_contact=, reserved=True,
+            #                  paid=True, cancelled=False, user_id=)
+
+            # create transaction entry for reservation
+            
+            # create seatReserved entries
+    
+    # redirect to ticket creation
+    return HttpResponseRedirect('/customer/ticket/' + RESERVATION_PK)
