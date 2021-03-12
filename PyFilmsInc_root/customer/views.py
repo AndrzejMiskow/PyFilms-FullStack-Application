@@ -69,7 +69,7 @@ def render_ticket_view(request, *args, **kwargs):
     # adding data to the ticket template
     template_path = 'ticket.html'
     context = {
-        'name': reservation.user_id.first_name + " " + reservation.user_id.last_name,
+        'name': reservation.user_id.user.last_name + " " + reservation.user_id.user.last_name,
         'movie': reservation.screening_id.movie_id.title,
         'date_time': reservation.screening_id.screening_start,
         'room_id': reservation.screening_id.room_id,
@@ -81,7 +81,7 @@ def render_ticket_view(request, *args, **kwargs):
     filename = "ticket" + str(pk) + ".pdf"
     ticket = open("static/customer/tickets/" + filename, "w+b")
 
-    # Find the template and render it
+    #    # Find the template and render it
     template = get_template(template_path)
     html = template.render(context)
 
@@ -97,9 +97,10 @@ def render_ticket_view(request, *args, **kwargs):
     mail = EmailMessage(
         "Ticket(s) for " + reservation.screening_id.movie_id.title +
         " screening " + reservation.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
-        "Dear " + reservation.user_id.first_name + ",\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
+        "Dear " + reservation.user_id.user.first_name + ",\n\nPlease find attached your ticket. Enjoy the "
+                                                        "show!\n\nPyFilms Inc",
         None,
-        [reservation.user_id.email], )
+        [reservation.user_id.user.email], )
 
     # attaching the ticket.pdf to the email & sending it
     mail.attach_file('static/customer/tickets/' + filename)
@@ -112,22 +113,25 @@ def render_ticket_view(request, *args, **kwargs):
 # create entries for reservation
 def retrieve_make_reservation(request, *args, **kwargs):
     pk = kwargs.get('pk')
-    
+
     # get data
     if request.method == 'POST':
-        
+
         form = ReservationForm(request.POST)
-         
+
         if form.is_valid():
+            pass
             # create reservation entry
-            #res = Reservation(screening_id=pk, reservation_type=,
+            # res = Reservation(screening_id=pk, reservation_type=,
             #                  reservation_contact=, reserved=True,
             #                  paid=True, cancelled=False, user_id=)
 
             # create transaction entry for reservation
-            
+
             # create seatReserved entries
+
             return HttpResponseRedirect('/customer/ticket/' + str(form.cleaned_data['cNumber']))
     
     # redirect to ticket creation
     # return HttpResponseRedirect('/customer/ticket/1')
+

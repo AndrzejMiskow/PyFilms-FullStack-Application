@@ -52,9 +52,3 @@ class TransactionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Transaction
         fields = ('transaction_type', 'date_time', 'amount', 'user_id', 'successful')
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('user_name', 'email', 'password')

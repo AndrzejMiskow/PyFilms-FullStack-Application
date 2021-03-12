@@ -1,10 +1,30 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.utils.timezone import now
+from django.contrib.auth.models import User
+from django.dispatch import receiver
 from django.core.validators import MinLengthValidator
 import qrcode
 from django.core.files import File
 from PIL import Image, ImageDraw
 from io import BytesIO
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    card_number = models.IntegerField(max_length=16, unique=True, null=True, blank=True)
+    exp_date = models.CharField(max_length=5, null=True, blank=True)
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class Transaction(models.Model):
@@ -21,17 +41,8 @@ class Transaction(models.Model):
                                         choices=PAY_CHOICES, default=CARD)
     date_time = models.DateTimeField(default=now())
     amount = models.FloatField()
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    user_id = models.ForeignKey('Profile', on_delete=models.CASCADE)
     successful = models.BooleanField(default=False, null=False)
-
-
-class User(models.Model):
-    objects = models.Manager()
-    first_name = models.CharField(max_length=32, null=True)
-    last_name = models.CharField(max_length=32, null=True)
-    user_name = models.CharField(max_length=32, null=False, blank=False)
-    email = models.EmailField(max_length=32, null=False, blank=False)
-    password = models.CharField(max_length=32, validators=[MinLengthValidator(8)])
 
 
 # database classes for Reservation tables
@@ -56,13 +67,13 @@ class Reservation(models.Model):
     reserved = models.BooleanField(default=False, null=False)
     paid = models.BooleanField(default=False, null=False)
     cancelled = models.BooleanField(default=False, null=False)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     qr_code = models.ImageField(upload_to='static/customer/img/qr_codes', blank=True)
 
     # Overriding save function to generate a QR code when a reservation is saved
     def save(self, *args, **kwargs):
         # Generate a QR code with the primary key and user last name
-        qrcode_img = qrcode.make(str(self.pk) + ':' + self.user_id.last_name)
+        qrcode_img = qrcode.make(str(self.pk) + ':' + self.user_id.user.last_name)
 
         # Create a canvas on which to put the QR code
         canvas = Image.new('RGB', (290, 290), 'white')

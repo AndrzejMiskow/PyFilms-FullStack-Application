@@ -43,7 +43,6 @@ class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all().order_by('date_time')
     serializer_class = TransactionSerializer
 
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('email')
-    serializer_class = UserSerializer
+# class UserViewSet(viewsets.ModelViewSet):
+#    queryset = User.objects.all().order_by('email')
+#    serializer_class = UserSerializer
