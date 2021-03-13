@@ -7,9 +7,10 @@ from xhtml2pdf import pisa
 from django.core.mail import send_mail, EmailMessage
 from .forms import *
 from django.template import RequestContext
-
 from API.models import *
+from django.contrib.auth.forms import UserCreationForm
 
+from django.contrib.auth import login, authenticate
 
 class HomeView(ListView):
     model = Movie
@@ -165,5 +166,43 @@ def retrieve_make_booking(request, *args, **kwargs):
             render_ticket_views(res.screening_id, request.user.id)
 
     return HttpResponseRedirect('/customer/')
-    
+ 
 
+# render user signup page
+def render_signup_view(request):
+    if request.method == "POST":
+        
+        # get user data from html page 
+        form = UserCreationForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+                
+            # validate & add email to user object
+            email = request.POST.get('email')
+            if (len(email) > 0):
+                user.email = email
+                user.save()
+            
+            #validate & add name fields
+            name = request.POST.get('first_name')
+            surname = request.POST.get('surname')
+            if ((len(name) > 0) and (len(surname) > 0)):
+                user.first_name = name
+                user.last_name = surname
+                user.save()
+                
+            login(request, user)
+            return HttpResponseRedirect('/customer/')
+            
+    # otherwise generate signup page
+    else:
+        form = UserCreationForm()
+    
+    # render page
+    template = get_template('signup.html')
+    html = template.render({'form': form})
+    return HttpResponse(html)

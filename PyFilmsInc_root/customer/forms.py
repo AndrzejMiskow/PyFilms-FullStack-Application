@@ -14,5 +14,3 @@ class ReservationForm(forms.Form):
 	cNumber = forms.IntegerField(label="cNumber")
 	cExpiration = forms.CharField(label="cExpiration")
 	cCVV = forms.IntegerField(label="cCVV")
-
-    

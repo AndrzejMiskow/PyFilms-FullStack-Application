@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    Sign up
+    
+    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="">
+    Required. 150 characters or fewer. Letters, digits and ('@','.','+','-','_') only.
+    <br>
+    <br>
+    <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" required="">
+    <ul>
+      <li>Your password can’t be too similar to your other personal information.</li>
+      <li>Your password must contain at least 8 characters.</li>
+      <li>Your password can’t be a commonly used password.</li>
+      <li>Your password can’t be entirely numeric.</li>
+    </ul>
+    <input type="password" class="form-control" id="password2" name="password2" placeholder="Password confirmation" required="">
+    Enter the same password as before, for verification.
+    <br>
+    <br>
+    <input type="text" class="form-control" id="email" name="email" placeholder="Email address" required="">
+    <br>
+    <br>
+    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name" required="">
+    <input type="text" class="form-control" id="surname" name="surname" placeholder="Last name" required="">
+    
+    <br><br><button type="submit" style="horizontal-align:center">Sign up</button>
+  </form>
+{% endblock %}
