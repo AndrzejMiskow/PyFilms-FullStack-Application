@@ -19,7 +19,7 @@ Checkout
                             "qSenior" quantity of Senior Tickets
  -->
     <h3>Select Number of Tickets for {{movie}}</h3>
-    <form action="/customer/reserve/{{pk}}" method="post">
+    <form action="/customer/booking/{{pk}}" method="post">
         <div class="form-group row">
             <label for="qChild" class="col-sm-2 col-form-label">Child (18 <)</label>
             <div class="col-sm-1">
@@ -81,7 +81,7 @@ Checkout
         <!-- We need a submit function which will add items to the database updateSelected () can be used for this-->
         <label for="SelectedSeatsID">Selected Seats</label>
         <input type="text" class="form-control" id="SelectedSeatsID" name="SelectedSeatsID" placeholder="" required="">
-
+        
         <button type="button" class="btn btn-primary" onclick="confirmSeats()">Confirm Selected Seats</button>
 
         {% load static %}

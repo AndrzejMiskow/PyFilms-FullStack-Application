@@ -8,7 +8,7 @@ from django.core.mail import send_mail, EmailMessage
 from .forms import *
 from django.template import RequestContext
 
-from API.models import Movie, Reservation, Screening, Seat, SeatReserved
+from API.models import *
 
 
 class HomeView(ListView):
@@ -25,7 +25,7 @@ class BuyTickets(ListView):
     model = Movie
     template_name = 'buyTickets.html'
 
-
+# generate seat purchasing page
 def render_purchase_view(request, *args, **kwargs):
     pk = kwargs.get('pk')
     screening = get_object_or_404(Screening, pk=pk)
@@ -42,7 +42,7 @@ def render_purchase_view(request, *args, **kwargs):
         seat_reserved = SeatReserved.objects.filter(screening_id=screening, seat_id=seat).count()
         if seat_reserved != 0:
             layout[current_row][current_col] = "seat reserved"
-        if current_col == rows - 1:
+        if current_col == cols - 1:
             current_row += 1
             current_col = 0
         else:
@@ -62,76 +62,108 @@ def render_purchase_view(request, *args, **kwargs):
     return HttpResponse(html)
 
 
-def render_ticket_view(request, *args, **kwargs):
-    pk = kwargs.get('pk')
-    reservation = get_object_or_404(Reservation, pk=pk)
-
-    # adding data to the ticket template
-    template_path = 'ticket.html'
-    context = {
-        'name': reservation.user_id.user.last_name + " " + reservation.user_id.user.last_name,
-        'movie': reservation.screening_id.movie_id.title,
-        'date_time': reservation.screening_id.screening_start,
-        'room_id': reservation.screening_id.room_id,
-        'res_type': reservation.reservation_type,
-        'qrcode': reservation.qr_code,
-    }
-
-    # create file to contain the pdf
-    filename = "ticket" + str(pk) + ".pdf"
-    ticket = open("static/customer/tickets/" + filename, "w+b")
-
-    #    # Find the template and render it
-    template = get_template(template_path)
-    html = template.render(context)
-
-    # Create a pdf
-    pisa_status = pisa.CreatePDF(html, dest=ticket)
-    ticket.close()
-
-    # if error then show alternative view
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-
-    # emailing ticket to user
+def render_ticket_views(screening_id, user_id):
+    reservations = Reservation.objects.filter(screening_id=screening_id,
+                                              user_id=Profile.objects.get(user=user_id))
+    booking = reservations[0]
+    tickets = []
+    
+    # emailing ticket to UserWarning
     mail = EmailMessage(
-        "Ticket(s) for " + reservation.screening_id.movie_id.title +
-        " screening " + reservation.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
-        "Dear " + reservation.user_id.user.first_name + ",\n\nPlease find attached your ticket. Enjoy the "
+        "Ticket(s) for " + booking.screening_id.movie_id.title +
+        " screening " + booking.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
+        "Dear " + booking.user_id.user.first_name + ",\n\nPlease find attached your ticket. Enjoy the "
                                                         "show!\n\nPyFilms Inc",
         None,
-        [reservation.user_id.user.email], )
+        [booking.user_id.user.email], )
 
-    # attaching the ticket.pdf to the email & sending it
-    mail.attach_file('static/customer/tickets/' + filename)
+    # create 1 ticket per reservation
+    for reservation in reservations:
+
+        # adding data to the ticket template
+        template_path = 'ticket.html'
+        context = {
+            'name': reservation.user_id.user.first_name + " " + reservation.user_id.user.last_name,
+            'movie': reservation.screening_id.movie_id.title,
+            'date_time': reservation.screening_id.screening_start,
+            'room_id': reservation.screening_id.room_id,
+            'res_type': reservation.reservation_type,
+            'qrcode': reservation.qr_code,
+            'poster': reservation.screening_id.movie_id.poster_img,
+        }
+
+        # create file to contain the pdf
+        filename = "ticket" + str(reservation.pk) + ".pdf"
+        ticket = open("static/customer/tickets/" + filename, "w+b")
+
+        # Find the template and render it
+        template = get_template(template_path)
+        html = template.render(context)
+
+        # Create a pdf
+        pisa_status = pisa.CreatePDF(html, dest=ticket)
+        ticket.close()
+
+        # if error then show alternative view
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+
+        # attaching the ticket.pdf to the email & sending it
+        mail.attach_file('static/customer/tickets/' + filename)
+        
     mail.send()
 
-    # return to customer homepage
-    return HttpResponseRedirect('/customer/')
 
-
-# create entries for reservation
-def retrieve_make_reservation(request, *args, **kwargs):
+# create entries for booking (reservations, transaction, seatReserveds)
+def retrieve_make_booking(request, *args, **kwargs):
     pk = kwargs.get('pk')
 
     # get data
     if request.method == 'POST':
 
         form = ReservationForm(request.POST)
-
+        reservationCount = 0
+        seatNos = request.POST.get('SelectedSeatsID').split(',')
+        
         if form.is_valid():
-            pass
-            # create reservation entry
-            # res = Reservation(screening_id=pk, reservation_type=,
-            #                  reservation_contact=, reserved=True,
-            #                  paid=True, cancelled=False, user_id=)
+            form = form.cleaned_data
+            # make vars
+            qAdult = form["qAdult"]
+            qChild = form["qChild"]
+            qSenior = form["qSenior"]
+            qTotal = qAdult + qChild + qSenior
+            res = Reservation(screening_id=Screening.objects.get(pk=pk), reservation_contact="DoWeNeedThisField?", reserved=True,
+                              paid=True, cancelled=False, user_id=Profile.objects.get(user=request.user.id))
+            
+            # update ticket sold quantity for Movie object 
+            Movie.addTickets(qTotal, Screening.objects.get(pk=pk).movie_id)
+            
+            # create reservation entry per party member
+            for i in range(qTotal):
+                # auto-generate new res object with new pk
+                res.pk = None
+                res.save()
+                
+                if (i < qAdult):
+                    res.reservation_type=Reservation.AD
+                elif (i < (qAdult + qChild)):
+                    res.reservation_type=Reservation.CH
+                else:
+                    res.reservation_type=Reservation.SE
+                    
+                res.save()
+                
+                # create seat reservation for this party member
+                SeatReserved.objects.create(seat_id=Seat.objects.get(pk=((int(seatNos[i])+541)+(32*(res.screening_id.room_id.name-1)))),
+                                            reservation_id=res, screening_id=Screening.objects.get(pk=pk))
+            
+            # create transaction entry for reservation (fake card payment)
+            Transaction.objects.create(transaction_type=Transaction.CARD, amount=(qTotal*10),
+                                       user_id=Profile.objects.get(user=request.user.id), successful=True)
+             
+            # render tickets for every member & emails them to customer 
+            render_ticket_views(res.screening_id, request.user.id)
 
-            # create transaction entry for reservation
-
-            # create seatReserved entries
-
-            return HttpResponseRedirect('/customer/ticket/' + str(form.cleaned_data['cNumber']))
+    return HttpResponseRedirect('/customer/')
     
-    # redirect to ticket creation
-    # return HttpResponseRedirect('/customer/ticket/1')
 

@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     
     # error rendering buyTickets related to {% csrf token %} so disabled for now
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -137,3 +137,6 @@ EMAIL_HOST_PASSWORD = 'Pyfilms21'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = 'pyfilmsnoreply@gmail.com'
+
+# user
+LOGIN_REDIRECT_URL = 'home'

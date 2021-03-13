@@ -11,6 +11,7 @@ from io import BytesIO
 
 
 class Profile(models.Model):
+    objects = models.Manager()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     card_number = models.IntegerField(max_length=16, unique=True, null=True, blank=True)
     exp_date = models.CharField(max_length=5, null=True, blank=True)
@@ -138,3 +139,7 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def addTickets(count, self):
+        self.tickets_sold += count
+        self.save()
