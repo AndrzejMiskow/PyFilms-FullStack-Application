@@ -27,7 +27,7 @@ function updateSelected (){
     const selectedSeats = document.querySelectorAll('.row-seat .selected');
 
     selectedSeatsCount = selectedSeats.length;
-}
+};
 
 function confirmSeats(){
     const selectedSeats = document.querySelectorAll('.row-seat .selected');
