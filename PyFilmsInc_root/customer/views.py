@@ -205,6 +205,6 @@ def render_signup_view(request):
         form = UserCreationForm()
 
     # render page
-    template = get_template('signup.html')
-    html = template.render({'form': form})
-    return HttpResponse(html)
+    # template = get_template('signup.html')
+    # html = template.render({'form': form})
+    return render(request, 'signup.html', {'form': form})
