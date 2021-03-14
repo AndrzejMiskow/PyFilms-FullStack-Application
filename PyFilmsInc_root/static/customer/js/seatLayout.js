@@ -2,7 +2,7 @@
 const seatLayout = document.querySelector('.seatLayout');
 
 //All seats which are not reserved
-const seats = document.querySelectorAll('.row-seat .seat:not(.reserved)');
+const seats = document.querySelectorAll('.row-seat .seat');
 
 //number of tickets
 var totalTickets = 0;
@@ -27,7 +27,7 @@ function updateSelected (){
     const selectedSeats = document.querySelectorAll('.row-seat .selected');
 
     selectedSeatsCount = selectedSeats.length;
-};
+}
 
 function confirmSeats(){
     const selectedSeats = document.querySelectorAll('.row-seat .selected');
@@ -66,6 +66,3 @@ seatLayout.addEventListener('click', e => {
     }
 
 });
-
-
-

@@ -13,7 +13,7 @@ router.register(r'seat', views.SeatViewSet)
 router.register(r'seatreserved', views.SeatReservedViewSet)
 router.register(r'movie', views.MovieViewSet)
 router.register(r'transaction', views.TransactionViewSet)
-router.register(r'user', views.UserViewSet)
+# router.register(r'user', views.UserViewSet)
 
 # Once the URL reaches /API/ - the rest of the URL is processed by the router
 urlpatterns = [

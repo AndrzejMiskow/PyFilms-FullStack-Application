@@ -215,9 +215,9 @@ a:hover {
     box-shadow: 0 3px 10px rgb(14, 23, 59);
 }
 
-
-
-
-
+.message {
+    text-align: center;
+    font-size: 4px;
+}
 
 

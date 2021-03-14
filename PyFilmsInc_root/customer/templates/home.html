@@ -4,6 +4,12 @@
 
 {% block content %}
 
+    {%  if messages %}
+        {% for message in messages %}
+            <h3 class="message">{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+
 <!-- Movie Thumbmails -->
 <div class="container-movies">
     {% for movie in object_list %}

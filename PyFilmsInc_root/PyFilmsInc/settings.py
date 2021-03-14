@@ -134,3 +134,6 @@ EMAIL_HOST_PASSWORD = 'Pyfilms21'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = 'pyfilmsnoreply@gmail.com'
+
+# user
+LOGIN_REDIRECT_URL = 'home'
