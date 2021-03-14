@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponse
+from django.template import RequestContext
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,7 +7,6 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.core.mail import send_mail, EmailMessage
 from .forms import *
-from django.template import RequestContext
 from API.models import *
 from django.contrib.auth.forms import UserCreationForm
 
@@ -53,7 +52,6 @@ def render_purchase_view(request, *args, **kwargs):
             current_col += 1
 
     # Applies the movie title and layout to the template
-    template_path = 'buyTickets.html'
     context = {
         'movie': screening.movie_id.title,
         'layout': layout,
@@ -61,12 +59,10 @@ def render_purchase_view(request, *args, **kwargs):
     }
 
     # Renders and returns the template with the context
-    template = get_template(template_path)
-    html = template.render(context)
-    return HttpResponse(html)
+    return render(request, 'buyTickets.html', context)
 
 
-def render_ticket_views(screening_id, user_id):
+def render_ticket_views(request, screening_id, user_id):
     reservations = Reservation.objects.filter(screening_id=screening_id,
                                               user_id=Profile.objects.get(user=user_id))
     booking = reservations[0]
@@ -168,7 +164,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                                        user_id=Profile.objects.get(user=request.user.id), successful=True)
 
             # render tickets for every member & emails them to customer 
-            render_ticket_views(res.screening_id, request.user.id)
+            render_ticket_views(request, res.screening_id, request.user.id)
 
     messages.success(request, 'Thanks! Your booking is confirmed, your ticket will arrive in your inbox soon.')
     return HttpResponseRedirect('/customer/')
