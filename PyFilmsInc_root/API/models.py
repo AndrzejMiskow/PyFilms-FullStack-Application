@@ -13,7 +13,7 @@ from io import BytesIO
 class Profile(models.Model):
     objects = models.Manager()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    card_number = models.IntegerField(max_length=16, unique=True, null=True, blank=True)
+    card_number = models.IntegerField(unique=True, null=True, blank=True)
     exp_date = models.CharField(max_length=5, null=True, blank=True)
 
 
@@ -40,7 +40,7 @@ class Transaction(models.Model):
     objects = models.Manager()
     transaction_type = models.CharField(max_length=32, null=False, blank=False,
                                         choices=PAY_CHOICES, default=CARD)
-    date_time = models.DateTimeField(default=now())
+    date_time = models.DateTimeField(default=now)
     amount = models.FloatField()
     user_id = models.ForeignKey('Profile', on_delete=models.CASCADE)
     successful = models.BooleanField(default=False, null=False)
@@ -96,7 +96,7 @@ class Screening(models.Model):
     objects = models.Manager()
     movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE, null=True)
     room_id = models.ForeignKey('Room', on_delete=models.CASCADE)
-    screening_start = models.DateTimeField(default=now())
+    screening_start = models.DateTimeField(default=now)
 
 
 class Room(models.Model):
