@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from django.test.utils import setup_test_environment
+#from django.test.utils import setup_test_environment
 from django.urls import reverse
 from API.models import Movie
 
@@ -35,7 +35,7 @@ class CustomerListViewTest(TestCase):
         To test /customer if it matches with the current number of movies in the Movie Model
         -NOTE This test would fail
         """
-    #    new_movie = create_movie("1","Jack & Jill","John","A&B","Story about 2 lost kids","/",30,0,"U")
+        new_movie = create_movie("1","Jack & Jill","John","A&B","Story about 2 lost kids","/",30,0,"U")
         response = self.client.get('/customer/')
         self.assertEqual(response.status_code , 200)
-        self.assertQuerysetEqual(response.context['all_movies_list'],['<Movie: Black Widow>'])
+        self.assertQuerysetEqual(response.context['all_movies_list'],['<Movie: Jack & Jill>'])
