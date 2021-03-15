@@ -139,7 +139,10 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+    def get_all_movies_list(self):
+        return Movie.objects.all()
+
     def addTickets(count, self):
         self.tickets_sold += count
         self.save()
