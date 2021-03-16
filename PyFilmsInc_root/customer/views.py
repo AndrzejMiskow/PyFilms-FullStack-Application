@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.template import RequestContext
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -135,7 +134,8 @@ def retrieve_make_booking(request, *args, **kwargs):
             res = Reservation(screening_id=Screening.objects.get(pk=pk),
                               reserved=True,
                               paid=True, cancelled=False, user_id=Profile.objects.get(user=request.user.id))
-
+            lead_booking = res
+            total_price = 0
             # update ticket sold quantity for Movie object 
             Movie.addTickets(q_total, Screening.objects.get(pk=pk).movie_id)
 
@@ -145,6 +145,12 @@ def retrieve_make_booking(request, *args, **kwargs):
                 res.pk = None
                 res.save()
 
+                # The first booking made is the "lead booking" and the others will be connected
+                if i == 0:
+                    lead_booking = res.pk
+                else:
+                    res.lead_booking = Reservation.objects.get(pk=lead_booking)
+
                 if i < q_adult:
                     res.reservation_type = Reservation.AD
                 elif i < (q_adult + q_child):
@@ -153,6 +159,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                     res.reservation_type = Reservation.SE
 
                 res.save()
+                total_price += res.price
 
                 # create seat reservation for this party member
                 SeatReserved.objects.create(
@@ -160,8 +167,9 @@ def retrieve_make_booking(request, *args, **kwargs):
                     reservation_id=res, screening_id=Screening.objects.get(pk=pk))
 
             # create transaction entry for reservation (fake card payment)
-            Transaction.objects.create(transaction_type=Transaction.CARD, amount=(q_total * 10),
-                                       user_id=Profile.objects.get(user=request.user.id), successful=True)
+            Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price,
+                                       user_id=Profile.objects.get(user=request.user.id), successful=True,
+                                       booking=Reservation.objects.get(pk=lead_booking))
 
             # render tickets for every member & emails them to customer 
             render_ticket_views(request, res.screening_id, request.user.id)

@@ -42,6 +42,7 @@ class Transaction(models.Model):
                                         choices=PAY_CHOICES, default=CARD)
     date_time = models.DateTimeField(default=now)
     amount = models.FloatField()
+    booking = models.ForeignKey('Reservation', on_delete=models.CASCADE, null=True)
     user_id = models.ForeignKey('Profile', on_delete=models.CASCADE)
     successful = models.BooleanField(default=False, null=False)
 
@@ -67,7 +68,7 @@ class Reservation(models.Model):
     reserved = models.BooleanField(default=False, null=False)
     reserved_date = models.DateTimeField(default=now, blank=False)
     price = models.IntegerField(default=0)
-    transaction_id = models.ForeignKey('Transaction', blank=True, on_delete=models.SET_NULL, null=True)
+    lead_booking = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     paid = models.BooleanField(default=False, null=False)
     cancelled = models.BooleanField(default=False, null=False)
     user_id = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
