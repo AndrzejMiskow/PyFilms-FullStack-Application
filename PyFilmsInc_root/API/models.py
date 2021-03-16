@@ -64,16 +64,16 @@ class Reservation(models.Model):
     screening_id = models.ForeignKey('Screening', on_delete=models.CASCADE)
     reservation_type = models.CharField(max_length=32, null=False, blank=False,
                                         choices=RES_CHOICES, default=AD)
-    # reservation_contact = models.CharField(max_length=32, null=False, blank=False)
     reserved = models.BooleanField(default=False, null=False)
     reserved_date = models.DateTimeField(default=now, blank=False)
+    price = models.IntegerField(default=0)
     transaction_id = models.ForeignKey('Transaction', blank=True, on_delete=models.SET_NULL, null=True)
     paid = models.BooleanField(default=False, null=False)
     cancelled = models.BooleanField(default=False, null=False)
     user_id = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     qr_code = models.ImageField(upload_to='static/customer/img/qr_codes', blank=True)
 
-    # Overriding save function to generate a QR code when a reservation is saved
+    # Overriding save function to generate a QR code and set price when a reservation is saved
     def save(self, *args, **kwargs):
         # Generate a QR code with the primary key and user last name
         qrcode_img = qrcode.make(str(self.pk) + ':' + self.user_id.user.last_name)
@@ -89,6 +89,16 @@ class Reservation(models.Model):
         # Save the file as a png in the static folder
         self.qr_code.save(fname, File(buffer), save=False)
         canvas.close()
+
+        # Set a price and store that in the object
+        if self.reservation_type == Reservation.AD:
+            self.price = 10
+        elif self.reservation_type == Reservation.CH:
+            self.price = 5
+        elif self.reservation_type == Reservation.ST:
+            self.price = 7
+        elif self.reservation_type == Reservation.SE:
+            self.price = 6
 
         # Continue with the usual saving
         super().save(*args, **kwargs)
