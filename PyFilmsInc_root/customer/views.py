@@ -132,7 +132,7 @@ def retrieve_make_booking(request, *args, **kwargs):
             q_child = form["qChild"]
             q_senior = form["qSenior"]
             q_total = q_adult + q_child + q_senior
-            res = Reservation(screening_id=Screening.objects.get(pk=pk), reservation_contact="DoWeNeedThisField?",
+            res = Reservation(screening_id=Screening.objects.get(pk=pk),
                               reserved=True,
                               paid=True, cancelled=False, user_id=Profile.objects.get(user=request.user.id))
 

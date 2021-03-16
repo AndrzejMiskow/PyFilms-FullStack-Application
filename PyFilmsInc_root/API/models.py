@@ -64,8 +64,10 @@ class Reservation(models.Model):
     screening_id = models.ForeignKey('Screening', on_delete=models.CASCADE)
     reservation_type = models.CharField(max_length=32, null=False, blank=False,
                                         choices=RES_CHOICES, default=AD)
-    reservation_contact = models.CharField(max_length=32, null=False, blank=False)
+    # reservation_contact = models.CharField(max_length=32, null=False, blank=False)
     reserved = models.BooleanField(default=False, null=False)
+    reserved_date = models.DateTimeField(default=now, blank=False)
+    transaction_id = models.ForeignKey('Transaction', blank=True, on_delete=models.SET_NULL, null=True)
     paid = models.BooleanField(default=False, null=False)
     cancelled = models.BooleanField(default=False, null=False)
     user_id = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
