@@ -15,3 +15,8 @@ class ReservationForm(forms.Form):
     cNumber = forms.IntegerField(label="cNumber")
     cExpiration = forms.CharField(label="cExpiration")
     cCVV = forms.IntegerField(label="cCVV")
+
+
+class ScreeningForm(forms.Form):
+    # selection of screening for given movie
+    screening = forms.IntegerField(label="screening")
