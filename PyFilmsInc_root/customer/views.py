@@ -8,6 +8,7 @@ from django.core.mail import send_mail, EmailMessage
 from .forms import *
 from API.models import *
 from django.contrib.auth.forms import UserCreationForm
+import sys
 
 from django.contrib.auth import login, authenticate
 
@@ -17,19 +18,40 @@ class HomeView(ListView):
     template_name = 'home.html'
 
 
-class MovieDetailView(DetailView):
-    model = Movie
-    template_name = "movieDetails.html"
-
-
-class BuyTickets(ListView):
-    model = Movie
-    template_name = 'buyTickets.html'
-
+# generate movie detail page listing info about movie & available screenings
+def render_movie_view(request, *args, **kwargs):
+    pk = kwargs.get("pk")
+    movie = get_object_or_404(Movie, pk=pk)
+    screenings = Screening.objects.filter(movie_id=pk)
+    
+    # adding contents to context
+    context = {
+        'movie': movie,
+        'screenings': screenings,
+        # pk': pk,
+    }
+    
+    # Renders and returns the template with the context
+    return render(request, 'movieDetails.html', context)
 
 # generate seat purchasing page
 def render_purchase_view(request, *args, **kwargs):
-    pk = kwargs.get('pk')
+    pk = None
+    
+    # get data
+    if request.method == 'POST':
+
+        form = ScreeningForm(request.POST)
+        
+        if form.is_valid():
+            form = form.cleaned_data
+            pk = int(form["screening"])
+            
+    # otherwise method is get        
+    else:
+        pass
+        # pk = kwargs.get('pk')
+        
     screening = get_object_or_404(Screening, pk=pk)
     seats = Seat.objects.filter(room_id=screening.room_id)
 
@@ -81,8 +103,11 @@ def render_ticket_views(request, screening_id, user_id):
 
         # adding data to the ticket template
         template_path = 'ticket.html'
+        reservedSeat = SeatReserved.objects.filter(reservation_id=reservation.pk)
+        reservedSeat = reservedSeat[0].seat_id
         context = {
             'name': reservation.user_id.user.first_name + " " + reservation.user_id.user.last_name,
+            'seat': "Row " + str(reservedSeat.row) + ", Seat " + str(reservedSeat.number),
             'movie': reservation.screening_id.movie_id.title,
             'date_time': reservation.screening_id.screening_start,
             'room_id': reservation.screening_id.room_id,

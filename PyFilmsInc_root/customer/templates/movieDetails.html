@@ -38,32 +38,18 @@ Movie: {{ movie.title }}
             </div>
             <!-- select Movie Details Section-->
             <div class="col-6">
-                <div class="form-group">
-                    <label>Dates</label>
-                    <select class="form-control">
-                        <option>22/11/2021</option>
-                        <option>23/11/2021</option>
-                        <option>24/11/2021</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Times</label>
-                    <select class="form-control">
-                        <option>12:05</option>
-                        <option>12:15</option>
-                        <option>22:00</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Cinema Screen</label>
-                    <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
-                </div>
+                <form action="/customer/tickets/" method="post">{% csrf_token %}
+                    <label>Screenings</label>
+                    <select class="form-control" name="screening">
+                        <option selected="selected" disabled>Please select a screening</option>
+                        {% for screening in screenings %}
+                        <option value="{{screening.pk}}">{{ screening.screening_start }}</option>
+                        {% endfor %}
+                    </select>   
+                    <input type="submit" value="View screening">
+                </form>
             </div>
-        </div>
+        </div>  
     </div>
 </div>
 
