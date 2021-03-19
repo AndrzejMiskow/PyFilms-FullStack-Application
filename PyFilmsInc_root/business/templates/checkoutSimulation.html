@@ -9,7 +9,7 @@
             tSenior - Number of Senior Tickets
 -->
 <div class="container">
-    <h2 class="title""> Select Number of Tickets </h2>
+    <h2 class="title"> Select Number of Tickets </h2>
     <div class="container">
         <div class="row">
             <div class="col ticket-title">
@@ -20,7 +20,7 @@
                             <button type="button" class="btn btn-danger">-</button>
                         </div>
                         <div class="col-3">
-                            <input type="number" class="form-control" id="tAdult" name="tAdult" value="0">
+                            <input style="text-align: center" type="number" class="form-control tEntry" id="tAdult" name="tAdult" value="0">
                         </div>
                         <div class="col">
                             <button type="button" class="btn btn-success">+</button>
@@ -30,13 +30,13 @@
             </div>
             <div class="col ticket-title">
                 <div class="container">
-                    <h4 align="center">Child</h4>
+                    <h4>Child</h4>
                     <div class="row" align="center">
                         <div class="col">
                             <button type="button" class="btn btn-danger">-</button>
                         </div>
                         <div class="col-3">
-                            <input type="number" class="form-control" id="tChild" name="tChild" value="0">
+                            <input type="number" class="form-control tEntry" id="tChild" name="tChild" value="0">
                         </div>
                         <div class="col">
                             <button type="button" class="btn btn-success">+</button>
@@ -52,7 +52,7 @@
                             <button type="button" class="btn btn-danger">-</button>
                         </div>
                         <div class="col-3">
-                            <input type="number" class="form-control" id="tSenior" name="tSenior" value="0">
+                            <input type="number" class="form-control tEntry" id="tSenior" name="tSenior" value="0">
                         </div>
                         <div class="col">
                             <button type="button" class="btn btn-success">+</button>
@@ -124,6 +124,6 @@
 
 
 {% load static %}
-<script src="{% static 'business/js/script.js' %}"></script>
+<script src="{% static 'business/js/simulation-checkout.js' %}"></script>
 
 {% endblock %}

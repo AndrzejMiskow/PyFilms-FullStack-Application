@@ -4,4 +4,11 @@ h2{
 
 h4{
     text-align: center;
+    align: "center"
 }
+
+.cashButton {
+    width: 200px;
+    height: 75px;
+}
+
