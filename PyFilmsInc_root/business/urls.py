@@ -1,6 +1,9 @@
 from django.urls import include, path
-from . import views
+from .views import *
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', home, name="home"),
+    path('testCheckout', testChechkout, name="checkOut"),
+    path('cashPayment', testCash, name="cashPayment"),
 ]
