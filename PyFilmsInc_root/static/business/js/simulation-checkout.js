@@ -94,6 +94,38 @@ changeCalculator.addEventListener('click', e => {
     }
 });
 
+//Functions which deal with controlling the number of tickets select using buttons.
+
+function minusAdult(){
+    if (document.getElementById("tAdult").value > 0){
+        document.getElementById("tAdult").value -= 1;
+    }
+}
+function addAdult(){
+    document.getElementById("tAdult").value++;
+}
+
+function minusSenior(){
+    if (document.getElementById("tSenior").value > 0){
+        document.getElementById("tSenior").value -= 1;
+    }
+}
+
+function addSenior(){
+    document.getElementById("tSenior").value++;
+}
+
+function minusChild(){
+    if (document.getElementById("tChild").value > 0){
+        document.getElementById("tChild").value -= 1;
+    }
+}
+
+function addChild(){
+    document.getElementById("tChild").value++;}
+
+
+
 
 //Changes the message in card Payment page that the payment was successful
 function paymentSuccess(){

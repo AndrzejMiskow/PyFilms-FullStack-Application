@@ -17,13 +17,13 @@
                     <h4 align="center">Adult</h4>
                     <div class="row" align="center">
                         <div class="col">
-                            <button type="button" class="btn btn-danger">-</button>
+                            <button type="button" class="btn btn-danger" onclick="minusAdult()">-</button>
                         </div>
                         <div class="col-3">
                             <input type="number" class="form-control tEntry" id="tAdult" name="tAdult" value="0">
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-success">+</button>
+                            <button type="button" class="btn btn-success" onclick="addAdult()">+</button>
                         </div>
                     </div>
                 </div>
@@ -33,13 +33,13 @@
                     <h4>Child</h4>
                     <div class="row" align="center">
                         <div class="col">
-                            <button type="button" class="btn btn-danger">-</button>
+                            <button type="button" class="btn btn-danger" onclick="minusChild()">-</button>
                         </div>
                         <div class="col-3">
                             <input type="number" class="form-control tEntry" id="tChild" name="tChild" value="0">
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-success">+</button>
+                            <button type="button" class="btn btn-success" onclick="addChild()">+</button>
                         </div>
                     </div>
                 </div>
@@ -49,13 +49,13 @@
                     <h4 align="center">Senior</h4>
                     <div class="row" align="center">
                         <div class="col">
-                            <button type="button" class="btn btn-danger">-</button>
+                            <button type="button" class="btn btn-danger" onclick="minusSenior()">-</button>
                         </div>
                         <div class="col-3">
                             <input type="number" class="form-control tEntry" id="tSenior" name="tSenior" value="0">
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-success">+</button>
+                            <button type="button" class="btn btn-success" onclick="addSenior()">+</button>
                         </div>
                     </div>
                 </div>
@@ -103,8 +103,6 @@
         <button type="button" class="btn btn-primary btn-lg" onclick="confirmSeats()">Confirm Selected Seats</button>
     </div>
 
-    {% load static %}
-    <script src="{%static 'customer/js/seatLayout.js' %}" type="text/javascript"></script>
 
     <hr class="mb-4">
     <h2 class="title" align="center" > Payment </h2>
@@ -120,7 +118,11 @@
     </div>
 </div>
 
+    {% load static %}
+    <script src="{%static 'customer/js/seatLayout.js' %}" type="text/javascript"></script>
 
+    {% load static %}
+    <script src="{% static 'business/js/simulation-checkout.js' %}"></script>
 
 
 
