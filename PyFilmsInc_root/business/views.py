@@ -14,3 +14,7 @@ def testChechkout(request):
 
 def testCash(request):
     return render(request, "cashPayment.html", {})
+
+
+def testCard(request):
+    return render(request, "cardPayment.html", {})

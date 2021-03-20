@@ -6,4 +6,5 @@ urlpatterns = [
     path('', home, name="home"),
     path('testCheckout', testChechkout, name="checkOut"),
     path('cashPayment', testCash, name="cashPayment"),
+    path('cardPayment', testCard, name="cardPayment"),
 ]

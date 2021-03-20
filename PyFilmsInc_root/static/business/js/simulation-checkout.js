@@ -1,4 +1,5 @@
 const changeCalculator = document.querySelector('.change');
+var loadPage;
 
 var total_ammount = 0;
 
@@ -93,4 +94,18 @@ changeCalculator.addEventListener('click', e => {
     }
 });
 
+
+//Changes the message in card Payment page that the payment was successful
+function paymentSuccess(){
+    document.getElementById("messageBox").value = "Payment Accepted, Print Tickets";
+    document.getElementById("messageBox").style.backgroundColor = "green";
+    document.getElementById("messageBox").style.color = "white";
+}
+
+//Changes the message in card Payment page that the payment was not successful
+function paymentFailed(){
+    document.getElementById("messageBox").value = "Payment Failed, Please Try Again";
+    document.getElementById("messageBox").style.backgroundColor = "red";
+    document.getElementById("messageBox").style.color = "black";
+}
 
