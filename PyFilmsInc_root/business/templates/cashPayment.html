@@ -7,53 +7,53 @@
     <h1 align="center"> Pay with Cash</h1>
     <div class="form-group">
         <!-- Hard coded CSS for testing -->
-        <input style="height:100px; font-size:50px; text-align: center;" class="form-control input-lg" id="total" type="text" placeholder="[Total Ammount]">
+        <input style="height:100px; font-size:50px; text-align: center;" class="form-control input-lg" id="test" type="text" placeholder="[Total Ammount]">
         <p></p>
-        <input style="height:50px; font-size:25px; text-align: center;" class="form-control input-lg" id="total" type="text" placeholder="[Message Box]">
+        <input style="height:50px; font-size:25px; text-align: center;" class="form-control input-lg" id="enteredCash" type="text" placeholder="[Message Box]">
 
     </div>
     <p></p>
-    <div class="container">
+    <div class="container change">
         <div class="row" align="center">
             <div class="col-sm">
                 <!-- Test styling will be turnend into CSS-->
-                <button type="button" class="btn btn-primary btn-lg cashButton">£10</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton ten">£10</button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton">£5</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton five">£5</button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton">£2</button>
-            </div>
-        </div>
-        <p></p>
-        <div class="row" align="center">
-            <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton">£1</button>
-            </div>
-            <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton">50p</button>
-            </div>
-            <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton">20p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton two">£2</button>
             </div>
         </div>
         <p></p>
         <div class="row" align="center">
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton">10p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton one">£1</button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton">5p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton fiftyP">50p</button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton">2p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton twentyP">20p</button>
+            </div>
+        </div>
+        <p></p>
+        <div class="row" align="center">
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary btn-lg cashButton tenP">10p</button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary btn-lg cashButton fiveP">5p</button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary btn-lg cashButton twoP">2p</button>
             </div>
         </div>
         <p></p>
         <div class="row">
             <div class="col-sm" align="center">
-                <button type="button" class="btn btn-primary btn-lg cashButton">1p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton oneP">1p</button>
             </div>
         </div>
         <p></p>
@@ -62,5 +62,8 @@
         <button type="button" style="height: 75px;" class="btn btn-success btn-lg btn-block">Confirm Payment</button>
     </div>
 </div>
+
+{% load static %}
+<script src="{% static 'business/js/simulation-checkout.js' %}"></script>
 
 {% endblock %}

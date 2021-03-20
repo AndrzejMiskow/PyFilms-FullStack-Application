@@ -97,9 +97,8 @@
         </div>
     </div>
 
-    <!-- We need a submit function which will add items to the database updateSelected () can be used for this-->
     <label for="SelectedSeatsID">Selected Seats</label>
-    <input type="text" class="form-control" id="SelectedSeatsID" name="SelectedSeatsID" placeholder="" required="">
+    <input type="text" class="form-control" id="SelectedSeatsID" name="SelectedSeatsID" placeholder="25" required="">
     <div align="center">
         <button type="button" class="btn btn-primary btn-lg" onclick="confirmSeats()">Confirm Selected Seats</button>
     </div>
@@ -123,7 +122,6 @@
 
 
 
-{% load static %}
-<script src="{% static 'business/js/simulation-checkout.js' %}"></script>
+
 
 {% endblock %}

@@ -1,5 +1,10 @@
+const changeCalculator = document.querySelector('.change');
+
+var total_ammount = 0;
+
 
 //Function to calculate the amount of change need to be given to the customer and what coins are needed for it.
+//Output is a Dictionary in a style {"Change Type", Number to Give}
 var calculateChange = function(price, cash){
     var returnValue = cash - price;
     var change = {};
@@ -12,15 +17,80 @@ var calculateChange = function(price, cash){
 
     for (var i = 0; i < coinValues.length; i++){
         amount = Math.floor(returnValue/coinValues[i]);
-        console.log(amount);
         if (amount > 0){
             change[coinTypes[i]] = amount;
             returnValue = returnValue % coinValues[i];
-            console.log(returnValue);
         }
     }
 
     return change;
 }
 
-console.log(calculateChange(176,200));
+//function to update the total amount the customer gave to the staff
+changeCalculator.addEventListener('click', e => {
+    if (
+        e.target.classList.contains('btn')
+    ) {
+        console.log("button pressed");
+        var totalPrice = document.getElementById("test").value * 100;
+        let stringChangeOutput = "Change to Give: ";
+        console.log(totalPrice);
+
+        if (e.target.classList.contains('ten')){
+            total_ammount +=1000;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('five')){
+            total_ammount +=500;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('two')){
+            total_ammount += 200;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('one')){
+            total_ammount += 100;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('fiftyP')){
+            total_ammount +=50;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('twentyP')){
+            total_ammount +=  20;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('tenP')){
+            total_ammount += 10;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('fiveP')){
+            total_ammount +=5;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('twoP')){
+            total_ammount += 2;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('oneP')){
+            total_ammount +=1;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (total_ammount > totalPrice){
+            var tempDict = calculateChange(totalPrice , total_ammount);
+            for(var key in tempDict) {
+                var value = tempDict[key];
+
+                console.log(key);
+                console.log(value);
+
+                stringChangeOutput += key.toString() + " x " + value.toString() + " , ";
+            }
+
+            document.getElementById("enteredCash").value = stringChangeOutput;
+        }
+
+    }
+});
+
+
