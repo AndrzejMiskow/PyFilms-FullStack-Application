@@ -19,7 +19,9 @@ Checkout
                             "qSenior" quantity of Senior Tickets
  -->
     <h3>Select Number of Tickets for {{movie}}</h3>
-    <form action="/customer/booking/{{pk}}" method="post">{% csrf_token %}
+    <form action="/customer/booking/{{pk}}" name="form1" method="post" class="needs-validation"
+          novalidate
+    >{% csrf_token %}
         <div class="form-group row">
             <label for="qAdult" class="col-sm-2 col-form-label">Adult (18+)</label>
             <div class="col-sm-1">
@@ -97,11 +99,11 @@ Checkout
                                     "cCVV" For cards cvv Number
          -->
         <h3>Checkout</h3>
-
             <div class="row mb-6">
                 <div class="col-md-6 mb-3">
                     <label for="cName">Name on card</label>
-                    <input type="text" class="form-control" id="cName" name="cName" placeholder="" required="">
+                    <input type="text" class="form-control" id="cName" name="cName"
+                           placeholder="" required maxlength="128">
                     <small class="text-muted">Full name as displayed on card</small>
                     <div class="invalid-feedback">
                         Name on card is required
@@ -109,7 +111,8 @@ Checkout
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="cNumber">Card number</label>
-                    <input type="text" class="form-control" id="cNumber" name="cNumber" placeholder="" required="">
+                    <input type="text" class="form-control" id="cNumber" name="cNumber"
+                           placeholder="" required minlength="16" maxlength="16">
                     <div class="invalid-feedback">
                         Credit card number is required
                     </div>
@@ -118,21 +121,27 @@ Checkout
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label for="cExpiration">Expiration</label>
-                    <input type="text" class="form-control" id="cExpiration" name="cExpiration" placeholder="MM/YY" required="">
+                    <input type="text" class="form-control" id="cExpiration" name="cExpiration"
+                           placeholder="MM/YY" required minlength="5" maxlength="5">
                     <div class="invalid-feedback">
                         Expiration date required
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="cCVV">CVV</label>
-                    <input type="text" class="form-control" id="cCVV" name="cCVV" placeholder="000" required="">
+                    <input type="text" class="form-control" id="cCVV" name="cCVV"
+                           placeholder="000" required minlength="3" maxlength="4">
                     <div class="invalid-feedback">
                         Security code required
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-primary" type="submit">Complete Check Out</button>
+            <button class="btn btn-primary" type="submit" id="checkout-submit">Complete
+                Check Out</button>
+
+    {% load static %}
+     <script src="{%static 'customer/js/formValidation.js' %}" type="text/javascript"></script>
     </form>
 </div>
 
