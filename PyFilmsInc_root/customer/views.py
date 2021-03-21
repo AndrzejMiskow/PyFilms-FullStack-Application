@@ -151,16 +151,23 @@ def retrieve_make_booking(request, *args, **kwargs):
 
         if form.is_valid():
             form = form.cleaned_data
+
             # make vars
+            user = Profile.objects.get(user=request.user.id)
             q_adult = form["qAdult"]
             q_child = form["qChild"]
             q_senior = form["qSenior"]
             q_total = q_adult + q_child + q_senior
-            res = Reservation(screening_id=Screening.objects.get(pk=pk),
-                              reserved=True,
-                              paid=True, cancelled=False, user_id=Profile.objects.get(user=request.user.id))
+
+            save_card = form["saveCard"]
+            c_number = form["cNumber"]
+            c_exp = form["cExpiration"]
+
+            res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True,paid=True, cancelled=False,
+                              user_id=user)
             lead_booking = res
             total_price = 0
+
             # update ticket sold quantity for Movie object 
             Movie.addTickets(q_total, Screening.objects.get(pk=pk).movie_id)
 
@@ -192,9 +199,14 @@ def retrieve_make_booking(request, *args, **kwargs):
                     reservation_id=res, screening_id=Screening.objects.get(pk=pk))
 
             # create transaction entry for reservation (fake card payment)
-            Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price,
-                                       user_id=Profile.objects.get(user=request.user.id), successful=True,
-                                       booking=Reservation.objects.get(pk=lead_booking))
+            Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price, user_id=user,
+                                       successful=True, booking=Reservation.objects.get(pk=lead_booking))
+
+            # Save card details
+            if save_card:
+                user.card_number = c_number
+                user.exp_date = c_exp
+                user.save()
 
             # render tickets for every member & emails them to customer 
             render_ticket_views(request, res.screening_id, request.user.id)
@@ -238,6 +250,4 @@ def render_signup_view(request):
         form = UserCreationForm()
 
     # render page
-    # template = get_template('signup.html')
-    # html = template.render({'form': form})
     return render(request, 'signup.html', {'form': form})
