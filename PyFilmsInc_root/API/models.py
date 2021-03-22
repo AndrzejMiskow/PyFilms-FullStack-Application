@@ -43,7 +43,7 @@ class Transaction(models.Model):
     date_time = models.DateTimeField(default=now)
     amount = models.FloatField()
     booking = models.ForeignKey('Reservation', on_delete=models.CASCADE, null=True)
-    user_id = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     successful = models.BooleanField(default=False, null=False)
 
 
@@ -71,13 +71,13 @@ class Reservation(models.Model):
     lead_booking = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     paid = models.BooleanField(default=False, null=False)
     cancelled = models.BooleanField(default=False, null=False)
-    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     qr_code = models.ImageField(upload_to='static/customer/img/qr_codes', blank=True)
 
     # Overriding save function to generate a QR code and set price when a reservation is saved
     def save(self, *args, **kwargs):
         # Generate a QR code with the primary key and user last name
-        qrcode_img = qrcode.make(str(self.pk) + ':' + self.user_id.user.last_name)
+        qrcode_img = qrcode.make(str(self.pk) + ':' + self.user_id.last_name)
 
         # Create a canvas on which to put the QR code
         canvas = Image.new('RGB', (290, 290), 'white')
