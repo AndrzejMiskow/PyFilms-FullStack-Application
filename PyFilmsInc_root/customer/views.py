@@ -12,7 +12,6 @@ import sys
 
 from django.contrib.auth import login, authenticate
 
-
 class HomeView(ListView):
     model = Movie
     template_name = 'home.html'
