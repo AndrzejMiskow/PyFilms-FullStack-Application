@@ -265,3 +265,12 @@ def render_account_view(request):
         
         return render(request, 'editAccount.html', context)
         
+
+# render view bookings page
+def render_bookings_view(request):
+    bookings = Reservation.objects.filter(user_id=Profile.objects.get(user=request.user.id))
+    context = {
+        'bookings': bookings,
+    }
+    
+    return render(request, 'viewBookings.html', context)
