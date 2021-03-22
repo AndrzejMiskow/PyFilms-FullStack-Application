@@ -23,35 +23,36 @@ def render_movie_view(request, *args, **kwargs):
     pk = kwargs.get("pk")
     movie = get_object_or_404(Movie, pk=pk)
     screenings = Screening.objects.filter(movie_id=pk)
-    
+
     # adding contents to context
     context = {
         'movie': movie,
         'screenings': screenings,
         # pk': pk,
     }
-    
+
     # Renders and returns the template with the context
     return render(request, 'movieDetails.html', context)
+
 
 # generate seat purchasing page
 def render_purchase_view(request, *args, **kwargs):
     pk = None
-    
+
     # get data
     if request.method == 'POST':
 
         form = ScreeningForm(request.POST)
-        
+
         if form.is_valid():
             form = form.cleaned_data
             pk = int(form["screening"])
-            
+
     # otherwise method is get        
     else:
         pass
         # pk = kwargs.get('pk')
-        
+
     screening = get_object_or_404(Screening, pk=pk)
     seats = Seat.objects.filter(room_id=screening.room_id)
 
@@ -163,7 +164,7 @@ def retrieve_make_booking(request, *args, **kwargs):
             c_number = form["cNumber"]
             c_exp = form["cExpiration"]
 
-            res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True,paid=True, cancelled=False,
+            res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True, paid=True, cancelled=False,
                               user_id=user)
             lead_booking = res
             total_price = 0
@@ -195,12 +196,14 @@ def retrieve_make_booking(request, *args, **kwargs):
 
                 # create seat reservation for this party member
                 SeatReserved.objects.create(
-                    seat_id=Seat.objects.get(pk=((int(seat_nos[i]) + 541) + (32 * (res.screening_id.room_id.name - 1)))),
+                    seat_id=Seat.objects.get(
+                        pk=((int(seat_nos[i]) + 541) + (32 * (res.screening_id.room_id.name - 1)))),
                     reservation_id=res, screening_id=Screening.objects.get(pk=pk))
 
             # create transaction entry for reservation (fake card payment)
-            Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price, user_id=user,
-                                       successful=True, booking=Reservation.objects.get(pk=lead_booking))
+            if c_number == "":
+                Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price, user_id=user,
+                                           successful=True, booking=Reservation.objects.get(pk=lead_booking))
 
             # Save card details
             if save_card:
