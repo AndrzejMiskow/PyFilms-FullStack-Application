@@ -241,3 +241,27 @@ def render_signup_view(request):
     # template = get_template('signup.html')
     # html = template.render({'form': form})
     return render(request, 'signup.html', {'form': form})
+
+
+# render view account details page
+def render_account_view(request):
+    if request.method == 'POST':
+        form = EditUserForm(request.POST, instance=request.user)
+        profileForm = EditProfileForm(request.POST, instance=Profile.objects.get(user=request.user.id))
+        
+        if form.is_valid() and profileForm.is_valid():
+            form.save()
+            profileForm.save()
+            messages.success(request, 'Your account details have been updated.')
+            return HttpResponseRedirect('/customer/')
+    
+    else:
+        form = EditUserForm(instance=request.user)
+        profileForm = EditProfileForm(instance=Profile.objects.get(user=request.user.id))
+        context = {
+            'form': form,
+            'profileForm': profileForm,
+        }
+        
+        return render(request, 'editAccount.html', context)
+        
