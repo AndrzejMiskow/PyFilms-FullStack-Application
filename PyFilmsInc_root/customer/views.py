@@ -164,7 +164,14 @@ def retrieve_make_booking(request, *args, **kwargs):
             c_number = form["cNumber"]
             c_exp = form["cExpiration"]
 
-            res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True, paid=True, cancelled=False,
+            print(c_number)
+
+            if c_number is None:
+                paid_now = False
+            else:
+                paid_now = True
+
+            res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True, paid=paid_now, cancelled=False,
                               user_id=user)
             lead_booking = res
             total_price = 0
@@ -201,7 +208,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                     reservation_id=res, screening_id=Screening.objects.get(pk=pk))
 
             # create transaction entry for reservation (fake card payment)
-            if c_number == "":
+            if paid_now:
                 Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price, user_id=user,
                                            successful=True, booking=Reservation.objects.get(pk=lead_booking))
 

@@ -12,10 +12,10 @@ class ReservationForm(forms.Form):
 
     # card details
     saveCard = forms.BooleanField(label="saveCard", initial=False, required=False)
-    cName = forms.CharField(label="cName", required=False)
-    cNumber = forms.IntegerField(label="cNumber", required=False)
-    cExpiration = forms.CharField(label="cExpiration", required=False)
-    cCVV = forms.IntegerField(label="cCVV", required=False)
+    cName = forms.CharField(label="cName", required=False, initial="")
+    cNumber = forms.IntegerField(label="cNumber", required=False, initial="")
+    cExpiration = forms.CharField(label="cExpiration", required=False, initial="")
+    cCVV = forms.IntegerField(label="cCVV", required=False, initial="")
 
 
 class ScreeningForm(forms.Form):
