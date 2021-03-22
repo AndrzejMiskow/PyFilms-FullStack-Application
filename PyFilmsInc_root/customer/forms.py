@@ -11,7 +11,7 @@ class ReservationForm(forms.Form):
     SelectedSeatsID = forms.CharField(label="SelectedSeatsID")
 
     # card details
-    saveCard = forms.BooleanField(label="saveCard")
+    saveCard = forms.BooleanField(label="saveCard", initial=False, required=False)
     cName = forms.CharField(label="cName")
     cNumber = forms.IntegerField(label="cNumber")
     cExpiration = forms.CharField(label="cExpiration")
