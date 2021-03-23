@@ -134,4 +134,4 @@ EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = 'pyfilmsnoreply@gmail.com'
 
 # user
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/customer/'
