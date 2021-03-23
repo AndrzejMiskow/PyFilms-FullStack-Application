@@ -38,6 +38,7 @@ def render_movie_view(request, *args, **kwargs):
 # generate seat purchasing page
 def render_purchase_view(request, *args, **kwargs):
     pk = None
+    profile = Profile.objects.get(user=request.user.id)
 
     # get data
     if request.method == 'POST':
@@ -73,11 +74,23 @@ def render_purchase_view(request, *args, **kwargs):
         else:
             current_col += 1
 
+    # Obtain card details if they've been saved in the past
+    card_number = str(profile.card_number)
+    exp_date = profile.exp_date
+    name = profile.user.first_name + " " + profile.user.last_name
+    if card_number is None or exp_date is None:
+        card_number = ""
+        exp_date = ""
+        name = ""
+
     # Applies the movie title and layout to the template
     context = {
         'movie': screening.movie_id.title,
         'layout': layout,
-        'pk': pk
+        'pk': pk,
+        'card_number': card_number,
+        'exp_date': exp_date,
+        'card_name': name
     }
 
     # Renders and returns the template with the context
