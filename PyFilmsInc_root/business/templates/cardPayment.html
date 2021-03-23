@@ -1,0 +1,37 @@
+{% extends 'business-base.html' %}
+
+{% block content %}
+
+
+    <div class="container">
+        <h1 align="center"> Pay with Cash</h1>
+        <div class="form-group">
+            <!-- Hard coded CSS for testing -->
+            <input class="form-control input-lg total-field" id="test" type="text" placeholder="[Total Ammount]">
+            <p></p>
+            <input class="form-control input-lg message-box" id="messageBox" type="text" placeholder="Please Enter your Pin">
+
+        </div>
+        <p></p>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <!-- Test styling will be turnend into CSS-->
+                    <button type="button" class="btn btn-primary btn-lg cardButton" onclick="paymentSuccess()">Pin Entry Successful</button>
+                </div>
+                <div class="col" align="right">
+                    <button type="button" class="btn btn-primary btn-lg cardButton" onclick="paymentFailed()">Try Again</button>
+                </div>
+            </div>
+        </div>
+            <p></p>
+
+            <!-- Test styling will be turnend into CSS-->
+            <button type="button" class="btn btn-success btn-lg btn-block big-btn">Print Tickets</button>
+        </div>
+    </div>
+
+    {% load static %}
+    <script src="{% static 'business/js/simulation-checkout.js' %}"></script>
+
+{% endblock %}
