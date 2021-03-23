@@ -50,7 +50,7 @@ $(document).ready(function() {
                             size: '10'
                         },
                         formatter: (value) => {
-                            return '£' + value;
+                            return value;
                         }
                     }
                 }
@@ -61,10 +61,18 @@ $(document).ready(function() {
 </script>
 
 {% endblock scripts %} 
-{% block content %} 
+{% block content %}
 
-<!-- Displays the graph from the given graph name-->
-<canvas id='myChart' width="400" height="400"></canvas>
+
+<div class="container" style="height: 50vh">
+    <div align="center">
+        <h1>Number of tickets Sold</h1>
+        <canvas class="chart-style" id="myChart"></canvas>
+    </div>
+</div>
+
+
+
 
 
 {% endblock content %}
