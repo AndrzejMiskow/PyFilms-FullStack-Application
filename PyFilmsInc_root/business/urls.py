@@ -7,4 +7,5 @@ urlpatterns = [
     path('testCheckout', testChechkout, name="checkOut"),
     path('cashPayment', testCash, name="cashPayment"),
     path('cardPayment', testCard, name="cardPayment"),
+    path('sampleGraph', SampleBusinessPage.as_view(), name="sampleGraph"),
 ]

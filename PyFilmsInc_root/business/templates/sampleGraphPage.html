@@ -1,0 +1,70 @@
+{% extends 'graphs-base.html' %} 
+
+{% block scripts %}
+<script>
+//Function is loaded when the page loads
+$(document).ready(function() {
+
+
+        let ctx = document.getElementById('myChart').getContext('2d');
+
+        //Data Lables and colours
+        let labelsFromDB = [{% for item in qs%}'{{item.title}}',{% endfor %}];
+        let dataFromDB = [{% for item in qs%}{{item.tickets_sold}},{% endfor %}]
+
+        //We may need a db field for this or set it autimatically
+        let colorHex = ['#3639fb', '#060613', '#43AA8B'];
+
+        //Function for the graph and graph settings
+        let myChart = new Chart(ctx, {
+            type: 'pie',
+
+            //Data values of the graph but the varibles are taken from above
+            data: {
+                datasets: [{
+                    //Data used for the graph
+                    data: dataFromDB,
+                    backgroundColor: colorHex
+                }],
+                labels: labelsFromDB
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom'
+                },
+                plugins: {
+                    datalabels: {
+                        color: '#fff',
+                        anchor: 'end',
+                        align: 'start',
+                        offset: -10,
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                        borderRadius: 25,
+                        backgroundColor: (context) => {
+                            return context.dataset.backgroundColor;
+                        },
+                        font: {
+                            weight: 'bold',
+                            size: '10'
+                        },
+                        formatter: (value) => {
+                            return '£' + value;
+                        }
+                    }
+                }
+            }
+        })
+
+});
+</script>
+
+{% endblock scripts %} 
+{% block content %} 
+
+<!-- Displays the graph from the given graph name-->
+<canvas id='myChart' width="400" height="400"></canvas>
+
+
+{% endblock content %}
