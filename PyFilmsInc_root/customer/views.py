@@ -1,16 +1,16 @@
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-from django.core.mail import send_mail, EmailMessage
-from .forms import *
-from API.models import *
-from django.contrib.auth.forms import UserCreationForm
-import sys
-
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.core.mail import EmailMessage
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.template.loader import get_template
+from django.views.generic import ListView
+from xhtml2pdf import pisa
+
+from API.models import *
+from .forms import *
+
 
 class HomeView(ListView):
     model = Movie
@@ -26,8 +26,7 @@ def render_movie_view(request, *args, **kwargs):
     # adding contents to context
     context = {
         'movie': movie,
-        'screenings': screenings,
-        # pk': pk,
+        'screenings': screenings
     }
 
     # Renders and returns the template with the context
@@ -100,7 +99,6 @@ def render_ticket_views(request, screening_id, user_id):
     reservations = Reservation.objects.filter(screening_id=screening_id,
                                               user_id=Profile.objects.get(user=user_id))
     booking = reservations[0]
-    tickets = []
 
     # emailing ticket to UserWarning
     mail = EmailMessage(
@@ -116,11 +114,11 @@ def render_ticket_views(request, screening_id, user_id):
 
         # adding data to the ticket template
         template_path = 'ticket.html'
-        reservedSeat = SeatReserved.objects.filter(reservation_id=reservation.pk)
-        reservedSeat = reservedSeat[0].seat_id
+        reserved_seat = SeatReserved.objects.filter(reservation_id=reservation.pk)
+        reserved_seat = reserved_seat[0].seat_id
         context = {
             'name': reservation.user_id.user.first_name + " " + reservation.user_id.user.last_name,
-            'seat': "Row " + str(reservedSeat.row) + ", Seat " + str(reservedSeat.number),
+            'seat': "Row " + str(reserved_seat.row) + ", Seat " + str(reserved_seat.number),
             'movie': reservation.screening_id.movie_id.title,
             'date_time': reservation.screening_id.screening_start,
             'room_id': reservation.screening_id.room_id,
@@ -159,7 +157,6 @@ def retrieve_make_booking(request, *args, **kwargs):
     if request.method == 'POST':
 
         form = ReservationForm(request.POST)
-        reservation_count = 0
         seat_nos = request.POST.get('SelectedSeatsID').split(',')
 
         if form.is_valid():
@@ -279,24 +276,24 @@ def render_signup_view(request):
 def render_account_view(request):
     if request.method == 'POST':
         form = EditUserForm(request.POST, instance=request.user)
-        profileForm = EditProfileForm(request.POST, instance=Profile.objects.get(user=request.user.id))
-        
-        if form.is_valid() and profileForm.is_valid():
+        profile_form = EditProfileForm(request.POST, instance=Profile.objects.get(user=request.user.id))
+
+        if form.is_valid() and profile_form.is_valid():
             form.save()
-            profileForm.save()
+            profile_form.save()
             messages.success(request, 'Your account details have been updated.')
             return HttpResponseRedirect('/customer/')
-    
+
     else:
         form = EditUserForm(instance=request.user)
-        profileForm = EditProfileForm(instance=Profile.objects.get(user=request.user.id))
+        profile_form = EditProfileForm(instance=Profile.objects.get(user=request.user.id))
         context = {
             'form': form,
-            'profileForm': profileForm,
+            'profileForm': profile_form,
         }
-        
+
         return render(request, 'editAccount.html', context)
-        
+
 
 # render view bookings page
 def render_bookings_view(request):
@@ -304,5 +301,5 @@ def render_bookings_view(request):
     context = {
         'bookings': bookings,
     }
-    
+
     return render(request, 'viewBookings.html', context)
