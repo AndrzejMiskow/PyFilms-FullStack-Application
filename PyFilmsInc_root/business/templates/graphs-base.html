@@ -23,7 +23,7 @@
 <!-- Navigation bar at the top of the page -->
 <nav class="navbar sticky-top navbar-expand-lg navbar navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/customer/">PyFilm</a>
+        <a class="navbar-brand" href="/customer/">PyFilm - Business Owner</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -48,21 +48,21 @@
     </div>
 </nav>
 
-<div class="wrapper">
-    <div class="container d-flex flex-column justify-content-center align-items-center" style="height: 50vh">
-        <div class="title text-center mb-5">
-            <h1>Total Revenue Report</h1>
-        </div>
-        <div class="chart-wrapper">
-            <canvas id="myChart"></canvas>
-        </div>
-    </div>
-</div>
+<!-- Contains the scripts needed for the graphs -->
+{% block scripts %}
+
+{% endblock scripts %}
+
+
+<!-- Contains the graph content in html-->
+{% block content %}
+
+{% endblock content %}
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-<script src="../../static/business/js/script.js"></script>
 
 
 </body>

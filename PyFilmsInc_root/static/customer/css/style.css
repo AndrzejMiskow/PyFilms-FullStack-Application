@@ -97,9 +97,9 @@ a:hover {
 }
 
 
-.chart-wrapper {
-    width: 500px;
-    height: 500px;
+.chart-style {
+    width: 600px;
+    height: 600px;
     margin: 0 auto;
 }
 
