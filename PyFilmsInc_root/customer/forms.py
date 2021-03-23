@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from API.models import Profile
 from django.forms import ModelForm
 
+
 class ReservationForm(forms.Form):
     # quantities of seats for reservation
     qAdult = forms.IntegerField(label="qAdult")
@@ -23,12 +24,14 @@ class ReservationForm(forms.Form):
 class ScreeningForm(forms.Form):
     # selection of screening for given movie
     screening = forms.IntegerField(label="screening")
-    
+
+
 # forms to auto-fill edit user details page
 class EditUserForm(ModelForm):
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name')
+
 
 class EditProfileForm(ModelForm):
     class Meta:

@@ -1,13 +1,13 @@
+from io import BytesIO
+
+import qrcode
+from PIL import Image, ImageDraw
+from django.contrib.auth.models import User
+from django.core.files import File
 from django.db import models
 from django.db.models.signals import post_save
-from django.utils.timezone import now
-from django.contrib.auth.models import User
 from django.dispatch import receiver
-from django.core.validators import MinLengthValidator
-import qrcode
-from django.core.files import File
-from PIL import Image, ImageDraw
-from io import BytesIO
+from django.utils.timezone import now
 
 
 class Profile(models.Model):
@@ -81,7 +81,7 @@ class Reservation(models.Model):
 
         # Create a canvas on which to put the QR code
         canvas = Image.new('RGB', (290, 290), 'white')
-        draw = ImageDraw.Draw(canvas)
+        ImageDraw.Draw(canvas)
         canvas.paste(qrcode_img)
         fname = f'qr_code-{str(self.pk)}' + '.png'
         buffer = BytesIO()
@@ -152,7 +152,7 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
-    
-    def addTickets(count, self):
+
+    def addTickets(self, count):
         self.tickets_sold += count
         self.save()
