@@ -98,10 +98,19 @@ Checkout
          -->
         <h3>Checkout</h3>
 
+
+            <div class="row mb-6">
+                <div class="col-md-6 mb-3">
+                <a id="payByCard" class="btn btn-primary" data-toggle="collapse" href="#card" role="button" aria-expanded="false">Pay by card now</a>
+                <button class="btn btn-primary" type="submit">Pay by cash when you arrive</button>
+                </div>
+            </div>
+
+            <div class="collapse"  id="card">
             <div class="row mb-6">
                 <div class="col-md-6 mb-3">
                     <label for="cName">Name on card</label>
-                    <input type="text" class="form-control" id="cName" name="cName" placeholder="" required="">
+                    <input type="text" class="form-control" id="cName" name="cName" placeholder="" value="{{ card_name }}">
                     <small class="text-muted">Full name as displayed on card</small>
                     <div class="invalid-feedback">
                         Name on card is required
@@ -109,7 +118,8 @@ Checkout
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="cNumber">Card number</label>
-                    <input type="text" class="form-control" id="cNumber" name="cNumber" placeholder="" required="">
+                    <input type="text" class="form-control" id="cNumber" name="cNumber" placeholder="" value={{ card_number }}>
+                    <small class="text-muted">16 digits from the front of your card</small>
                     <div class="invalid-feedback">
                         Credit card number is required
                     </div>
@@ -118,21 +128,29 @@ Checkout
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label for="cExpiration">Expiration</label>
-                    <input type="text" class="form-control" id="cExpiration" name="cExpiration" placeholder="MM/YY" required="">
+                    <input type="text" class="form-control" id="cExpiration" name="cExpiration" placeholder="" value={{ exp_date }}>
+                    <small class="text-muted">MM/YY</small>
                     <div class="invalid-feedback">
                         Expiration date required
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="cCVV">CVV</label>
-                    <input type="text" class="form-control" id="cCVV" name="cCVV" placeholder="000" required="">
+                    <input type="text" class="form-control" id="cCVV" name="cCVV">
+                    <small class="text-muted">3 digits from the back of your card</small>
                     <div class="invalid-feedback">
                         Security code required
                     </div>
                 </div>
             </div>
 
-            <button class="btn btn-primary" type="submit">Complete Check Out</button>
+            <div class="col-md-3 mb-3">
+                <label for="saveCard">Save card details for future purchases?</label>
+                <input type="checkbox" id="saveCard" name="saveCard">
+            </div>
+
+            <button id="submit" class="btn btn-primary" type="submit">Complete Check Out</button>
+            </div>
     </form>
 </div>
 

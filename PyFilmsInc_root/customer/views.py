@@ -22,35 +22,37 @@ def render_movie_view(request, *args, **kwargs):
     pk = kwargs.get("pk")
     movie = get_object_or_404(Movie, pk=pk)
     screenings = Screening.objects.filter(movie_id=pk)
-    
+
     # adding contents to context
     context = {
         'movie': movie,
         'screenings': screenings,
         # pk': pk,
     }
-    
+
     # Renders and returns the template with the context
     return render(request, 'movieDetails.html', context)
+
 
 # generate seat purchasing page
 def render_purchase_view(request, *args, **kwargs):
     pk = None
-    
+    profile = Profile.objects.get(user=request.user.id)
+
     # get data
     if request.method == 'POST':
 
         form = ScreeningForm(request.POST)
-        
+
         if form.is_valid():
             form = form.cleaned_data
             pk = int(form["screening"])
-            
+
     # otherwise method is get        
     else:
         pass
         # pk = kwargs.get('pk')
-        
+
     screening = get_object_or_404(Screening, pk=pk)
     seats = Seat.objects.filter(room_id=screening.room_id)
 
@@ -71,11 +73,23 @@ def render_purchase_view(request, *args, **kwargs):
         else:
             current_col += 1
 
+    # Obtain card details if they've been saved in the past
+    card_number = str(profile.card_number)
+    exp_date = profile.exp_date
+    name = profile.user.first_name + " " + profile.user.last_name
+    if card_number is None or exp_date is None:
+        card_number = ""
+        exp_date = ""
+        name = ""
+
     # Applies the movie title and layout to the template
     context = {
         'movie': screening.movie_id.title,
         'layout': layout,
-        'pk': pk
+        'pk': pk,
+        'card_number': card_number,
+        'exp_date': exp_date,
+        'card_name': name
     }
 
     # Renders and returns the template with the context
@@ -150,16 +164,30 @@ def retrieve_make_booking(request, *args, **kwargs):
 
         if form.is_valid():
             form = form.cleaned_data
+
             # make vars
+            user = Profile.objects.get(user=request.user.id)
             q_adult = form["qAdult"]
             q_child = form["qChild"]
             q_senior = form["qSenior"]
             q_total = q_adult + q_child + q_senior
-            res = Reservation(screening_id=Screening.objects.get(pk=pk),
-                              reserved=True,
-                              paid=True, cancelled=False, user_id=Profile.objects.get(user=request.user.id))
+
+            save_card = form["saveCard"]
+            c_number = form["cNumber"]
+            c_exp = form["cExpiration"]
+
+            print(c_number)
+
+            if c_number is None:
+                paid_now = False
+            else:
+                paid_now = True
+
+            res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True, paid=paid_now, cancelled=False,
+                              user_id=user)
             lead_booking = res
             total_price = 0
+
             # update ticket sold quantity for Movie object 
             Movie.addTickets(q_total, Screening.objects.get(pk=pk).movie_id)
 
@@ -187,13 +215,20 @@ def retrieve_make_booking(request, *args, **kwargs):
 
                 # create seat reservation for this party member
                 SeatReserved.objects.create(
-                    seat_id=Seat.objects.get(pk=((int(seat_nos[i]) + 541) + (32 * (res.screening_id.room_id.name - 1)))),
+                    seat_id=Seat.objects.get(
+                        pk=((int(seat_nos[i]) + 541) + (32 * (res.screening_id.room_id.name - 1)))),
                     reservation_id=res, screening_id=Screening.objects.get(pk=pk))
 
             # create transaction entry for reservation (fake card payment)
-            Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price,
-                                       user_id=Profile.objects.get(user=request.user.id), successful=True,
-                                       booking=Reservation.objects.get(pk=lead_booking))
+            if paid_now:
+                Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price, user_id=user,
+                                           successful=True, booking=Reservation.objects.get(pk=lead_booking))
+
+            # Save card details
+            if save_card:
+                user.card_number = c_number
+                user.exp_date = c_exp
+                user.save()
 
             # render tickets for every member & emails them to customer 
             render_ticket_views(request, res.screening_id, request.user.id)
@@ -237,8 +272,6 @@ def render_signup_view(request):
         form = UserCreationForm()
 
     # render page
-    # template = get_template('signup.html')
-    # html = template.render({'form': form})
     return render(request, 'signup.html', {'form': form})
 
 
