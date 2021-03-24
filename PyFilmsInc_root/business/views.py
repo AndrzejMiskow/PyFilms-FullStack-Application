@@ -28,3 +28,11 @@ class SampleBusinessPage(TemplateView):
         context["qs"] = Movie.objects.all()
         return context
 
+
+class SelectMovie(ListView):
+    model = Movie
+    template_name = 'selectMovie.html'
+
+class SelectMovie(ListView):
+    model = Movie
+    template_name = 'selectTime.html'
