@@ -16,6 +16,10 @@ from .forms import *
 class HomeView(ListView):
     model = Movie
     template_name = 'home.html'
+    context_object_name = 'all_movies_list'
+
+    def get_queryset(self):
+        return Movie.objects.all()
 
 
 # generate movie detail page listing info about movie & available screenings
@@ -52,7 +56,7 @@ def render_purchase_view(request, *args, **kwargs):
             form = form.cleaned_data
             pk = int(form["screening"])
 
-    # otherwise method is get        
+    # otherwise method is get
     else:
         pass
         # pk = kwargs.get('pk')
@@ -189,7 +193,7 @@ def retrieve_make_booking(request, *args, **kwargs):
             lead_booking = res
             total_price = 0
 
-            # update ticket sold quantity for Movie object 
+            # update ticket sold quantity for Movie object
             Movie.addTickets(Screening.objects.get(pk=pk).movie_id, q_total)
 
             # create reservation entry per party member
@@ -232,7 +236,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                 profile.exp_date = c_exp
                 profile.save()
 
-            # render tickets for every member & emails them to customer 
+            # render tickets for every member & emails them to customer
             render_ticket_views(request, res.screening_id, request.user.id)
 
     messages.success(request, 'Thanks! Your booking is confirmed, your ticket will arrive in your inbox soon.')
@@ -243,7 +247,7 @@ def retrieve_make_booking(request, *args, **kwargs):
 def render_signup_view(request):
     if request.method == "POST":
 
-        # get user data from html page 
+        # get user data from html page
         form = UserCreationForm(request.POST)
 
         if form.is_valid():
