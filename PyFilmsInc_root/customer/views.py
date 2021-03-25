@@ -54,8 +54,8 @@ def render_purchase_view(request, *args, **kwargs):
 
     # otherwise method is get        
     else:
-        pass
-        # pk = kwargs.get('pk')
+        messages.error(request, 'Something went wrong!')
+        return HttpResponseRedirect('/customer/')
 
     screening = get_object_or_404(Screening, pk=pk)
     seats = Seat.objects.filter(room_id=screening.room_id)
