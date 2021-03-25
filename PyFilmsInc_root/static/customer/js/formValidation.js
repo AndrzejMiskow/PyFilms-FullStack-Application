@@ -17,15 +17,25 @@
   }, false);
 })();
 
-// validation function for the card number
+// validation function for the card number that prints alert to the user
 function cardNumber(input) {
-    if(input.value.length === 16) {
-      return true;
+    let regexCardNumber = /\b\d{16}\b/
+    if(input.value.match(regexCardNumber)) {
+       // console.table(input.value.match(regexCardNumber));
+        return true;
     } else {
         alert("Card number provided does not have 16 digits.");
         return false;
     }
 }
+
+// disables input of card number if character typed is not a digit
+const CARDNUMBER_ALLOWED_CHARS = /\d/
+document.querySelector("input[id='cNumber']").addEventListener("keypress", evt => {
+    if (!CARDNUMBER_ALLOWED_CHARS.test(evt.key)) {
+        evt.preventDefault();
+    }
+})
 
 // validation function for the expiry date
 function expDate(input) {
