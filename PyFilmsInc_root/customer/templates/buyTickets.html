@@ -19,7 +19,9 @@ Checkout
                             "qSenior" quantity of Senior Tickets
  -->
     <h3>Select Number of Tickets for {{movie}}</h3>
-    <form action="/customer/booking/{{pk}}" method="post">{% csrf_token %}
+    <form action="/customer/booking/{{pk}}" name="form1" method="post" class="needs-validation"
+          novalidate
+    >{% csrf_token %}
         <div class="form-group row">
             <label for="qAdult" class="col-sm-2 col-form-label">Adult (18+)</label>
             <div class="col-sm-1">
@@ -98,7 +100,6 @@ Checkout
          -->
         <h3>Checkout</h3>
 
-
             <div class="row mb-6">
                 <div class="col-md-6 mb-3">
                 <a id="payByCard" class="btn btn-primary" data-toggle="collapse" href="#card" role="button" aria-expanded="false">Pay by card now</a>
@@ -110,7 +111,7 @@ Checkout
             <div class="row mb-6">
                 <div class="col-md-6 mb-3">
                     <label for="cName">Name on card</label>
-                    <input type="text" class="form-control" id="cName" name="cName" placeholder="" value="{{ card_name }}">
+                    <input type="text" class="form-control" id="cName" name="cName" placeholder="" value="{{ card_name }}" required maxlength="128">
                     <small class="text-muted">Full name as displayed on card</small>
                     <div class="invalid-feedback">
                         Name on card is required
@@ -118,7 +119,9 @@ Checkout
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="cNumber">Card number</label>
-                    <input type="text" class="form-control" id="cNumber" name="cNumber" placeholder="" value={{ card_number }}>
+
+                    <input type="text" class="form-control" id="cNumber" name="cNumber" placeholder=""      value={{ card_number }} required minlength="16" maxlength="16"
+                           pattern="\b\d{16}\b">
                     <small class="text-muted">16 digits from the front of your card</small>
                     <div class="invalid-feedback">
                         Credit card number is required
@@ -128,7 +131,8 @@ Checkout
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label for="cExpiration">Expiration</label>
-                    <input type="text" class="form-control" id="cExpiration" name="cExpiration" placeholder="" value={{ exp_date }}>
+                    <input type="text" class="form-control" id="cExpiration" name="cExpiration" placeholder="MM/YY" value={{ exp_date }} required minlength="5" maxlength="5"
+                           pattern="\b\d{2}\/\d{2}\b">
                     <small class="text-muted">MM/YY</small>
                     <div class="invalid-feedback">
                         Expiration date required
@@ -136,8 +140,9 @@ Checkout
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="cCVV">CVV</label>
-                    <input type="text" class="form-control" id="cCVV" name="cCVV">
-                    <small class="text-muted">3 digits from the back of your card</small>
+                    <input type="text" class="form-control" id="cCVV" name="cCVV"
+                           placeholder="000" required minlength="3" maxlength="4">
+                    <small class="text-muted">Last 3 or 4 digits from the back of your card</small>
                     <div class="invalid-feedback">
                         Security code required
                     </div>
@@ -149,8 +154,11 @@ Checkout
                 <input type="checkbox" id="saveCard" name="saveCard">
             </div>
 
-            <button id="submit" class="btn btn-primary" type="submit">Complete Check Out</button>
+            <button id="checkout-submit" class="btn btn-primary" type="submit">Complete Check Out</button>
             </div>
+
+            {% load static %}
+            <script src="{%static 'customer/js/formValidation.js' %}" type="text/javascript"></script>
     </form>
 </div>
 
