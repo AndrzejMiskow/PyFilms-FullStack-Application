@@ -37,9 +37,10 @@ document.querySelector("input[id='cNumber']").addEventListener("keypress", evt =
     }
 })
 
-// validation function for the expiry date
+// validation function for the expiry date that prints alert to the user
 function expDate(input) {
-    if(input.value.length === 5) {
+    let regexExpDate = /\b\d{2}\/\d{2}\b/
+    if(input.value.match(regexExpDate)) {
         return true;
     } else {
         alert ("Expiry date provided is not of correct format MM/YY.")
@@ -47,15 +48,32 @@ function expDate(input) {
     }
 }
 
-// validation function for the CVV
+// disables input of expiration date if character typed is not a digit or a forward slash
+const EXPDATE_ALLOWED_CHARS = /[\d\/]/
+document.querySelector("input[id='cExpiration']").addEventListener("keypress", evt => {
+    if (!EXPDATE_ALLOWED_CHARS.test(evt.key)) {
+        evt.preventDefault();
+    }
+})
+
+// validation function for the CVV that prints alert to the user
 function CVV(input) {
-    if(input.value.length === 3 || input.value.length === 4) {
+    let regexCVV = /\d/
+    if(input.value.match(regexCVV)) {
         return true;
     } else {
         alert("CVV provided is not of correct format (3 or 4 digits).")
         return false;
     }
 }
+
+// disables input of CVV if character typed is not a digit
+const CVV_ALLOWED_CHARS = /\d/
+document.querySelector("input[id='cCVV']").addEventListener("keypress", evt => {
+    if (!CVV_ALLOWED_CHARS.test(evt.key)) {
+        evt.preventDefault();
+    }
+})
 
 document.getElementById("checkout-submit").addEventListener("click", function() {
     cardNumber(document.form1.cNumber)
