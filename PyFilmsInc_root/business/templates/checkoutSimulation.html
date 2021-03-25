@@ -1,0 +1,129 @@
+{% extends 'business-base.html' %}
+
+{% block content %}
+
+
+<!-- Option to Select Tickets when buying them at the front counter
+    Inputs: tAdult - Number of Adult Tickets
+            tChild - Number of Children Tickets
+            tSenior - Number of Senior Tickets
+-->
+<div class="container">
+    <h2 class="title"> Select Number of Tickets </h2>
+    <div class="container">
+        <div class="row">
+            <div class="col ticket-title">
+                <div class="container">
+                    <h4 align="center">Adult</h4>
+                    <div class="row" align="center">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger" onclick="minusAdult()">-</button>
+                        </div>
+                        <div class="col-3">
+                            <input type="number" class="form-control tEntry" id="tAdult" name="tAdult" value="0">
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-success" onclick="addAdult()">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col ticket-title">
+                <div class="container">
+                    <h4>Child</h4>
+                    <div class="row" align="center">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger" onclick="minusChild()">-</button>
+                        </div>
+                        <div class="col-3">
+                            <input type="number" class="form-control tEntry" id="tChild" name="tChild" value="0">
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-success" onclick="addChild()">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col ticket-title">
+                <div class="container">
+                    <h4 align="center">Senior</h4>
+                    <div class="row" align="center">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger" onclick="minusSenior()">-</button>
+                        </div>
+                        <div class="col-3">
+                            <input type="number" class="form-control tEntry" id="tSenior" name="tSenior" value="0">
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-success" onclick="addSenior()">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="mb-4">
+
+    <h2 class="title"> Select Seats </h2>
+    <div class="container p-3 my-3 border">
+        <!-- Key for the seat selection model-->
+        <ul class="seatSelectionKey">
+            <li>
+                <div class="seat"></div>
+                <small>Available</small>
+            </li>
+            <li>
+                <div class="seat selected"></div>
+                <small>Selected</small>
+            </li>
+            <li>
+                <div class="seat reserved"></div>
+                <small>Reserved</small>
+            </li>
+        </ul>
+
+        <!-- 2 modes for a seat normal seat or seat reserved
+             When a seat is in reserve mode it cannot be selected-->
+        <div class="seatLayout">
+            <div class="screen"></div>
+            {% for row in layout %}
+                <div class ="row-seat">
+                    {% for seat in row %}
+                        <div class="{{ seat }}"></div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <label for="SelectedSeatsID">Selected Seats</label>
+    <input type="text" class="form-control" id="SelectedSeatsID" name="SelectedSeatsID" placeholder="25" required="">
+    <div align="center">
+        <button type="button" class="btn btn-primary btn-lg" onclick="confirmSeats()">Confirm Selected Seats</button>
+    </div>
+
+
+    <hr class="mb-4">
+    <h2 class="title" align="center" > Payment </h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg" align="center">
+                <a href="{% url 'cardPayment' %}" type="button" class="btn btn-primary btn-lg">Pay With Card</a>
+            </div>
+            <div class="col-lg" align="center">
+                <a href="{% url 'cashPayment' %}" type="button" class="btn btn-primary btn-lg">Pay With Cash</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% load static %}
+    <script src="{%static 'customer/js/seatLayout.js' %}" type="text/javascript"></script>
+
+    {% load static %}
+    <script src="{% static 'business/js/simulation-checkout.js' %}"></script>
+
+
+
+{% endblock %}

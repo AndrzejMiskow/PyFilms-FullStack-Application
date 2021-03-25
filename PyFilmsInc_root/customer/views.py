@@ -1,21 +1,25 @@
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-from django.core.mail import send_mail, EmailMessage
-from .forms import *
-from API.models import *
-from django.contrib.auth.forms import UserCreationForm
-import sys
-
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import AnonymousUser
+from django.core.mail import EmailMessage
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.template.loader import get_template
+from django.views.generic import ListView
+from xhtml2pdf import pisa
+
+from API.models import *
+from .forms import *
 
 
 class HomeView(ListView):
     model = Movie
     template_name = 'home.html'
+    context_object_name = 'all_movies_list'
+
+    def get_queryset(self):
+        return Movie.objects.all()
 
 
 # generate movie detail page listing info about movie & available screenings
@@ -23,35 +27,40 @@ def render_movie_view(request, *args, **kwargs):
     pk = kwargs.get("pk")
     movie = get_object_or_404(Movie, pk=pk)
     screenings = Screening.objects.filter(movie_id=pk)
-    
+
     # adding contents to context
     context = {
         'movie': movie,
-        'screenings': screenings,
-        # pk': pk,
+        'screenings': screenings
     }
-    
+
     # Renders and returns the template with the context
     return render(request, 'movieDetails.html', context)
 
+
 # generate seat purchasing page
 def render_purchase_view(request, *args, **kwargs):
+    if isinstance(request.user, AnonymousUser):
+        messages.error(request, 'You must be signed in to make a booking!')
+        return HttpResponseRedirect('/customer/login/')
+
     pk = None
-    
+    profile = Profile.objects.get(user=request.user.id)
+
     # get data
     if request.method == 'POST':
 
         form = ScreeningForm(request.POST)
-        
+
         if form.is_valid():
             form = form.cleaned_data
             pk = int(form["screening"])
-            
-    # otherwise method is get        
+
+    # otherwise method is get
     else:
         pass
         # pk = kwargs.get('pk')
-        
+
     screening = get_object_or_404(Screening, pk=pk)
     seats = Seat.objects.filter(room_id=screening.room_id)
 
@@ -72,11 +81,23 @@ def render_purchase_view(request, *args, **kwargs):
         else:
             current_col += 1
 
+    # Obtain card details if they've been saved in the past
+    card_number = str(profile.card_number)
+    exp_date = profile.exp_date
+    name = profile.user.first_name + " " + profile.user.last_name
+    if card_number is None or exp_date is None:
+        card_number = ""
+        exp_date = ""
+        name = ""
+
     # Applies the movie title and layout to the template
     context = {
         'movie': screening.movie_id.title,
         'layout': layout,
-        'pk': pk
+        'pk': pk,
+        'card_number': card_number,
+        'exp_date': exp_date,
+        'card_name': name
     }
 
     # Renders and returns the template with the context
@@ -85,29 +106,28 @@ def render_purchase_view(request, *args, **kwargs):
 
 def render_ticket_views(request, screening_id, user_id):
     reservations = Reservation.objects.filter(screening_id=screening_id,
-                                              user_id=Profile.objects.get(user=user_id))
+                                              user_id=User.objects.get(pk=user_id))
     booking = reservations[0]
-    tickets = []
 
     # emailing ticket to UserWarning
     mail = EmailMessage(
         "Ticket(s) for " + booking.screening_id.movie_id.title +
         " screening " + booking.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
-        "Dear " + booking.user_id.user.first_name + ",\n\nPlease find attached your ticket. Enjoy the "
-                                                    "show!\n\nPyFilms Inc",
+        "Dear " + booking.user_id.first_name + ",\n\nPlease find attached your ticket. Enjoy the "
+                                               "show!\n\nPyFilms Inc",
         None,
-        [booking.user_id.user.email], )
+        [booking.user_id.email], )
 
     # create 1 ticket per reservation
     for reservation in reservations:
 
         # adding data to the ticket template
         template_path = 'ticket.html'
-        reservedSeat = SeatReserved.objects.filter(reservation_id=reservation.pk)
-        reservedSeat = reservedSeat[0].seat_id
+        reserved_seat = SeatReserved.objects.filter(reservation_id=reservation.pk)
+        reserved_seat = reserved_seat[0].seat_id
         context = {
-            'name': reservation.user_id.user.first_name + " " + reservation.user_id.user.last_name,
-            'seat': "Row " + str(reservedSeat.row) + ", Seat " + str(reservedSeat.number),
+            'name': reservation.user_id.first_name + " " + reservation.user_id.last_name,
+            'seat': "Row " + str(reserved_seat.row) + ", Seat " + str(reserved_seat.number),
             'movie': reservation.screening_id.movie_id.title,
             'date_time': reservation.screening_id.screening_start,
             'room_id': reservation.screening_id.room_id,
@@ -146,23 +166,35 @@ def retrieve_make_booking(request, *args, **kwargs):
     if request.method == 'POST':
 
         form = ReservationForm(request.POST)
-        reservation_count = 0
         seat_nos = request.POST.get('SelectedSeatsID').split(',')
 
         if form.is_valid():
             form = form.cleaned_data
+
             # make vars
+            user = request.user
+            profile = Profile.objects.get(user=user.id)
             q_adult = form["qAdult"]
             q_child = form["qChild"]
             q_senior = form["qSenior"]
             q_total = q_adult + q_child + q_senior
-            res = Reservation(screening_id=Screening.objects.get(pk=pk),
-                              reserved=True,
-                              paid=True, cancelled=False, user_id=Profile.objects.get(user=request.user.id))
+
+            save_card = form["saveCard"]
+            c_number = form["cNumber"]
+            c_exp = form["cExpiration"]
+
+            if c_number is None:
+                paid_now = False
+            else:
+                paid_now = True
+
+            res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True, paid=paid_now, cancelled=False,
+                              user_id=request.user)
             lead_booking = res
             total_price = 0
-            # update ticket sold quantity for Movie object 
-            Movie.addTickets(q_total, Screening.objects.get(pk=pk).movie_id)
+
+            # update ticket sold quantity for Movie object
+            Movie.addTickets(Screening.objects.get(pk=pk).movie_id, q_total)
 
             # create reservation entry per party member
             for i in range(q_total):
@@ -188,15 +220,23 @@ def retrieve_make_booking(request, *args, **kwargs):
 
                 # create seat reservation for this party member
                 SeatReserved.objects.create(
-                    seat_id=Seat.objects.get(pk=((int(seat_nos[i]) + 541) + (32 * (res.screening_id.room_id.name - 1)))),
+                    seat_id=Seat.objects.get(
+                        pk=((int(seat_nos[i]) + 541) + (32 * (res.screening_id.room_id.name - 1)))),
                     reservation_id=res, screening_id=Screening.objects.get(pk=pk))
 
             # create transaction entry for reservation (fake card payment)
-            Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price,
-                                       user_id=Profile.objects.get(user=request.user.id), successful=True,
-                                       booking=Reservation.objects.get(pk=lead_booking))
+            if paid_now:
+                Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price,
+                                           user_id=request.user,
+                                           successful=True, booking=Reservation.objects.get(pk=lead_booking))
 
-            # render tickets for every member & emails them to customer 
+            # Save card details
+            if save_card:
+                profile.card_number = c_number
+                profile.exp_date = c_exp
+                profile.save()
+
+            # render tickets for every member & emails them to customer
             render_ticket_views(request, res.screening_id, request.user.id)
 
     messages.success(request, 'Thanks! Your booking is confirmed, your ticket will arrive in your inbox soon.')
@@ -207,7 +247,7 @@ def retrieve_make_booking(request, *args, **kwargs):
 def render_signup_view(request):
     if request.method == "POST":
 
-        # get user data from html page 
+        # get user data from html page
         form = UserCreationForm(request.POST)
 
         if form.is_valid():
@@ -238,6 +278,37 @@ def render_signup_view(request):
         form = UserCreationForm()
 
     # render page
-    # template = get_template('signup.html')
-    # html = template.render({'form': form})
     return render(request, 'signup.html', {'form': form})
+
+
+# render view account details page
+def render_account_view(request):
+    if request.method == 'POST':
+        form = EditUserForm(request.POST, instance=request.user)
+        profile_form = EditProfileForm(request.POST, instance=Profile.objects.get(user=request.user.id))
+
+        if form.is_valid() and profile_form.is_valid():
+            form.save()
+            profile_form.save()
+            messages.success(request, 'Your account details have been updated.')
+            return HttpResponseRedirect('/customer/')
+
+    else:
+        form = EditUserForm(instance=request.user)
+        profile_form = EditProfileForm(instance=Profile.objects.get(user=request.user.id))
+        context = {
+            'form': form,
+            'profileForm': profile_form,
+        }
+
+        return render(request, 'editAccount.html', context)
+
+
+# render view bookings page
+def render_bookings_view(request):
+    bookings = Reservation.objects.filter(user_id=request.user)
+    context = {
+        'bookings': bookings,
+    }
+
+    return render(request, 'viewBookings.html', context)

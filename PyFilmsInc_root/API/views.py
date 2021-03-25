@@ -1,8 +1,7 @@
-from django.shortcuts import HttpResponse
 from rest_framework import viewsets
 
-from .serializers import *
 from .models import *
+from .serializers import *
 
 
 # Each view corresponds to a serialized model - it decides what will be displayed to the user

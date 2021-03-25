@@ -22,7 +22,6 @@ Movie: {{ movie.title }}
                 <div class="details-content">
                     <div class="details-tags">
                         <ul class="tag-list">
-                            </li>
                             <li><span>Director: {{ movie.director}}</span>
                             <li><span>Cast Members: {{ movie.cast_members}}</span>
                         </ul>
@@ -39,14 +38,13 @@ Movie: {{ movie.title }}
             <!-- select Movie Details Section-->
             <div class="col-6">
                 <form action="/customer/tickets/" method="post">{% csrf_token %}
-                    <label>Screenings</label>
-                    <select class="form-control" name="screening">
-                        <option selected="selected" disabled>Please select a screening</option>
+                    <label for="screening">Please Select a Screening</label>
+                    <select class="form-control" id="screening" name="screening">
                         {% for screening in screenings %}
                         <option value="{{screening.pk}}">{{ screening.screening_start }}</option>
                         {% endfor %}
                     </select>   
-                    <input type="submit" value="View screening">
+                    <input class="btn btn-primary" type="submit" value="View screening">
                 </form>
             </div>
         </div>  
