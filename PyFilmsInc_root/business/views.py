@@ -57,7 +57,5 @@ class SampleBusinessPage(TemplateView):
 
 
 class SelectMovie(ListView):
-    if not authStaff(request):
-        return HttpResponseRedirect('/customer/')
     model = Movie
     template_name = 'selectMovie.html'
