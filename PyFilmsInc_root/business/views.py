@@ -74,14 +74,18 @@ def pay(request):
         return HttpResponseRedirect('/business/cashPayment')
 
 
-def testCash(request):
+def testCash(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
+    pk = kwargs.get("pk")
     return render(request, "cashPayment.html", {})
 
-def testCard(request):
+
+def testCard(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
+    pk = kwargs.get("pk")
+
     return render(request, "cardPayment.html", {})
 
 
