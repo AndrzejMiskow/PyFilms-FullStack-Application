@@ -59,29 +59,81 @@ def checkout(request, **kwargs):
 
     context = {
         'layout': layout,
+        'pk': pk
     }
 
     return render(request, "checkoutSimulation.html", context)
 
 
-def pay(request):
+def pay(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
+
+    lead_booking = 0
+    if request.method == "POST":
+        form = ReservationForm(request.POST)
+        pk = kwargs.get("pk")
+        screening = Screening.objects.get(pk=pk)
+
+        if request.method == 'POST':
+            form = ReservationForm(request.POST)
+            seat_nos = request.POST.get('SelectedSeatsID').split(',')
+
+            if form.is_valid():
+                form = form.cleaned_data
+                t_adult = form["tAdult"]
+                t_child = form["tChild"]
+                t_senior = form["tSenior"]
+                t_total = t_adult+t_child+t_senior
+
+                res = Reservation(screening_id=screening, reserved=True, paid=False, cancelled=False)
+                lead_booking = res
+                total_price = 0
+
+                Movie.addTickets(screening.movie_id, t_total)
+
+                for i in range(t_total):
+                    res.pk = None
+                    res.save()
+
+                    if i == 0:
+                        lead_booking = res.pk
+                    else:
+                        res.lead_booking = Reservation.objects.get(pk=lead_booking)
+
+                    if i < t_adult:
+                        res.reservation_type = Reservation.AD
+                    elif i < (t_adult + t_child):
+                        res.reservation_type = Reservation.CH
+                    else:
+                        res.reservation_type = Reservation.SE
+
+                    res.save()
+                    total_price += res.price
+
+                    SeatReserved.objects.create(seat_id=Seat.objects.get(
+                        pk=((int(seat_nos[i])+541)+(32*(res.screening_id.room_id.name-1)))),
+                        reservation_id=res, screening_id=screening)
 
     if request.method == "POST" and 'card-submit' in request.POST:
-        return HttpResponseRedirect('/business/cardPayment')
+        return HttpResponseRedirect('/business/cardPayment/' + str(lead_booking))
     elif request.method == "POST" and 'cash-submit' in request.POST:
-        return HttpResponseRedirect('/business/cashPayment')
+        return HttpResponseRedirect('/business/cashPayment' + str(lead_booking))
 
 
-def testCash(request):
+def testCash(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
+    pk = kwargs.get("pk")
+
     return render(request, "cashPayment.html", {})
 
-def testCard(request):
+
+def testCard(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
+    pk = kwargs.get("pk")
+
     return render(request, "cardPayment.html", {})
 
 

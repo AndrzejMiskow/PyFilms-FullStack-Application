@@ -10,7 +10,7 @@
     -->
     <div class="container">
         <h2 class="title"> Select Number of Tickets </h2>
-        <form action="/business/pay" method="post">{% csrf_token %}
+        <form action="/business/pay/{{ pk }}" method="post">{% csrf_token %}
             <div class="container">
                 <div class="row">
                     <div class="col ticket-title">
