@@ -150,10 +150,12 @@ def processPayment(request, **kwargs):
     txn.save()
 
     res.paid = True
+    res.save()
     connected_res = Reservation.objects.filter(lead_booking=res)
     if connected_res.count() != 0:
         for ticket in connected_res:
             ticket.paid = True
+            ticket.save()
 
     messages.success(request, "Reservation successful")
     return HttpResponseRedirect('/customer/')
@@ -230,3 +232,39 @@ def render_time_view(request, *args, **kwargs):
     }
 
     return render(request, "selectTime.html", context)
+
+# render pay for existing reservation page
+def render_find_res(request):
+    pk = None
+    
+    if not authStaff(request):
+        return HttpResponseRedirect('/customer/')
+    
+    # redirect to payment using entered reservation ID
+    if request.method == "POST":
+        
+        # get resID from forms
+        form = FindResForm(request.POST)
+        
+        if form.is_valid():
+            form = form.cleaned_data
+            pk = str(form["resID"])
+            lead_booking = Reservation.objects.get(pk=int(pk))
+            
+            # redirect if Reservation pk invalid
+            if lead_booking is None:
+                messages.error(request, 'Reservation with that ID not found. Please try again.')
+                return HttpResponseRedirect('/business/findReservation')
+            # otherwise check that reservation hasn't al;ready been paid for
+            elif lead_booking.paid is True:
+                messages.error(request, 'Reservation with that ID has already been paid for.')
+                return HttpResponseRedirect('/business/findReservation')
+            
+        if 'card-submit' in request.POST:
+            return HttpResponseRedirect('/business/cardPayment/' + pk)
+        elif 'cash-submit' in request.POST:
+            return HttpResponseRedirect('/business/cashPayment/' + pk)
+    
+    # otherwise request is GET and need to render page
+    else:
+        return render(request, "findReservation.html", {})

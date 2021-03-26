@@ -9,3 +9,7 @@ class ReservationForm(forms.Form):
 
     # seat numbers
     SelectedSeatsID = forms.CharField(label="SelectedSeatsID")
+    
+class FindResForm(forms.Form):
+    # lead reservation ID
+    resID = forms.CharField(label="resID")

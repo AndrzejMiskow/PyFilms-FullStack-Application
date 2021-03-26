@@ -105,12 +105,12 @@ def render_ticket_views(request, screening_id, user_id):
                                               user_id=User.objects.get(pk=user_id))
     booking = reservations[0]
 
-    # emailing ticket to UserWarning
+    # emailing ticket to User
     mail = EmailMessage(
         "Ticket(s) for " + booking.screening_id.movie_id.title +
         " screening " + booking.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
-        "Dear " + booking.user_id.first_name + ",\n\nPlease find attached your ticket. Enjoy the "
-                                               "show!\n\nPyFilms Inc",
+        "Dear " + booking.user_id.first_name + ",\n\n" + "Your reservation ID is " + str(booking.pk) 
+        + ".\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
         None,
         [booking.user_id.email], )
 
@@ -197,7 +197,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                 # auto-generate new res object with new pk
                 res.pk = None
                 res.save()
-
+                
                 # The first booking made is the "lead booking" and the others will be connected
                 if i == 0:
                     lead_booking = res.pk
