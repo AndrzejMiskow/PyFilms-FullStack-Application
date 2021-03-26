@@ -11,4 +11,5 @@ urlpatterns = [
     path('sampleGraph', SampleBusinessPage.as_view(), name="sampleGraph"),
     path('selectMovie', MovieView.as_view(), name="selectMovie"),
     path('selectTime/<pk>', render_time_view, name="selectTime"),
+    path('process/<type>/<pk>', processPayment, name="processPayment")
 ]

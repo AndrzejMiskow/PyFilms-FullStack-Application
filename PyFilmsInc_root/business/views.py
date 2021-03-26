@@ -134,6 +134,19 @@ def getReservationPrice(pk):
     return price, lead_res
 
 
+def processPayment(request, **kwargs):
+    pk = kwargs.get("pk")
+    price, res = getReservationPrice(pk)
+    kind = kwargs.get("type")
+
+    txn = Transaction.objects.create(transaction_type=kind, amount=price, booking=res, user_id=request.user,
+                                     successful=True)
+    txn.save()
+
+    messages.success(request, "Reservation successful")
+    return HttpResponseRedirect('/customer/')
+
+
 def testCash(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
@@ -142,7 +155,8 @@ def testCash(request, **kwargs):
 
     context = {
         "price": price,
-        "movie": lead_res.screening_id.movie_id.title
+        "movie": lead_res.screening_id.movie_id.title,
+        "pk": pk
     }
 
     return render(request, "cashPayment.html", context)
@@ -156,7 +170,8 @@ def testCard(request, **kwargs):
 
     context = {
         "price": price,
-        "movie": lead_res.screening_id.movie_id.title
+        "movie": lead_res.screening_id.movie_id.title,
+        "pk": pk
     }
 
     return render(request, "cardPayment.html", context)
@@ -201,3 +216,5 @@ def render_time_view(request, *args, **kwargs):
     }
 
     return render(request, "selectTime.html", context)
+
+
