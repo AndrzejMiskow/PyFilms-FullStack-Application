@@ -118,23 +118,48 @@ def pay(request, **kwargs):
     if request.method == "POST" and 'card-submit' in request.POST:
         return HttpResponseRedirect('/business/cardPayment/' + str(lead_booking))
     elif request.method == "POST" and 'cash-submit' in request.POST:
-        return HttpResponseRedirect('/business/cashPayment' + str(lead_booking))
+        return HttpResponseRedirect('/business/cashPayment/' + str(lead_booking))
+
+
+def getReservationPrice(pk):
+    lead_res = Reservation.objects.get(pk=pk)
+    connected_res = Reservation.objects.filter(lead_booking=lead_res)
+
+    price = lead_res.price
+
+    if connected_res.count() != 0:
+        for res in connected_res:
+            price += res.price
+
+    return price, lead_res
 
 
 def testCash(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
     pk = kwargs.get("pk")
+    price, lead_res = getReservationPrice(pk)
 
-    return render(request, "cashPayment.html", {})
+    context = {
+        "price": price,
+        "movie": lead_res.screening_id.movie_id.title
+    }
+
+    return render(request, "cashPayment.html", context)
 
 
 def testCard(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
     pk = kwargs.get("pk")
+    price, lead_res = getReservationPrice(pk)
 
-    return render(request, "cardPayment.html", {})
+    context = {
+        "price": price,
+        "movie": lead_res.screening_id.movie_id.title
+    }
+
+    return render(request, "cardPayment.html", context)
 
 
 class SampleBusinessPage(TemplateView):
