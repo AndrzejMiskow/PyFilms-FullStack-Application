@@ -1,3 +1,4 @@
 .idea
 **/__pycache__
 *.DS_Store
+PyFilmsInc_root/static/customer/img/qr_codes/
