@@ -93,6 +93,7 @@ class MovieView(ListView):
 def render_time_view(request, *args, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
+
     pk = kwargs.get("pk")
     movie = Movie.objects.get(pk=pk)
 
