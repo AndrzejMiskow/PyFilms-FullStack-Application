@@ -149,6 +149,12 @@ def processPayment(request, **kwargs):
                                      successful=True)
     txn.save()
 
+    res.paid = True
+    connected_res = Reservation.objects.filter(lead_booking=res)
+    if connected_res.count() != 0:
+        for ticket in connected_res:
+            ticket.paid = True
+
     messages.success(request, "Reservation successful")
     return HttpResponseRedirect('/customer/')
 
