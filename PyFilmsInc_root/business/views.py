@@ -8,6 +8,7 @@ from .forms import *
 from API.models import *
 
 
+# Functions used to determine if the current user is a member of staff or business owner
 def authOwner(request):
     if request.user.is_superuser:
         return True
@@ -30,6 +31,7 @@ def home(request):
     return render(request, 'Business.html', {})
 
 
+# View which renders seating and where seats are chosen
 def checkout(request, **kwargs):
     pk = kwargs.get("pk")
     # pk above is id of screening in DB for which to make the booking
@@ -65,6 +67,7 @@ def checkout(request, **kwargs):
     return render(request, "checkoutSimulation.html", context)
 
 
+# Creates a reservation and redirects to the appropriate payment page
 def pay(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
@@ -121,6 +124,7 @@ def pay(request, **kwargs):
         return HttpResponseRedirect('/business/cashPayment/' + str(lead_booking))
 
 
+# Used to find every linked reservation and returns the lead booking and total price
 def getReservationPrice(pk):
     lead_res = Reservation.objects.get(pk=pk)
     connected_res = Reservation.objects.filter(lead_booking=lead_res)
@@ -134,11 +138,13 @@ def getReservationPrice(pk):
     return price, lead_res
 
 
+# Creates a transaction and redirects to the home page with a success message
 def processPayment(request, **kwargs):
     pk = kwargs.get("pk")
     price, res = getReservationPrice(pk)
     kind = kwargs.get("type")
 
+    # Transaction is linked to the member of staff handling the payment
     txn = Transaction.objects.create(transaction_type=kind, amount=price, booking=res, user_id=request.user,
                                      successful=True)
     txn.save()
@@ -147,7 +153,8 @@ def processPayment(request, **kwargs):
     return HttpResponseRedirect('/customer/')
 
 
-def testCash(request, **kwargs):
+# Renders the UI for cash payments
+def cashPayment(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
     pk = kwargs.get("pk")
@@ -162,7 +169,8 @@ def testCash(request, **kwargs):
     return render(request, "cashPayment.html", context)
 
 
-def testCard(request, **kwargs):
+# Renders the UI for card payments
+def cardPayment(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
     pk = kwargs.get("pk")
@@ -216,5 +224,3 @@ def render_time_view(request, *args, **kwargs):
     }
 
     return render(request, "selectTime.html", context)
-
-
