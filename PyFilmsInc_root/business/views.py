@@ -8,6 +8,7 @@ from .forms import *
 from API.models import *
 
 
+# Functions used to determine if the current user is a member of staff or business owner
 def authOwner(request):
     if request.user.is_superuser:
         return True
@@ -30,6 +31,7 @@ def home(request):
     return render(request, 'Business.html', {})
 
 
+# View which renders seating and where seats are chosen
 def checkout(request, **kwargs):
     pk = kwargs.get("pk")
     # pk above is id of screening in DB for which to make the booking
@@ -59,34 +61,128 @@ def checkout(request, **kwargs):
 
     context = {
         'layout': layout,
+        'pk': pk
     }
 
     return render(request, "checkoutSimulation.html", context)
 
 
-def pay(request):
+# Creates a reservation and redirects to the appropriate payment page
+def pay(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
+
+    lead_booking = 0
+    if request.method == "POST":
+        form = ReservationForm(request.POST)
+        pk = kwargs.get("pk")
+        screening = Screening.objects.get(pk=pk)
+
+        if request.method == 'POST':
+            form = ReservationForm(request.POST)
+            seat_nos = request.POST.get('SelectedSeatsID').split(',')
+
+            if form.is_valid():
+                form = form.cleaned_data
+                t_adult = form["tAdult"]
+                t_child = form["tChild"]
+                t_senior = form["tSenior"]
+                t_total = t_adult+t_child+t_senior
+
+                res = Reservation(screening_id=screening, reserved=True, paid=False, cancelled=False)
+                lead_booking = res
+                total_price = 0
+
+                Movie.addTickets(screening.movie_id, t_total)
+
+                for i in range(t_total):
+                    res.pk = None
+                    res.save()
+
+                    if i == 0:
+                        lead_booking = res.pk
+                    else:
+                        res.lead_booking = Reservation.objects.get(pk=lead_booking)
+
+                    if i < t_adult:
+                        res.reservation_type = Reservation.AD
+                    elif i < (t_adult + t_child):
+                        res.reservation_type = Reservation.CH
+                    else:
+                        res.reservation_type = Reservation.SE
+
+                    res.save()
+                    total_price += res.price
+
+                    SeatReserved.objects.create(seat_id=Seat.objects.get(
+                        pk=((int(seat_nos[i])+541)+(32*(res.screening_id.room_id.name-1)))),
+                        reservation_id=res, screening_id=screening)
 
     if request.method == "POST" and 'card-submit' in request.POST:
-        return HttpResponseRedirect('/business/cardPayment')
+        return HttpResponseRedirect('/business/cardPayment/' + str(lead_booking))
     elif request.method == "POST" and 'cash-submit' in request.POST:
-        return HttpResponseRedirect('/business/cashPayment')
+        return HttpResponseRedirect('/business/cashPayment/' + str(lead_booking))
 
 
-def testCash(request, **kwargs):
+# Used to find every linked reservation and returns the lead booking and total price
+def getReservationPrice(pk):
+    lead_res = Reservation.objects.get(pk=pk)
+    connected_res = Reservation.objects.filter(lead_booking=lead_res)
+
+    price = lead_res.price
+
+    if connected_res.count() != 0:
+        for res in connected_res:
+            price += res.price
+
+    return price, lead_res
+
+
+# Creates a transaction and redirects to the home page with a success message
+def processPayment(request, **kwargs):
+    pk = kwargs.get("pk")
+    price, res = getReservationPrice(pk)
+    kind = kwargs.get("type")
+
+    # Transaction is linked to the member of staff handling the payment
+    txn = Transaction.objects.create(transaction_type=kind, amount=price, booking=res, user_id=request.user,
+                                     successful=True)
+    txn.save()
+
+    messages.success(request, "Reservation successful")
+    return HttpResponseRedirect('/customer/')
+
+
+# Renders the UI for cash payments
+def cashPayment(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
     pk = kwargs.get("pk")
-    return render(request, "cashPayment.html", {})
+    price, lead_res = getReservationPrice(pk)
+
+    context = {
+        "price": price,
+        "movie": lead_res.screening_id.movie_id.title,
+        "pk": pk
+    }
+
+    return render(request, "cashPayment.html", context)
 
 
-def testCard(request, **kwargs):
+# Renders the UI for card payments
+def cardPayment(request, **kwargs):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
     pk = kwargs.get("pk")
+    price, lead_res = getReservationPrice(pk)
 
-    return render(request, "cardPayment.html", {})
+    context = {
+        "price": price,
+        "movie": lead_res.screening_id.movie_id.title,
+        "pk": pk
+    }
+
+    return render(request, "cardPayment.html", context)
 
 
 class SampleBusinessPage(TemplateView):
