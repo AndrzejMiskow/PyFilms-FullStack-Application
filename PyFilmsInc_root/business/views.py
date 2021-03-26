@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import *
-from API.models import *
 import datetime
 from django.contrib import messages
+
+from .forms import *
+from API.models import *
 
 
 def authOwner(request):
@@ -62,11 +64,20 @@ def checkout(request, **kwargs):
     return render(request, "checkoutSimulation.html", context)
 
 
+def pay(request):
+    if not authStaff(request):
+        return HttpResponseRedirect('/customer/')
+
+    if request.method == "POST" and 'card-submit' in request.POST:
+        return HttpResponseRedirect('/business/cardPayment')
+    elif request.method == "POST" and 'cash-submit' in request.POST:
+        return HttpResponseRedirect('/business/cashPayment')
+
+
 def testCash(request):
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
     return render(request, "cashPayment.html", {})
-
 
 def testCard(request):
     if not authStaff(request):
