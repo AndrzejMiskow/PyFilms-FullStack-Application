@@ -24,13 +24,22 @@ class ReservationForm(forms.Form):
 
     def clean_cNumber(self):
         data = self.cleaned_data['cNumber']
-        if len(data) != 16:
+
+        # Accept 0 length as this means payment on arrival, only other length is 16
+        if len(data) == 0:
+            return data
+        elif len(data) != 16:
             raise ValidationError('Invalid card number - not 16 digits')
 
         return data
 
     def clean_cExpiration(self):
         data = self.cleaned_data['cExpiration']
+
+        # Accept 0 length as this means payment on arrival
+        if len(data) == 0:
+            return data
+
         # match expiry date with regex to accept only dates with format MM/YY, where MM can take
         # values between 01 - 12 (i.e. Jan - Dec), and YY between 21-29 (i.e. 2021 - 2029)
         regex = r'^(0[1-9]{1})|(1[0-2]{1})\/(2[1-9]{1})$'
@@ -44,8 +53,10 @@ class ReservationForm(forms.Form):
     def clean_cCVV(self):
         data = self.cleaned_data['cCVV']
         data_str = str(data)
-        # accept only CVVs that have three of four digits
-        if len(data_str) < 3 or len(data_str) > 4:
+        # accept only CVVs that have three of four digits, or zero if paying on arrival
+        if len(data_str) == 0:
+            return data
+        elif len(data_str) < 3 or len(data_str) > 4:
             raise ValidationError('Invalid CVV format - not three or four digits')
 
         return data
