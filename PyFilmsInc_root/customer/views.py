@@ -164,7 +164,6 @@ def retrieve_make_booking(request, *args, **kwargs):
 
     # get data
     if request.method == 'POST':
-
         form = ReservationForm(request.POST)
         seat_nos = request.POST.get('SelectedSeatsID').split(',')
 
@@ -178,15 +177,15 @@ def retrieve_make_booking(request, *args, **kwargs):
             q_child = form["qChild"]
             q_senior = form["qSenior"]
             q_total = q_adult + q_child + q_senior
+            save_card = False
 
-            save_card = form["saveCard"]
-            c_number = form["cNumber"]
-            c_exp = form["cExpiration"]
-
-            if c_number is None:
-                paid_now = False
-            else:
+            if 'checkout-submit' in request.POST:
+                save_card = form["saveCard"]
+                c_number = form["cNumber"]
+                c_exp = form["cExpiration"]
                 paid_now = True
+            else:
+                paid_now = False
 
             res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True, paid=paid_now, cancelled=False,
                               user_id=request.user)

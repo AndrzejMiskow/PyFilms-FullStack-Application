@@ -103,7 +103,7 @@ Checkout
             <div class="row mb-6">
                 <div class="col-md-6 mb-3">
                 <a id="payByCard" class="btn btn-primary" data-toggle="collapse" href="#card" role="button" aria-expanded="false">Pay by card now</a>
-                <button class="btn btn-primary" type="submit">Pay by cash when you arrive</button>
+                <button id="pay-later" name="pay-later" class="btn btn-primary" type="submit">Pay when you arrive</button>
                 </div>
             </div>
 
@@ -111,7 +111,7 @@ Checkout
             <div class="row mb-6">
                 <div class="col-md-6 mb-3">
                     <label for="cName">Name on card</label>
-                    <input type="text" class="form-control" id="cName" name="cName" placeholder="" value="{{ card_name }}" required maxlength="128">
+                    <input type="text" class="form-control" id="cName" name="cName" placeholder="" value="{{ card_name }}" maxlength="128">
                     <small class="text-muted">Full name as displayed on card</small>
                     <div class="invalid-feedback">
                         Name on card is required
@@ -120,7 +120,7 @@ Checkout
                 <div class="col-md-6 mb-3">
                     <label for="cNumber">Card number</label>
 
-                    <input type="text" class="form-control" id="cNumber" name="cNumber" placeholder=""      value={{ card_number }} required minlength="16" maxlength="16"
+                    <input type="text" class="form-control" id="cNumber" name="cNumber" placeholder="" value="{{ card_number }}" minlength="16" maxlength="16"
                            pattern="\b\d{16}\b">
                     <small class="text-muted">16 digits from the front of your card</small>
                     <div class="invalid-feedback">
@@ -131,7 +131,7 @@ Checkout
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label for="cExpiration">Expiration</label>
-                    <input type="text" class="form-control" id="cExpiration" name="cExpiration" placeholder="MM/YY" value={{ exp_date }} required minlength="5" maxlength="5"
+                    <input type="text" class="form-control" id="cExpiration" name="cExpiration" placeholder="MM/YY" value="{{ exp_date }}" minlength="5" maxlength="5"
                            pattern="\b\d{2}\/\d{2}\b">
                     <small class="text-muted">MM/YY</small>
                     <div class="invalid-feedback">
@@ -141,7 +141,7 @@ Checkout
                 <div class="col-md-3 mb-3">
                     <label for="cCVV">CVV</label>
                     <input type="text" class="form-control" id="cCVV" name="cCVV"
-                           placeholder="000" required minlength="3" maxlength="4">
+                           placeholder="000" minlength="3" maxlength="4">
                     <small class="text-muted">Last 3 or 4 digits from the back of your card</small>
                     <div class="invalid-feedback">
                         Security code required
@@ -154,7 +154,7 @@ Checkout
                 <input type="checkbox" id="saveCard" name="saveCard">
             </div>
 
-            <button id="checkout-submit" class="btn btn-primary" type="submit">Complete Check Out</button>
+            <button id="checkout-submit" name="checkout-submit" class="btn btn-primary" type="submit">Complete Check Out</button>
             </div>
 
             {% load static %}
