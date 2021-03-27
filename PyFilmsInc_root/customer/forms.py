@@ -24,9 +24,10 @@ class ReservationForm(forms.Form):
 
     def clean_cNumber(self):
         data = self.cleaned_data['cNumber']
-
         if len(data) != 16:
             raise ValidationError('Invalid card number - not 16 digits')
+
+        return data
 
     def clean_cExpiration(self):
         data = self.cleaned_data['cExpiration']
@@ -34,18 +35,21 @@ class ReservationForm(forms.Form):
         # values between 01 - 12 (i.e. Jan - Dec), and YY between 21-29 (i.e. 2021 - 2029)
         regex = r'^(0[1-9]{1})|(1[0-2]{1})\/(2[1-9]{1})$'
         match = re.search(regex, data)
-
         if match is None:
             raise ValidationError('Invalid card expiry format - not MM/YY, with MM between 01-12 '
                                   'and YY between 21-29')
 
+        return data
+
     def clean_cCVV(self):
         data = self.cleaned_data['cCVV']
         data_str = str(data)
-
         # accept only CVVs that have three of four digits
         if len(data_str) < 3 or len(data_str) > 4:
             raise ValidationError('Invalid CVV format - not three or four digits')
+
+        return data
+
 
 class ScreeningForm(forms.Form):
     # selection of screening for given movie

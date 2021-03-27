@@ -164,13 +164,11 @@ def retrieve_make_booking(request, *args, **kwargs):
 
     # get data
     if request.method == 'POST':
-
+        breakpoint()
         form = ReservationForm(request.POST)
         seat_nos = request.POST.get('SelectedSeatsID').split(',')
-
-        if form.is_valid():
+        if form.is_valid() or not form.is_valid():
             form = form.cleaned_data
-
             # make vars
             user = request.user
             profile = Profile.objects.get(user=user.id)
@@ -182,7 +180,7 @@ def retrieve_make_booking(request, *args, **kwargs):
             save_card = form["saveCard"]
             c_number = form["cNumber"]
             c_exp = form["cExpiration"]
-
+            breakpoint()
             if c_number is None:
                 paid_now = False
             else:
@@ -225,6 +223,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                     reservation_id=res, screening_id=Screening.objects.get(pk=pk))
 
             # create transaction entry for reservation (fake card payment)
+            breakpoint()
             if paid_now:
                 Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price,
                                            user_id=request.user,
