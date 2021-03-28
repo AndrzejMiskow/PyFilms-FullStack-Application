@@ -16,8 +16,35 @@ from .forms import *
 class HomeView(ListView):
     model = Movie
     template_name = 'home.html'
+    context_object_name = 'all_movies_list'
 
+    def get_queryset(self):
+        return Movie.objects.all()
 
+# render homepage
+def render_home(request):
+    
+    # carry out search & return results
+    if request.method == "POST":
+        
+        # retrieve query
+        query = request.POST.get("query")
+        searchType = request.POST.get("filter") + "__icontains"
+        movies = Movie.objects.filter(**{searchType: query})
+        
+        context = {
+            'query': query,
+            'movies': movies,
+        }
+        
+        # render page
+        return render(request, "homeSearch.html", context)
+    
+    # otherwise render standard homepage
+    else:
+        return HomeView.as_view()(request)
+        
+        
 # generate movie detail page listing info about movie & available screenings
 def render_movie_view(request, *args, **kwargs):
     pk = kwargs.get("pk")
@@ -52,7 +79,7 @@ def render_purchase_view(request, *args, **kwargs):
             form = form.cleaned_data
             pk = int(form["screening"])
 
-    # otherwise method is get        
+    # otherwise method is get
     else:
         messages.error(request, 'Something went wrong!')
         return HttpResponseRedirect('/customer/')
@@ -160,7 +187,6 @@ def retrieve_make_booking(request, *args, **kwargs):
 
     # get data
     if request.method == 'POST':
-
         form = ReservationForm(request.POST)
         seat_nos = request.POST.get('SelectedSeatsID').split(',')
 
@@ -174,22 +200,22 @@ def retrieve_make_booking(request, *args, **kwargs):
             q_child = form["qChild"]
             q_senior = form["qSenior"]
             q_total = q_adult + q_child + q_senior
+            save_card = False
 
-            save_card = form["saveCard"]
-            c_number = form["cNumber"]
-            c_exp = form["cExpiration"]
-
-            if c_number is None:
-                paid_now = False
-            else:
+            if 'checkout-submit' in request.POST:
+                save_card = form["saveCard"]
+                c_number = form["cNumber"]
+                c_exp = form["cExpiration"]
                 paid_now = True
+            else:
+                paid_now = False
 
             res = Reservation(screening_id=Screening.objects.get(pk=pk), reserved=True, paid=paid_now, cancelled=False,
                               user_id=request.user)
             lead_booking = res
             total_price = 0
 
-            # update ticket sold quantity for Movie object 
+            # update ticket sold quantity for Movie object
             Movie.addTickets(Screening.objects.get(pk=pk).movie_id, q_total)
 
             # create reservation entry per party member
@@ -225,6 +251,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                 Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price,
                                            user_id=request.user,
                                            successful=True, booking=Reservation.objects.get(pk=lead_booking))
+                Movie.addIncome(Screening.objects.get(pk=pk).movie_id, total_price)
 
             # Save card details
             if save_card:
@@ -232,7 +259,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                 profile.exp_date = c_exp
                 profile.save()
 
-            # render tickets for every member & emails them to customer 
+            # render tickets for every member & emails them to customer
             render_ticket_views(request, res.screening_id, request.user.id)
 
     messages.success(request, 'Thanks! Your booking is confirmed, your ticket will arrive in your inbox soon.')
@@ -243,7 +270,7 @@ def retrieve_make_booking(request, *args, **kwargs):
 def render_signup_view(request):
     if request.method == "POST":
 
-        # get user data from html page 
+        # get user data from html page
         form = UserCreationForm(request.POST)
 
         if form.is_valid():
