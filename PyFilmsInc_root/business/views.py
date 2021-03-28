@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import *
+from django.db.models.functions import *
+from django.db.models import Sum
+
 
 from API.models import *
+
 
 
 def home(request):
@@ -20,11 +24,25 @@ def testCard(request):
     return render(request, "cardPayment.html", {})
 
 
-class SampleBusinessPage(TemplateView):
-    template_name = 'sampleGraphPage.html'
+def sampleGraph(request):
+    TotalPrice = 0
+    ChildTickets = 0
+    SeniorTickets = 0
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["qs"] = Movie.objects.all()
-        return context
+    label = []
+    data = []
 
+
+    TotalWeekly = Reservation.objects.all().annotate(week=ExtractWeek('reserved_date')).\
+        values('week').\
+        annotate(total=Sum('price'))
+
+
+    for week in TotalWeekly:
+        label.append(week["week"])
+        data.append(week["total"])
+
+    return  render(request , 'sampleGraphPage.html', {
+        'labels' : label,
+        'data' : data,
+    })
