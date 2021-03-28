@@ -21,7 +21,30 @@ class HomeView(ListView):
     def get_queryset(self):
         return Movie.objects.all()
 
-
+# render homepage
+def render_home(request):
+    
+    # carry out search & return results
+    if request.method == "POST":
+        
+        # retrieve query
+        query = request.POST.get("query")
+        searchType = request.POST.get("filter") + "__icontains"
+        movies = Movie.objects.filter(**{searchType: query})
+        
+        context = {
+            'query': query,
+            'movies': movies,
+        }
+        
+        # render page
+        return render(request, "homeSearch.html", context)
+    
+    # otherwise render standard homepage
+    else:
+        return HomeView.as_view()(request)
+        
+        
 # generate movie detail page listing info about movie & available screenings
 def render_movie_view(request, *args, **kwargs):
     pk = kwargs.get("pk")
