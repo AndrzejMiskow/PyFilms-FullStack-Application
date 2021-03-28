@@ -136,9 +136,13 @@ class SeatReserved(models.Model):
 
 
 # database classes for Movie tables
+def get_all_movies_list():
+    return Movie.objects.all()
+
+
 class Movie(models.Model):
     objects = models.Manager()
-    movie_id = models.AutoField(primary_key=True, default=0)
+    movie_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=256, null=False, blank=False)
     director = models.CharField(max_length=256, null=False, blank=False)
     cast_members = models.CharField(max_length=256, null=False, blank=False)
@@ -152,9 +156,6 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
-
-    def get_all_movies_list(self):
-        return Movie.objects.all()
 
     def addTickets(self, count):
         self.tickets_sold += count
