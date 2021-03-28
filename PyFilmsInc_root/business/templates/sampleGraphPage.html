@@ -18,10 +18,6 @@
     },
 options: {
 				responsive: true,
-				title: {
-					display: true,
-					text: 'Chart.js Line Chart'
-				},
 				tooltips: {
 					mode: 'index',
 					intersect: false,
@@ -35,14 +31,17 @@ options: {
 						display: true,
 						scaleLabel: {
 							display: true,
-							labelString: 'Month'
+							labelString: 'Week'
 						}
 					}],
 					yAxes: [{
 						display: true,
+                        ticks: {
+                            suggestedMin: 0
+                        },
 						scaleLabel: {
 							display: true,
-							labelString: 'Value'
+							labelString: 'Total earning (£)'
 						}
 					}]
 				}
