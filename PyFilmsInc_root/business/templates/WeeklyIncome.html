@@ -48,12 +48,12 @@ options: {
 			}
 	};
 
-    var config2 = {
+    var config_barchart = {
         type : 'bar',
         data : {
             labels: {{ label2 | safe }},
             datasets : [{
-                label: "Movies",
+                label: 'Movies',
                 backgroundColor: "rgba(204, 0, 0, .4)",
                 borderColor: "#c00",
                 borderWidth: 2,
@@ -61,6 +61,49 @@ options: {
                 data: {{ data2 |safe }},
             }]
         },
+    }
+    let colorHex = ['#3639fb', '#060613', '#43AA8B', '#008744' , '#d62d20'
+    , '#ffa700' , '#ffffff' , '#8008bd' , '#39285f' , '#1bc35a'];
+
+    var config_piechart = {
+        type: 'pie',
+
+        //Data values of the graph but the varibles are taken from above
+        data: {
+            datasets: [{
+                //Data used for the graph
+                data: {{ data2 |safe }},
+                backgroundColor: colorHex
+            }],
+            labels: {{ label2 | safe }}
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom'
+            },
+            plugins: {
+                datalabels: {
+                    color: '#fff',
+                    anchor: 'end',
+                    align: 'start',
+                    offset: -10,
+                    borderWidth: 2,
+                    borderColor: '#fff',
+                    borderRadius: 25,
+                    backgroundColor: (context) => {
+                        return context.dataset.backgroundColor;
+                    },
+                    font: {
+                        weight: 'bold',
+                        size: '10'
+                    },
+                    formatter: (value) => {
+                        return "£" + value;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -70,7 +113,7 @@ options: {
         window.myChart = new Chart(ctx, config);
 
         let ctx2 = document.getElementById('movieChart').getContext('2d');
-        window.movieChart = new Chart(ctx2 , config2);
+        window.movieChart = new Chart(ctx2 , config_piechart);
     });
 </script>
 
@@ -80,12 +123,20 @@ options: {
 
 <div class="container" style="height: 50vh">
     <div align="center">
-        <h1>Weekly Income</h1>
-        <canvas class="chart-style" id="myChart"></canvas>
+        <div class="row">
+            <div class="col-sm">
+                <h2>Overall Income</h2>
+                <h3>Total Income: £{{ extraData |safe }}</h3>
+            </div>
+            <div class="col-sm">
+                <h2>Income Per Movie</h2>
+                <canvas class="chart-style" id="movieChart"></canvas>
+            </div>
+        </div>
     </div>
     <div align="center">
-        <h1>Income Per Movie</h1>
-        <canvas class="chart-style" id="movieChart"></canvas>
+        <h1>Weekly Income</h1>
+        <canvas class="chart-style" id="myChart"></canvas>
     </div>
 </div>
 

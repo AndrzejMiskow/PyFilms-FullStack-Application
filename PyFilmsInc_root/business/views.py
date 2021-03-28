@@ -38,7 +38,6 @@ def weeklyIncome(request):
     data2 = []
 
     #hold total income
-    extraData = []
 
 
     TotalMovies = Reservation.objects.values('screening_id__movie_id__title').annotate(total=Sum('price'))
@@ -55,7 +54,7 @@ def weeklyIncome(request):
     for res in TotalOverall:
         TotalPrice += res.price
 
-    extraData.append(TotalPrice)
+    extraData = TotalPrice
 
     for movie in TotalMovies:
         label2.append(movie["screening_id__movie_id__title"])
