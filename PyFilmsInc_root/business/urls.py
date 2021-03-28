@@ -8,4 +8,5 @@ urlpatterns = [
     path('cashPayment', testCash, name="cashPayment"),
     path('cardPayment', testCard, name="cardPayment"),
     path('weeklyIncome', weeklyIncome, name="weeklyIncome"),
+    path('ticketsSolds', ticketsSold, name="ticketsSold"),
 ]
