@@ -228,7 +228,8 @@ def retrieve_make_booking(request, *args, **kwargs):
                 Transaction.objects.create(transaction_type=Transaction.CARD, amount=total_price,
                                            user_id=request.user,
                                            successful=True, booking=Reservation.objects.get(pk=lead_booking))
-
+                Movie.addIncome(Screening.objects.get(pk=pk).movie_id, total_price)
+                
             # Save card details
             if save_card:
                 profile.card_number = c_number

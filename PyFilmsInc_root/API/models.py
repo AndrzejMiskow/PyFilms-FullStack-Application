@@ -148,6 +148,7 @@ class Movie(models.Model):
                                    blank=False, null=False)
     movie_duration = models.IntegerField(null=False, blank=False)  # in minutes
     tickets_sold = models.IntegerField(default=0)
+    total_income = models.IntegerField(default=0)
     certificate = models.CharField(max_length=2, default="U", null=False, blank=False)
 
     def __str__(self):
@@ -155,6 +156,10 @@ class Movie(models.Model):
 
     def get_all_movies_list(self):
         return Movie.objects.all()
+
+    def addIncome(self, amount):
+        self.total_income += amount
+        self.save()
 
     def addTickets(self, count):
         self.tickets_sold += count
