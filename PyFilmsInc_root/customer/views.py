@@ -245,6 +245,7 @@ def retrieve_make_booking(request, *args, **kwargs):
 # render user signup page
 def render_signup_view(request):
     if request.method == "POST":
+        breakpoint()
 
         # get user data from html page
         form = UserCreationForm(request.POST)
