@@ -13,7 +13,7 @@
 				borderColor: "#404796",        
                 data: {{ data|safe }},
                 label: 'Weekly Income',
-                fill: true,
+                fill: false,
                 }]
     },
 options: {
@@ -48,9 +48,29 @@ options: {
 			}
 	};
 
+    var config2 = {
+        type : 'bar',
+        data : {
+            labels: {{ label2 | safe }},
+            datasets : [{
+                label: "Movies",
+                backgroundColor: "rgba(204, 0, 0, .4)",
+                borderColor: "#c00",
+                borderWidth: 2,
+                hoverBackgroundColor: "#59597F",
+                data: {{ data2 |safe }},
+            }]
+        },
+    }
+
+
+
     $(document).ready(function () {
         let ctx = document.getElementById('myChart').getContext('2d');
         window.myChart = new Chart(ctx, config);
+
+        let ctx2 = document.getElementById('movieChart').getContext('2d');
+        window.movieChart = new Chart(ctx2 , config2);
     });
 </script>
 
@@ -62,6 +82,10 @@ options: {
     <div align="center">
         <h1>Weekly Income</h1>
         <canvas class="chart-style" id="myChart"></canvas>
+    </div>
+    <div align="center">
+        <h1>Income Per Movie</h1>
+        <canvas class="chart-style" id="movieChart"></canvas>
     </div>
 </div>
 
