@@ -136,9 +136,13 @@ class SeatReserved(models.Model):
 
 
 # database classes for Movie tables
+def get_all_movies_list():
+    return Movie.objects.all()
+
+
 class Movie(models.Model):
     objects = models.Manager()
-    movie_id = models.AutoField(primary_key=True, default=0)
+    movie_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=256, null=False, blank=False)
     director = models.CharField(max_length=256, null=False, blank=False)
     cast_members = models.CharField(max_length=256, null=False, blank=False)
@@ -148,13 +152,15 @@ class Movie(models.Model):
                                    blank=False, null=False)
     movie_duration = models.IntegerField(null=False, blank=False)  # in minutes
     tickets_sold = models.IntegerField(default=0)
+    total_income = models.IntegerField(default=0)
     certificate = models.CharField(max_length=2, default="U", null=False, blank=False)
 
     def __str__(self):
         return self.title
 
-    def get_all_movies_list(self):
-        return Movie.objects.all()
+    def addIncome(self, amount):
+        self.total_income += amount
+        self.save()
 
     def addTickets(self, count):
         self.tickets_sold += count
