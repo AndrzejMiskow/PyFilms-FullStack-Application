@@ -89,7 +89,7 @@ def pay(request, **kwargs):
                 t_adult = form["tAdult"]
                 t_child = form["tChild"]
                 t_senior = form["tSenior"]
-                t_total = t_adult+t_child+t_senior
+                t_total = t_adult + t_child + t_senior
 
                 res = Reservation(screening_id=screening, reserved=True, paid=False, cancelled=False)
                 lead_booking = res
@@ -117,7 +117,7 @@ def pay(request, **kwargs):
                     total_price += res.price
 
                     SeatReserved.objects.create(seat_id=Seat.objects.get(
-                        pk=((int(seat_nos[i])+541)+(32*(res.screening_id.room_id.name-1)))),
+                        pk=((int(seat_nos[i]) + 541) + (32 * (res.screening_id.room_id.name - 1)))),
                         reservation_id=res, screening_id=screening)
 
     if request.method == "POST" and 'card-submit' in request.POST:
@@ -196,45 +196,45 @@ def cardPayment(request, **kwargs):
 
 
 def weeklyIncome(request):
-    TotalPrice = 0
+    total_price = 0
 
-    # Weekly income breakdonw
+    # Weekly income breakdown
     label = []
     data = []
 
-    # Per Moive breakdown
+    # Per Move breakdown
     label2 = []
     data2 = []
 
-    TotalMovies = Reservation.objects.values('screening_id__movie_id__title').annotate(total=Sum('price'))
+    total_movies = Reservation.objects.values('screening_id__movie_id__title').annotate(total=Sum('price'))
 
-    print(TotalMovies)
+    print(total_movies)
 
-    TotalWeekly = Reservation.objects.all().annotate(week=ExtractWeek('reserved_date')). \
+    total_weekly = Reservation.objects.all().annotate(week=ExtractWeek('reserved_date')). \
         values('week'). \
         annotate(total=Sum('price'))
 
-    TotalOverall = Reservation.objects.all()
+    total_overall = Reservation.objects.all()
 
     # Total Income of all time
-    for res in TotalOverall:
-        TotalPrice += res.price
+    for res in total_overall:
+        total_price += res.price
 
-    extraData = TotalPrice
+    extra_data = total_price
 
-    for movie in TotalMovies:
+    for movie in total_movies:
         label2.append(movie["screening_id__movie_id__title"])
         data2.append(movie["total"])
 
     # weekly income used for graph
-    for week in TotalWeekly:
+    for week in total_weekly:
         label.append(week["week"])
         data.append(week["total"])
 
     return render(request, 'WeeklyIncome.html', {
         'labels': label,
         'data': data,
-        'extraData': extraData,
+        'extraData': extra_data,
         'label2': label2,
         'data2': data2,
     })
@@ -245,16 +245,16 @@ def ticketsSold(request):
     data = []
 
     if request.method == "POST":
-        fromdate = request.POST.get('start')
-        todate = request.POST.get('end')
+        from_date = request.POST.get('start')
+        to_date = request.POST.get('end')
 
-        MovieQuerry = Reservation.objects.values('screening_id__movie_id__title').annotate(total=Count('price'))
+        movie_query = Reservation.objects.values('screening_id__movie_id__title').annotate(total=Count('price'))
 
-        groupedMovies = MovieQuerry.filter(reserved_date__range=[fromdate, todate])
+        grouped_movies = movie_query.filter(reserved_date__range=[from_date, to_date])
 
-        for object in groupedMovies:
-            label.append(object['screening_id__movie_id__title'])
-            data.append(object['total'])
+        for movie in grouped_movies:
+            label.append(movie['screening_id__movie_id__title'])
+            data.append(movie['total'])
 
         return render(request, 'ticketsSold.html', {
             'labels': label,
@@ -297,6 +297,7 @@ def render_time_view(request, *args, **kwargs):
     }
 
     return render(request, "selectTime.html", context)
+
 
 # render pay for existing reservation page
 def render_find_res(request):
