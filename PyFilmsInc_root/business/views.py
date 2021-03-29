@@ -196,6 +196,8 @@ def cardPayment(request, **kwargs):
 
 
 def weeklyIncome(request):
+    if not authOwner(request):
+        return HttpResponseRedirect('/customer/')
     total_price = 0
 
     # Weekly income breakdown
@@ -241,6 +243,8 @@ def weeklyIncome(request):
 
 
 def ticketsSold(request):
+    if not authOwner(request):
+        return HttpResponseRedirect('/customer/')
     label = []
     data = []
 
