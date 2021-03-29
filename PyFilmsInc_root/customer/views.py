@@ -296,6 +296,11 @@ def render_signup_view(request):
             login(request, user)
             return HttpResponseRedirect('/customer/')
 
+        elif not form.is_valid():
+            messages.error(request, 'Passwords don\'t match')
+            form = UserCreationForm()
+
+
     # otherwise generate signup page
     else:
         form = UserCreationForm()

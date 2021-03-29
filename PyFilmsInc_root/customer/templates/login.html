@@ -4,17 +4,36 @@
 
 {% block content %}
 
-    {%  if messages %}
-        {% for message in messages %}
-            <h3 class="message">{{ message }}</h3>
-        {% endfor %}
-    {% endif %}
+    <form method="post">
+    <div class="container d-flex flex-column justify-content-center align-items-center">
+    <h2>Login</h2>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary" type="submit">Login</button>
+    </div>
+    <br>
+    <div class="container d-flex flex-column justify-content-center align-items-center">
+        <div class="row">
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="col-sm">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    </form>
 
-
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary" type="submit">Login</button>
-  </form>
 {% endblock %}
