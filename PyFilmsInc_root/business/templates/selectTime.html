@@ -1,0 +1,40 @@
+{% extends 'business-base.html' %}
+
+{% block content %}
+
+<container>
+    <div class="row w-50 mx-auto">
+            <!-- Movie Details -->
+            <div class="col">
+                <h2>{{ movie.title }}</h2>
+                <p></p>
+
+                <!-- Display Poster-->
+                <div class="details-image">
+                    <img src = "/{{movie.poster_img}}" class="img-fluid" alt="Responsive image">
+                </div>
+
+            </div>
+            <!-- Time Selection-->
+            <div class="col">
+                <h2>Select Time</h2>
+                <p></p>
+                <!-- Container holds all the time slots-->
+                
+                <div class="container-times">
+                    {% for time, screening in screenings.items %}
+                    
+                    <div class="time-card time-content">
+                        <div class="time-header">
+                            <!-- Change Url to select time page-->
+                            <a href="{% url 'checkout' screening.pk %}">
+                                <h3>{{ time }}</h3>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+</container>
+{% endblock %}

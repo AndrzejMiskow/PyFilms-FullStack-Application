@@ -21,6 +21,29 @@ class HomeView(ListView):
     def get_queryset(self):
         return Movie.objects.all()
 
+# render homepage
+def render_home(request):
+
+    # carry out search & return results
+    if request.method == "POST":
+
+        # retrieve query
+        query = request.POST.get("query")
+        searchType = request.POST.get("filter") + "__icontains"
+        movies = Movie.objects.filter(**{searchType: query})
+
+        context = {
+            'query': query,
+            'movies': movies,
+        }
+
+        # render page
+        return render(request, "homeSearch.html", context)
+
+    # otherwise render standard homepage
+    else:
+        return HomeView.as_view()(request)
+
 
 # generate movie detail page listing info about movie & available screenings
 def render_movie_view(request, *args, **kwargs):
@@ -58,8 +81,8 @@ def render_purchase_view(request, *args, **kwargs):
 
     # otherwise method is get
     else:
-        pass
-        # pk = kwargs.get('pk')
+        messages.error(request, 'Something went wrong!')
+        return HttpResponseRedirect('/customer/')
 
     screening = get_object_or_404(Screening, pk=pk)
     seats = Seat.objects.filter(room_id=screening.room_id)
@@ -109,12 +132,12 @@ def render_ticket_views(request, screening_id, user_id):
                                               user_id=User.objects.get(pk=user_id))
     booking = reservations[0]
 
-    # emailing ticket to UserWarning
+    # emailing ticket to User
     mail = EmailMessage(
         "Ticket(s) for " + booking.screening_id.movie_id.title +
         " screening " + booking.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
-        "Dear " + booking.user_id.first_name + ",\n\nPlease find attached your ticket. Enjoy the "
-                                               "show!\n\nPyFilms Inc",
+        "Dear " + booking.user_id.first_name + ",\n\n" + "Your reservation ID is " + str(booking.pk)
+        + ".\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
         None,
         [booking.user_id.email], )
 
@@ -229,7 +252,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                                            user_id=request.user,
                                            successful=True, booking=Reservation.objects.get(pk=lead_booking))
                 Movie.addIncome(Screening.objects.get(pk=pk).movie_id, total_price)
-                
+
             # Save card details
             if save_card:
                 profile.card_number = c_number

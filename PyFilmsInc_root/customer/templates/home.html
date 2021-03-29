@@ -4,6 +4,17 @@
 
 {% block content %}
 
+
+    <form class="form-inline my-2 my-lg-0" action="/customer/" method="post"> {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="query" aria-label="Search">
+        <select class="form-control mr-sm-2" id="filter" name="filter">
+            <option value="title">Movie title</option>
+            <option value="director">Director</option>
+            <option value="cast_members">Cast members</option>
+        </select> 
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
     {%  if messages %}
         {% for message in messages %}
             <h3 class="message">{{ message }}</h3>

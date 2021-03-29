@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+    <form class="form-inline my-2 my-lg-0" action="/customer/" method="post"> {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="query" aria-label="Search" value="{{ query }}">
+        <select class="form-control mr-sm-2" id="filter" name="filter">
+            <option value="title">Movie title</option>
+            <option value="director">Director</option>
+            <option value="cast_members">Cast members</option>
+        </select> 
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+    {%  if messages %}
+        {% for message in messages %}
+            <h3 class="message">{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+
+<!-- Movie Thumbmails -->
+<div class="container-movies">
+    {% for movie in movies %}
+    <!-- Copy this code to add more movie cards-->
+    <div class="movie-card">
+        <div class="movie-header" style = "background: url(/{{movie.poster_img}}); background-size: cover"></div>
+        <!--movie-header-->
+        <div class="movie-content">
+            <div class="movie-content-header">
+                <a href="{% url 'movieDetails' movie.pk %}">
+                    <h3 class="movie-title">{{ movie.title }}</h3>
+                </a>
+            </div>
+            <div class="movie-info">
+                <div class="info-section">
+                    <label>Director</label>
+                    <span>{{ movie.director }}</span>
+                </div>
+                <div class="info-section">
+                    <label>Age Rating</label>
+                    <span>16+</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

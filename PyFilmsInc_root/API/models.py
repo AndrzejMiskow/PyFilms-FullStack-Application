@@ -71,25 +71,26 @@ class Reservation(models.Model):
     lead_booking = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     paid = models.BooleanField(default=False, null=False)
     cancelled = models.BooleanField(default=False, null=False)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     qr_code = models.ImageField(upload_to='static/customer/img/qr_codes', blank=True)
 
     # Overriding save function to generate a QR code and set price when a reservation is saved
     def save(self, *args, **kwargs):
-        # Generate a QR code with the primary key and user last name
-        qrcode_img = qrcode.make(str(self.pk) + ':' + self.user_id.last_name)
+        if self.user_id is not None:
+            # Generate a QR code with the primary key and user last name
+            qrcode_img = qrcode.make(str(self.pk) + ':' + self.user_id.last_name)
 
-        # Create a canvas on which to put the QR code
-        canvas = Image.new('RGB', (290, 290), 'white')
-        ImageDraw.Draw(canvas)
-        canvas.paste(qrcode_img)
-        fname = f'qr_code-{str(self.pk)}' + '.png'
-        buffer = BytesIO()
-        canvas.save(buffer, 'PNG')
+            # Create a canvas on which to put the QR code
+            canvas = Image.new('RGB', (290, 290), 'white')
+            ImageDraw.Draw(canvas)
+            canvas.paste(qrcode_img)
+            fname = f'qr_code-{str(self.pk)}' + '.png'
+            buffer = BytesIO()
+            canvas.save(buffer, 'PNG')
 
-        # Save the file as a png in the static folder
-        self.qr_code.save(fname, File(buffer), save=False)
-        canvas.close()
+            # Save the file as a png in the static folder
+            self.qr_code.save(fname, File(buffer), save=False)
+            canvas.close()
 
         # Set a price and store that in the object
         if self.reservation_type == Reservation.AD:
@@ -136,9 +137,13 @@ class SeatReserved(models.Model):
 
 
 # database classes for Movie tables
+def get_all_movies_list():
+    return Movie.objects.all()
+
+
 class Movie(models.Model):
     objects = models.Manager()
-    movie_id = models.AutoField(primary_key=True, default=0)
+    movie_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=256, null=False, blank=False)
     director = models.CharField(max_length=256, null=False, blank=False)
     cast_members = models.CharField(max_length=256, null=False, blank=False)
@@ -154,8 +159,9 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
-    def get_all_movies_list(self):
-        return Movie.objects.all()
+    def addIncome(self, amount):
+        self.total_income += amount
+        self.save()
 
     def addIncome(self, amount):
         self.total_income += amount
