@@ -48,22 +48,8 @@ options: {
 			}
 	};
 
-    var config_barchart = {
-        type : 'bar',
-        data : {
-            labels: {{ label2 | safe }},
-            datasets : [{
-                label: 'Movies',
-                backgroundColor: "rgba(204, 0, 0, .4)",
-                borderColor: "#c00",
-                borderWidth: 2,
-                hoverBackgroundColor: "#59597F",
-                data: {{ data2 |safe }},
-            }]
-        },
-    }
     let colorHex = ['#3639fb', '#060613', '#43AA8B', '#008744' , '#d62d20'
-    , '#ffa700' , '#ffffff' , '#8008bd' , '#39285f' , '#1bc35a'];
+    , '#ffa700' , '#914242' , '#8008bd' , '#39285f' , '#1bc35a'];
 
     var config_piechart = {
         type: 'pie',

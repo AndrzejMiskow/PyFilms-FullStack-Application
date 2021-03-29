@@ -17,7 +17,32 @@
             hoverBackgroundColor: "#59597F",
             data: {{ data |safe }},
         }]
-        }}
+    },
+        options: {
+            scaleShowValues: true,
+                scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of Tickets Sold'
+                    }
+                }],
+                    xAxes: [{
+                    ticks: {
+                        autoSkip: false
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Movie Name'
+                    }
+                }]
+            }
+        }
+        }
 
     $(document).ready(function () {
         let ctx = document.getElementById('movieChart').getContext('2d');
@@ -43,11 +68,15 @@
                         <input type="submit" value="Search"/>
                 </form>
             </div>
-            <div class="col-sm">
-                <h2>Income Per Movie</h2>
-                <canvas class="chart-style" id="movieChart"></canvas>
-            </div>
         </div>
+        <br>
+        <br>
+            <div class="row">
+                <div class="col-sm">
+                    <h2>Income Per Movie</h2>
+                    <canvas class="chart-style" id="movieChart"></canvas>
+                </div>
+            </div>
     </div>
 </div>
 
