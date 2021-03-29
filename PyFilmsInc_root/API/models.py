@@ -163,6 +163,10 @@ class Movie(models.Model):
         self.total_income += amount
         self.save()
 
+    def addIncome(self, amount):
+        self.total_income += amount
+        self.save()
+
     def addTickets(self, count):
         self.tickets_sold += count
         self.save()

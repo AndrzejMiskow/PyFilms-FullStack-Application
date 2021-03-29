@@ -23,28 +23,28 @@ class HomeView(ListView):
 
 # render homepage
 def render_home(request):
-    
+
     # carry out search & return results
     if request.method == "POST":
-        
+
         # retrieve query
         query = request.POST.get("query")
         searchType = request.POST.get("filter") + "__icontains"
         movies = Movie.objects.filter(**{searchType: query})
-        
+
         context = {
             'query': query,
             'movies': movies,
         }
-        
+
         # render page
         return render(request, "homeSearch.html", context)
-    
+
     # otherwise render standard homepage
     else:
         return HomeView.as_view()(request)
-        
-        
+
+
 # generate movie detail page listing info about movie & available screenings
 def render_movie_view(request, *args, **kwargs):
     pk = kwargs.get("pk")
@@ -136,7 +136,7 @@ def render_ticket_views(request, screening_id, user_id):
     mail = EmailMessage(
         "Ticket(s) for " + booking.screening_id.movie_id.title +
         " screening " + booking.screening_id.screening_start.strftime("%H:%M %d/%m/%y"),
-        "Dear " + booking.user_id.first_name + ",\n\n" + "Your reservation ID is " + str(booking.pk) 
+        "Dear " + booking.user_id.first_name + ",\n\n" + "Your reservation ID is " + str(booking.pk)
         + ".\n\nPlease find attached your ticket. Enjoy the show!\n\nPyFilms Inc",
         None,
         [booking.user_id.email], )
@@ -223,7 +223,7 @@ def retrieve_make_booking(request, *args, **kwargs):
                 # auto-generate new res object with new pk
                 res.pk = None
                 res.save()
-                
+
                 # The first booking made is the "lead booking" and the others will be connected
                 if i == 0:
                     lead_booking = res.pk

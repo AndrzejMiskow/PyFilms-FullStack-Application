@@ -1,0 +1,83 @@
+{% extends 'graphs-base.html' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+
+{% block scripts %}
+<script>
+    var config_barchart = {
+        type : 'bar',
+        data : {
+            labels: {{ labels | safe }},
+        datasets : [{
+            label: 'Movies',
+            backgroundColor: "rgba(204, 0, 0, .4)",
+            borderColor: "#c00",
+            borderWidth: 2,
+            hoverBackgroundColor: "#59597F",
+            data: {{ data |safe }},
+        }]
+    },
+        options: {
+            scaleShowValues: true,
+                scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of Tickets Sold'
+                    }
+                }],
+                    xAxes: [{
+                    ticks: {
+                        autoSkip: false
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Movie Name'
+                    }
+                }]
+            }
+        }
+        }
+
+    $(document).ready(function () {
+        let ctx = document.getElementById('movieChart').getContext('2d');
+        window.myChart = new Chart(ctx, config_barchart);
+    });
+
+</script>
+
+{% endblock scripts %}
+{% block content %}
+
+
+<div class="container" style="height: 50vh">
+    <div align="center">
+        <div class="row">
+            <div class="col-sm">
+                <h2>Select Date Range</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                        <input type="date" name="start">
+                        <span class="input-group-addon">to</span>
+                        <input type="date" name="end"/>
+                        <input type="submit" value="Search"/>
+                </form>
+            </div>
+        </div>
+        <br>
+        <br>
+            <div class="row">
+                <div class="col-sm">
+                    <h2>Tickets Sold Per Movie</h2>
+                    <canvas class="chart-style" id="movieChart"></canvas>
+                </div>
+            </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import *
+from django.db.models.functions import *
+from django.db.models import Sum, Value, Count
 import datetime
 from django.contrib import messages
 
@@ -87,7 +89,7 @@ def pay(request, **kwargs):
                 t_adult = form["tAdult"]
                 t_child = form["tChild"]
                 t_senior = form["tSenior"]
-                t_total = t_adult+t_child+t_senior
+                t_total = t_adult + t_child + t_senior
 
                 res = Reservation(screening_id=screening, reserved=True, paid=False, cancelled=False)
                 lead_booking = res
@@ -115,7 +117,7 @@ def pay(request, **kwargs):
                     total_price += res.price
 
                     SeatReserved.objects.create(seat_id=Seat.objects.get(
-                        pk=((int(seat_nos[i])+541)+(32*(res.screening_id.room_id.name-1)))),
+                        pk=((int(seat_nos[i]) + 541) + (32 * (res.screening_id.room_id.name - 1)))),
                         reservation_id=res, screening_id=screening)
 
     if request.method == "POST" and 'card-submit' in request.POST:
@@ -193,13 +195,76 @@ def cardPayment(request, **kwargs):
     return render(request, "cardPayment.html", context)
 
 
-class SampleBusinessPage(TemplateView):
-    template_name = 'sampleGraphPage.html'
+def weeklyIncome(request):
+    total_price = 0
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["qs"] = Movie.objects.all()
-        return context
+    # Weekly income breakdown
+    label = []
+    data = []
+
+    # Per Move breakdown
+    label2 = []
+    data2 = []
+
+    total_movies = Reservation.objects.values('screening_id__movie_id__title').annotate(total=Sum('price'))
+
+    print(total_movies)
+
+    total_weekly = Reservation.objects.all().annotate(week=ExtractWeek('reserved_date')). \
+        values('week'). \
+        annotate(total=Sum('price'))
+
+    total_overall = Reservation.objects.all()
+
+    # Total Income of all time
+    for res in total_overall:
+        total_price += res.price
+
+    extra_data = total_price
+
+    for movie in total_movies:
+        label2.append(movie["screening_id__movie_id__title"])
+        data2.append(movie["total"])
+
+    # weekly income used for graph
+    for week in total_weekly:
+        label.append(week["week"])
+        data.append(week["total"])
+
+    return render(request, 'WeeklyIncome.html', {
+        'labels': label,
+        'data': data,
+        'extraData': extra_data,
+        'label2': label2,
+        'data2': data2,
+    })
+
+
+def ticketsSold(request):
+    label = []
+    data = []
+
+    if request.method == "POST":
+        from_date = request.POST.get('start')
+        to_date = request.POST.get('end')
+
+        movie_query = Reservation.objects.values('screening_id__movie_id__title').annotate(total=Count('price'))
+
+        grouped_movies = movie_query.filter(reserved_date__range=[from_date, to_date])
+
+        for movie in grouped_movies:
+            label.append(movie['screening_id__movie_id__title'])
+            data.append(movie['total'])
+
+        return render(request, 'ticketsSold.html', {
+            'labels': label,
+            'data': data,
+        })
+
+    return render(request, 'ticketsSold.html', {
+        'labels': label,
+        'data': data,
+    })
 
 
 # show movies that can be booked
@@ -233,24 +298,25 @@ def render_time_view(request, *args, **kwargs):
 
     return render(request, "selectTime.html", context)
 
+
 # render pay for existing reservation page
 def render_find_res(request):
     pk = None
-    
+
     if not authStaff(request):
         return HttpResponseRedirect('/customer/')
-    
+
     # redirect to payment using entered reservation ID
     if request.method == "POST":
-        
+
         # get resID from forms
         form = FindResForm(request.POST)
-        
+
         if form.is_valid():
             form = form.cleaned_data
             pk = str(form["resID"])
             lead_booking = Reservation.objects.get(pk=int(pk))
-            
+
             # redirect if Reservation pk invalid
             if lead_booking is None:
                 messages.error(request, 'Reservation with that ID not found. Please try again.')
@@ -259,12 +325,12 @@ def render_find_res(request):
             elif lead_booking.paid is True:
                 messages.error(request, 'Reservation with that ID has already been paid for.')
                 return HttpResponseRedirect('/business/findReservation')
-            
+
         if 'card-submit' in request.POST:
             return HttpResponseRedirect('/business/cardPayment/' + pk)
         elif 'cash-submit' in request.POST:
             return HttpResponseRedirect('/business/cashPayment/' + pk)
-    
+
     # otherwise request is GET and need to render page
     else:
         return render(request, "findReservation.html", {})
