@@ -336,9 +336,15 @@ def render_account_view(request):
 # render view bookings page
 def render_bookings_view(request):
     bookings = Reservation.objects.filter(user_id=request.user)
+
+
+
+
     context = {
         'bookings': bookings,
         'view_booking': "active",
     }
+
+
 
     return render(request, 'viewBookings.html', context)

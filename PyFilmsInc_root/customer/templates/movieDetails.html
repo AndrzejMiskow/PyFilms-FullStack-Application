@@ -41,7 +41,7 @@ Movie: {{ movie.title }}
                     <label for="screening">Please Select a Screening</label>
                     <select class="form-control" id="screening" name="screening">
                         {% for screening in screenings %}
-                        <option value="{{screening.pk}}">{{ screening.screening_start }}</option>
+                        <option value="{{screening.pk}}">{{ screening.screening_start | date:'Y/m/d H:i'}}</option>
                         {% endfor %}
                     </select>   
                     <input class="btn btn-primary" type="submit" value="View screening">

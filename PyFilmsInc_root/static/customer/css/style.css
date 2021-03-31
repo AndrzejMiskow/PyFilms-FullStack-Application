@@ -219,3 +219,17 @@ a:hover {
     text-align: center;
     font-size: 24px;
 }
+
+
+.payment[data-status="True"]:after {
+ content : "Paid";
+ color : green;
+ font-weight: bold;
+
+}
+
+.payment[data-status="False"]:after {
+ content : "Not Paid";
+ color : red;
+ font-weight: bold;
+}
