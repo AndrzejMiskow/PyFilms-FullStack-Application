@@ -10,15 +10,26 @@ var selectedSeatsCount = 0;
 
 function takeData()
 {
+    var child = document.getElementsByName("qChild");
+    
     //Adding up tickets from the form
-    totalTickets = Number($("#qChild").val()) + Number($("#qAdult").val()) + Number($("#qSenior").val());
+    //If movie rated 18+, child seats won't be selectable
+    if (child.length<=0)
+    {
+        totalTickets = Number($("#qAdult").val()) + Number($("#qSenior").val());
+    }
+    else 
+    {
+        totalTickets = Number($("#qChild").val()) + Number($("#qAdult").val()) + Number($("#qSenior").val());
+    }
+    
     if (totalTickets <= 0)
     {
         alert("Please select a valid number of tickets");
     }
     else
     {
-        alert("Select Your Seats");
+        alert("Select your seats");
     }
 }
 
@@ -60,7 +71,7 @@ seatLayout.addEventListener('click', e => {
                     updateSelected();
                 }
                 else{
-                    alert("Deselect A seat to pick a new one");
+                    alert("Deselect a seat to pick a new one");
                 }
         }
     }

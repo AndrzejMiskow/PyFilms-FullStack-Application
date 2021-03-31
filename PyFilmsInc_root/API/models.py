@@ -154,6 +154,9 @@ class Movie(models.Model):
     movie_duration = models.IntegerField(null=False, blank=False)  # in minutes
     tickets_sold = models.IntegerField(default=0)
     total_income = models.IntegerField(default=0)
+    
+    # due to checking if child ticket on buyTickets page, the cert must
+    # be one of the following: {'U', 'PG', '12', '15', '18'}
     certificate = models.CharField(max_length=2, default="U", null=False, blank=False)
 
     def __str__(self):

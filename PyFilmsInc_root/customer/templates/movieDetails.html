@@ -20,12 +20,9 @@ Movie: {{ movie.title }}
             <!-- Movie Detials section-->
             <div class="col-6">
                 <div class="details-content">
-                    <div class="details-tags">
-                        <ul class="tag-list">
-                            <li><span>Director: {{ movie.director}}</span>
-                            <li><span>Cast Members: {{ movie.cast_members}}</span>
-                        </ul>
-                    </div>
+                    <span><b>Director:</b> {{ movie.director}}</span><br>
+                    <span><b>Cast Members:</b> {{ movie.cast_members}}</span><br>
+                    <span><b>Certificate:</b> {{ movie.certificate }}</span>
                 </div>
                 <div class="details-image">
                     <img src = "/{{movie.poster_img}}" class="img-fluid" alt="Responsive image">
