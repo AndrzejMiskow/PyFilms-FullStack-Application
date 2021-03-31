@@ -3,20 +3,31 @@
 {% load static %}
 
 {% block content %}
-	<h2>Your bookings</h2>
-	<table style="border: 1px solid black;">
-	  <tr style="border: 1px solid black;">
-	    <th style="border: 1px solid black;">Movie</th>
-	    <th style="border: 1px solid black;">Datetime</th>
-	    <th style="border: 1px solid black;">Room</th>
-	    <th style="border: 1px solid black;">Ticket</th>
-	  </tr>
-	  {% for booking in bookings %}
-	  <tr style="border: 1px solid black;">
-		<td style="border: 1px solid black;">{{ booking.screening_id.movie_id.title }}</td>
-		<td style="border: 1px solid black;">{{ booking.screening_id.screening_start }}</td>
-        <td style="border: 1px solid black;">{{ booking.reservation_type }}</td>
-        <td style="border: 1px solid black;"><a href="{% get_static_prefix %}customer/tickets/ticket{{ booking.pk }}.pdf" style="color:blue;" download>Download</a></td>
-	  {% endfor %}
-	</table>
+
+<container>
+    <div class="row w-75 mx-auto">
+		<div class="col-lg">
+			<h2>Your bookings</h2>
+			<table class="table table-hover">
+			  <tr style="border: 1px solid black;">
+				<th style="border: 1px solid black;">Movie</th>
+				<th style="border: 1px solid black;">Datetime</th>
+				  <th style="border: 1px solid black;">Ticket Type</th>
+				<th style="border: 1px solid black;">Room</th>
+				<th style="border: 1px solid black;">Ticket Link</th>
+			  </tr>
+			  {% for booking in bookings %}
+			  <tr style="border: 1px solid black;">
+				<td style="border: 1px solid black;">{{ booking.screening_id.movie_id.title }}</td>
+				<td style="border: 1px solid black;">{{ booking.screening_id.screening_start }}</td>
+				<td style="border: 1px solid black;">{{ booking.reservation_type }}</td>
+				  <td style="border: 1px solid black;">{{ booking.screening_id.room_id }}</td>
+				<td style="border: 1px solid black;"><a href="{% get_static_prefix %}customer/tickets/ticket{{ booking.pk }}.pdf" style="color:blue;" download>Download</a></td>
+			  {% endfor %}
+			</table>
+
+		</div>
+
+	</div>
+</container>
 {% endblock %}
