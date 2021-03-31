@@ -13,5 +13,5 @@ urlpatterns = [
     path('process/<type>/<pk>', processPayment, name="processPayment"),
     path('findReservation', render_find_res, name="findReservation"),
     path('weeklyIncome', weeklyIncome, name="weeklyIncome"),
-    path('ticketsSolds', ticketsSold, name="ticketsSold"),
+    path('ticketsSold', ticketsSold, name="ticketsSold"),
 ]

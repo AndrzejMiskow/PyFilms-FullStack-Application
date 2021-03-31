@@ -11,6 +11,16 @@
                 <a class="btn btn-primary btn-lg btn-block" href="/business/selectMovie">New customer booking</a>
                 <br>
                 <a class="btn btn-primary btn-lg btn-block" href="/business/findReservation">Pay for existing booking</a>
+
+                {% if user.is_superuser%}
+                <br>
+                <h1>Business Owner Menu</h1>
+                    <br><br>
+                    <a class="btn btn-primary btn-lg btn-block" href="/business/weeklyIncome">View Income</a>
+                        <br>
+                    <a class="btn btn-primary btn-lg btn-block" href="/business/ticketsSold">View Tickets Sold</a>
+                {% endif %}
+
             </div>
         </div>
     </div>
