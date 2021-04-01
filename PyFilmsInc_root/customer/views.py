@@ -115,7 +115,7 @@ def render_purchase_view(request, *args, **kwargs):
 
     # Applies the movie title and layout to the template
     context = {
-        'movie': screening.movie_id.title,
+        'movie': screening.movie_id,
         'layout': layout,
         'pk': pk,
         'card_number': card_number,
