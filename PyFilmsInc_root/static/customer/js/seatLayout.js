@@ -66,3 +66,33 @@ seatLayout.addEventListener('click', e => {
     }
 
 });
+
+function minusAdult(){
+    if (document.getElementById("qAdult").value > 0){
+        document.getElementById("qAdult").value -= 1;
+    }
+}
+function addAdult(){
+    document.getElementById("qAdult").value++;
+}
+
+function minusSenior(){
+    if (document.getElementById("qSenior").value > 0){
+        document.getElementById("qSenior").value -= 1;
+    }
+}
+
+function addSenior(){
+    document.getElementById("qSenior").value++;
+}
+
+function minusChild(){
+    if (document.getElementById("qChild").value > 0){
+        document.getElementById("qChild").value -= 1;
+    }
+}
+
+function addChild(){
+    document.getElementById("qChild").value++;
+    }
+

@@ -18,31 +18,66 @@ Checkout
                             "qAdult" quantity of Adults Tickets
                             "qSenior" quantity of Senior Tickets
  -->
-    <h3>Select Number of Tickets for {{movie}}</h3>
     <form action="/customer/booking/{{pk}}" name="form1" method="post" class="needs-validation"
           novalidate
     >{% csrf_token %}
-        <div class="form-group row">
-            <label for="qAdult" class="col-sm-2 col-form-label">Adult (18+)</label>
-            <div class="col-sm-1">
-                <input type="number" class="form-control" id="qAdult" name="qAdult" value="0">
-            </div>
+        <div class="container" align="center">
+                <h3>Select Number of Tickets for {{movie}}</h3>
+                <div class="row">
+                    <div class="col ticket-title">
+                        <div class="container">
+                            <h4 align="center">Adult</h4>
+                            <div class="row" align="center">
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger" onclick="minusAdult()">-</button>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" class="form-control tEntry" id="qAdult" name="qAdult"
+                                           value="0">
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-success" onclick="addAdult()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col ticket-title">
+                        <div class="container">
+                            <h4>Child</h4>
+                            <div class="row" align="center">
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger" onclick="minusChild()">-</button>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" class="form-control tEntry" id="qChild" name="qChild"
+                                           value="0">
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-success" onclick="addChild()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col ticket-title">
+                        <div class="container">
+                            <h4 align="center">Senior</h4>
+                            <div class="row" align="center">
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger" onclick="minusSenior()">-</button>
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" class="form-control tEntry" id="qSenior" name="qSenior"
+                                           value="0">
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-success" onclick="addSenior()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
-
-        <div class="form-group row">
-            <label for="qChild" class="col-sm-2 col-form-label">Child (18 <)</label>
-            <div class="col-sm-1">
-                <input type="number" class="form-control" id="qChild" name="qChild" value="0">
-            </div>
-        </div>
-    
-        <div class="form-group row">
-            <label for="qSenior" class="col-sm-2 col-form-label">Senior (65+)</label>
-            <div class="col-sm-1">
-                <input type="number" class="form-control" id="qSenior" name="qSenior" value="0">
-            </div>
-        </div>
-
+        <br>
         <!-- Used to get the total number of tickets selected above this is sent to takeData() function-->
         <button type="button" class="btn btn-primary" onclick="takeData(); return false;">Confirm Number of Tickets</button>
 
