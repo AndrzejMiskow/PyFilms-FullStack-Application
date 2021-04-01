@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     {% load static %}
     <link rel="stylesheet" href="{% static 'customer/css/style.css' %}">
     <title>
@@ -19,47 +20,75 @@
 <body>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
 
 <!-- Navigation bar at the top of the page -->
 <nav class="navbar sticky-top navbar-expand-lg navbar navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/customer/">PyFilm</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="/customer">PyFilm</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    {% if user.is_authenticated %}
-                      <a class="nav-link">Hi {{ user.username }}</a>
-                      <a class="nav-link" href="{% url 'bookings' %}">View bookings</a>
-                      <a class="nav-link" href="{% url 'account' %}">Edit account details</a>
-                      <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                    {% else %}
-                      <a class="nav-link">You are not logged in</a>
-                      <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                      <a class="nav-link" href="{% url 'signup' %}">Join</a>
-                    {% endif %}
+                {% if user.is_authenticated %}
+                <li>
+                    <a class="nav-link {{ view_booking }}" href="{% url 'bookings' %}">View bookings</a>
+                </li>
+                <li>
+                    <a class="nav-link {{ view_account }}" href="{% url 'account' %}">Edit account details</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                {% else %}
+                <li>
+                    <a class="nav-link {{ log_in }}" href="{% url 'login' %}">Log In</a>
+                </li>
+                <li>
+                    <a class="nav-link {{ join }}" href="{% url 'signup' %}">Join</a>
+                </li>
+                {% endif %}
                 </li>
             </ul>
-            <ul class = "nav navbar-right">
-
+            <ul class="nav navbar-right">
+                {% if user.is_staff%}
+                {% if user.is_superuser%}
+                    <li>
+                        <a class="nav-link" href="/business"> Staff Menu</a>
+                    </li>
+                {% endif %}
+                {% endif %}
+                    <span class="navbar-text">
+                        {% if user.is_authenticated %}
+                            Hi {{ user.username }}
+                        {% else %}
+                            You are not logged in
+                        {% endif %}
+                    </span>
             </ul>
         </div>
     </div>
 </nav>
+<container>
+    {% block content %}
+    {% endblock %}
+</container>
 
-{% block content %}
-{% endblock %}
 
 <br>
 <br>
-
 
 
 </body>

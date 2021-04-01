@@ -4,16 +4,18 @@
 
 {% block content %}
 
-
-    <form class="form-inline my-2 my-lg-0" action="/customer/" method="post"> {% csrf_token %}
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="query" aria-label="Search" value="{{ query }}">
-        <select class="form-control mr-sm-2" id="filter" name="filter">
+<div class="container">
+    <br>
+    <form class="form-inline" action="/customer/" method="post"> {% csrf_token %}
+        <input class="form-control col-lg-9 search-bar" type="search" placeholder="Search" name="query" aria-label="Search">
+        <select class="form-control" id="filter" name="filter">
             <option value="title">Movie title</option>
             <option value="director">Director</option>
             <option value="cast_members">Cast members</option>
-        </select> 
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </select>
+        <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
+</div>
 
     {%  if messages %}
         {% for message in messages %}
@@ -23,6 +25,9 @@
 
 <!-- Movie Thumbmails -->
 <div class="container-movies">
+
+
+
     {% for movie in movies %}
     <!-- Copy this code to add more movie cards-->
     <div class="movie-card">
@@ -41,7 +46,7 @@
                 </div>
                 <div class="info-section">
                     <label>Age Rating</label>
-                    <span>16+</span>
+                    <span> {{ movie.certificate }}</span>
                 </div>
             </div>
         </div>

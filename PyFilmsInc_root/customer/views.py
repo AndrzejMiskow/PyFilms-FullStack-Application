@@ -21,9 +21,9 @@ class HomeView(ListView):
     def get_queryset(self):
         return Movie.objects.all()
 
+
 # render homepage
 def render_home(request):
-
     # carry out search & return results
     if request.method == "POST":
 
@@ -306,7 +306,7 @@ def render_signup_view(request):
         form = UserCreationForm()
 
     # render page
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form, 'join': "active"})
 
 
 # render view account details page
@@ -327,6 +327,7 @@ def render_account_view(request):
         context = {
             'form': form,
             'profileForm': profile_form,
+            'view_account': "active",
         }
 
         return render(request, 'editAccount.html', context)
@@ -335,8 +336,15 @@ def render_account_view(request):
 # render view bookings page
 def render_bookings_view(request):
     bookings = Reservation.objects.filter(user_id=request.user)
+
+
+
+
     context = {
         'bookings': bookings,
+        'view_booking': "active",
     }
+
+
 
     return render(request, 'viewBookings.html', context)

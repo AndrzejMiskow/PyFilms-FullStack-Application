@@ -3,12 +3,24 @@
 {% block content %}
 
     <div class="wrapper">
-        <div class="container d-flex flex-column justify-content-center align-items-center" style="height: 50vh">
+        <div class="container d-flex flex-column justify-content-center align-items-center">
             <div class="title text-center mb-5">
-                <h1>Total Revenue Report</h1>
-            </div>
-            <div class="chart-wrapper">
-                <canvas id="myChart"></canvas>
+                <br><br>
+                <h1>Staff Menu</h1>
+                <br><br>
+                <a class="btn btn-primary btn-lg btn-block" href="/business/selectMovie">New customer booking</a>
+                <br>
+                <a class="btn btn-primary btn-lg btn-block" href="/business/findReservation">Pay for existing booking</a>
+
+                {% if user.is_superuser%}
+                <br>
+                <h1>Business Owner Menu</h1>
+                    <br><br>
+                    <a class="btn btn-primary btn-lg btn-block" href="/business/weeklyIncome">View Income</a>
+                        <br>
+                    <a class="btn btn-primary btn-lg btn-block" href="/business/ticketsSold">View Tickets Sold</a>
+                {% endif %}
+
             </div>
         </div>
     </div>

@@ -5,21 +5,24 @@
 {% block content %}
 
 
-    <form class="form-inline my-2 my-lg-0" action="/customer/" method="post"> {% csrf_token %}
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="query" aria-label="Search">
-        <select class="form-control mr-sm-2" id="filter" name="filter">
-            <option value="title">Movie title</option>
-            <option value="director">Director</option>
-            <option value="cast_members">Cast members</option>
-        </select> 
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-
     {%  if messages %}
         {% for message in messages %}
             <h3 class="message">{{ message }}</h3>
         {% endfor %}
     {% endif %}
+
+<div class="container">
+    <br>
+    <form class="form-inline" action="/customer/" method="post"> {% csrf_token %}
+        <input class="form-control col-lg-9 search-bar" type="search" placeholder="Search" name="query" aria-label="Search">
+        <select class="form-control" id="filter" name="filter">
+            <option value="title">Movie title</option>
+            <option value="director">Director</option>
+            <option value="cast_members">Cast members</option>
+        </select>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>
 
 <!-- Movie Thumbmails -->
 <div class="container-movies">
@@ -41,7 +44,7 @@
                 </div>
                 <div class="info-section">
                     <label>Age Rating</label>
-                    <span>{{ movie.certificate }}</span>
+                    <span> {{ movie.certificate }}</span>
                 </div>
             </div>
         </div>
@@ -49,12 +52,5 @@
     {% endfor %}
 </div>
 
-<div class="container">
-    <div class="row bg-dark" style="color:white; text-align:center;">
-        <a class="nav-link" href="/business/">Staff home</a>
-        <a class="nav-link" href="/business/selectMovie">New customer booking</a>
-        <a class="nav-link" href="/business/findReservation">Pay for existing booking</a>
-    </div>
-</div>
 
 {% endblock %}

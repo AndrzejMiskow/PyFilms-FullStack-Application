@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Edit account details</h2>
   <form method="post">
     {% csrf_token %}
 
-    <table>
-    {{ form.as_table }}
-    {{ profileForm.as_table }}
-    </table>
-    
-    <br><br><button type="submit" style="horizontal-align:center;">Submit changes</button>
+<container>
+    <div class="row w-50 mx-auto">
+		<div class="col-lg">
+          <h2>Edit account details</h2>
+          <table class="table">
+            {{ form.as_table }}
+            {{ profileForm.as_table }}
+          </table>
+
+          <br><br><button type="submit" class="btn btn-primary float-right">Submit changes</button>
+
+        </div>
+    </div>
+</container>
   </form>
 {% endblock %}
