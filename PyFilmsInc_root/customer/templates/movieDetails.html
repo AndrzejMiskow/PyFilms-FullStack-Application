@@ -10,24 +10,12 @@ Movie: {{ movie.title }}
 
 <!--Movie Details-->
 <div class="container">
-    <div class="row">
-        <!-- title -->
-        <div class="col-12">
-            <h1 class="details-title">{{ movie.title }}</h1>
-        </div>
-
+    <br>
         <div class="row">
             <!-- Movie Detials section-->
             <div class="col-6">
-                <div class="row">
-                <div class="details-image col-6">
-                    <img src = "/{{movie.poster_img}}" class="img-fluid .max-width: 50%" alt="Responsive image">
-                </div>
-
-                    <div class="details-description col-6">
-                        <h4>Description</h4>
-                        {{ movie.description }}
-                    </div>
+                <div class="details-image">
+                    <img src = "/{{movie.poster_img}}" class="img-fluid .max-height: 200px" alt="Responsive image">
                 </div>
 
                 <div class="details-content">
@@ -49,6 +37,14 @@ Movie: {{ movie.title }}
             </div>
             <!-- select Movie Details Section-->
             <div class="col-6">
+                <h1 class="details-title">{{ movie.title }}</h1>
+
+                <div class="details-description">
+                        <h4>Description</h4>
+                        {{ movie.description }}
+                    </div>
+                <br>
+
                 <form action="/customer/tickets/" method="post">{% csrf_token %}
                     <label for="screening">Please Select a Screening</label>
                     <select class="form-control" id="screening" name="screening">
