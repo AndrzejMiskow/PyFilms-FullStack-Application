@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, FileResponse
 from django.views.generic import *
 from django.db.models.functions import *
-from django.db.models import Sum, Value, Count
+from django.db.models import Sum, Value, Count, Q
 import datetime
 from django.contrib import messages
+from xhtml2pdf import pisa
+from django.template.loader import get_template
 
 from .forms import *
 from API.models import *
@@ -158,9 +160,47 @@ def processPayment(request, **kwargs):
         for ticket in connected_res:
             ticket.paid = True
             ticket.save()
+            
+    reservations = Reservation.objects.filter(Q(lead_booking=res) | Q(pk=res.pk))
+    bookings = []
+    
+    # create 1 ticket per reservation
+    for reservation in reservations:
 
+        # adding data to the ticket template
+        template_path = 'ticket.html'
+        reserved_seat = SeatReserved.objects.filter(reservation_id=reservation.pk)
+        reserved_seat = reserved_seat[0].seat_id
+        context = {
+            'name': "Ticket purchased at door",
+            'seat': "Row " + str(reserved_seat.row) + ", Seat " + str(reserved_seat.number),
+            'movie': reservation.screening_id.movie_id.title,
+            'date_time': reservation.screening_id.screening_start,
+            'room_id': reservation.screening_id.room_id,
+            'res_type': reservation.reservation_type,
+            'poster': reservation.screening_id.movie_id.poster_img,
+        }
+
+        # create file to contain the pdf
+        filename = "ticket" + str(reservation.pk) + ".pdf"
+        ticket = open("static/customer/tickets/" + filename, "w+b")
+
+        # Find the template and render it
+        template = get_template(template_path)
+        html = template.render(context)
+
+        # Create a pdf
+        pisa_status = pisa.CreatePDF(html, dest=ticket)
+        ticket.close()
+        
+        bookings.append(filename)
+    
+    # display tickets as list
+    context = {
+        'bookings': bookings,
+    }
     messages.success(request, "Reservation successful")
-    return HttpResponseRedirect('/customer/')
+    return render(request, "viewTickets.html", context)
 
 
 # Renders the UI for cash payments

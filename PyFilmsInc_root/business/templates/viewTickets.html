@@ -1,0 +1,34 @@
+{% extends 'business-base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{%  if messages %}
+{% for message in messages %}
+<h3 class="message">{{ message }}</h3>
+{% endfor %}
+{% endif %}
+
+<container>
+    <div class="row w-75 mx-auto">
+        <div class="col-lg">
+            <table class="table table-hover">
+                <tr>
+                    <th>Ticket Link</th>
+                </tr>
+                {% for booking in bookings %}
+                <tr>
+                    <td><a
+                            href="{% get_static_prefix %}customer/tickets/{{ booking }}"
+                            style="color:blue;" target="_blank">Open Ticket</a></td>
+                    {% endfor %}
+            </table>
+
+        </div>
+
+    </div>
+</container>
+
+
+{% endblock %}
