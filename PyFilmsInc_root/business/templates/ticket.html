@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+
+{% load static %}
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Ticket</title>
+
+    </head>
+    <body>
+        <h1>Your Ticket</h1>
+        <p>Name: {{name}}</p>
+        <p>Movie: {{movie}}</p>
+        <p>Screening: {{date_time}}</p>
+        <p>Screen: {{room_id}}</p>
+        <p>Ticket type: {{res_type}}</p>
+        <br>
+        <br>
+        <br>
+        <h1 style="text-indent: 50px;">{{seat}}</h1>
+        <img src={{qrcode}} style="horizontal-align:left; vertical-align:bottom" alt="QR Code">
+        <img src={{poster}} width="400" height="580" style="horizontal-align:middle" alt="Movie Poster">        
+
+    </body>
+</html>
+        
