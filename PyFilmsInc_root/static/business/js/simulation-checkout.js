@@ -33,50 +33,72 @@ changeCalculator.addEventListener('click', e => {
         e.target.classList.contains('btn')
     ) {
         console.log("button pressed");
-        var totalPrice = document.getElementById("test").value * 100;
+
+        //Extra number from the message box
+        var totalPrice = document.getElementById("main-box").value.replace( /^\D+/g, '') * 100;
+
+
         let stringChangeOutput = "Change to Give: ";
         console.log(totalPrice);
 
-        if (e.target.classList.contains('ten')){
-            total_ammount +=1000;
+        if (e.target.classList.contains('nine')){
+            total_ammount *=10;
+            total_ammount += 9;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('eight')){
+            total_ammount *=10;
+            total_ammount += 8;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('seven')){
+            total_ammount *=10;
+            total_ammount += 7;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('six')){
+            total_ammount *=10;
+            total_ammount += 6;
             document.getElementById("enteredCash").value = total_ammount/100;
         }
         if (e.target.classList.contains('five')){
-            total_ammount +=500;
+            total_ammount *=10;
+            total_ammount += 5;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('four')){
+            total_ammount *=10;
+            total_ammount += 4;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('three')){
+            total_ammount *=10;
+            total_ammount += 3;
             document.getElementById("enteredCash").value = total_ammount/100;
         }
         if (e.target.classList.contains('two')){
-            total_ammount += 200;
-            document.getElementById("enteredCash").value = total_ammount/100;
-        }
-        if (e.target.classList.contains('one')){
-            total_ammount += 100;
-            document.getElementById("enteredCash").value = total_ammount/100;
-        }
-        if (e.target.classList.contains('fiftyP')){
-            total_ammount +=50;
-            document.getElementById("enteredCash").value = total_ammount/100;
-        }
-        if (e.target.classList.contains('twentyP')){
-            total_ammount +=  20;
-            document.getElementById("enteredCash").value = total_ammount/100;
-        }
-        if (e.target.classList.contains('tenP')){
-            total_ammount += 10;
-            document.getElementById("enteredCash").value = total_ammount/100;
-        }
-        if (e.target.classList.contains('fiveP')){
-            total_ammount +=5;
-            document.getElementById("enteredCash").value = total_ammount/100;
-        }
-        if (e.target.classList.contains('twoP')){
+            total_ammount *=10;
             total_ammount += 2;
             document.getElementById("enteredCash").value = total_ammount/100;
         }
-        if (e.target.classList.contains('oneP')){
-            total_ammount +=1;
+        if (e.target.classList.contains('one')){
+            total_ammount *=10;
+            total_ammount += 1;
             document.getElementById("enteredCash").value = total_ammount/100;
         }
+        if (e.target.classList.contains('zero')){
+            total_ammount *=10;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('clear')){
+            total_ammount = 0;
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+        if (e.target.classList.contains('delete')){
+            total_ammount = Math.floor(total_ammount / 10)
+            document.getElementById("enteredCash").value = total_ammount/100;
+        }
+
         if (total_ammount > totalPrice){
             var tempDict = calculateChange(totalPrice , total_ammount);
             for(var key in tempDict) {
@@ -89,6 +111,7 @@ changeCalculator.addEventListener('click', e => {
             }
 
             document.getElementById("enteredCash").value = stringChangeOutput;
+            document.getElementById("main-box").value = "Payment Complete";
         }
 
     }

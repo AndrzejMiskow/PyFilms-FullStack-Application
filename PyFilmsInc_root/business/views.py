@@ -160,13 +160,12 @@ def processPayment(request, **kwargs):
         for ticket in connected_res:
             ticket.paid = True
             ticket.save()
-            
+
     reservations = Reservation.objects.filter(Q(lead_booking=res) | Q(pk=res.pk))
     bookings = []
-    
+
     # create 1 ticket per reservation
     for reservation in reservations:
-
         # adding data to the ticket template
         template_path = 'ticket.html'
         reserved_seat = SeatReserved.objects.filter(reservation_id=reservation.pk)
@@ -192,9 +191,9 @@ def processPayment(request, **kwargs):
         # Create a pdf
         pisa_status = pisa.CreatePDF(html, dest=ticket)
         ticket.close()
-        
+
         bookings.append(filename)
-    
+
     # display tickets as list
     context = {
         'bookings': bookings,
@@ -330,6 +329,10 @@ def render_time_view(request, *args, **kwargs):
     day_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max)
 
     screenings = Screening.objects.filter(movie_id=pk, screening_start__range=(day_min, day_max))
+    print(screenings)
+    print(day_min)
+    print(day_max)
+
     shows = {}
 
     for screening in screenings:
