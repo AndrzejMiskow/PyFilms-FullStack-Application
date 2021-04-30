@@ -7,7 +7,7 @@
     <h1 align="center"> Paying for {{ movie }} with Cash</h1>
     <div class="form-group">
         <!-- Hard coded CSS for testing -->
-        <input class="form-control input-lg total-field" id="test" type="text" value={{ price }}>
+        <input class="form-control input-lg total-field" id="main-box" type="text" value="Total: £{{ price }}">
         <p></p>
         <input class="form-control input-lg message-box" id="enteredCash" type="text" placeholder="[Message Box]">
 
@@ -17,44 +17,51 @@
         <div class="row" align="center">
             <div class="col-sm">
                 <!-- Test styling will be turned into CSS-->
-                <button type="button" class="btn btn-primary btn-lg cashButton ten">£10</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton nine">9</button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton five">£5</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton eight">8</button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton two">£2</button>
-            </div>
-        </div>
-        <p></p>
-        <div class="row" align="center">
-            <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton one">£1</button>
-            </div>
-            <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton fiftyP">50p</button>
-            </div>
-            <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton twentyP">20p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton seven">7</button>
             </div>
         </div>
         <p></p>
         <div class="row" align="center">
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton tenP">10p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton six">6</button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton fiveP">5p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton five">5</button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-primary btn-lg cashButton twoP">2p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton four">4</button>
+            </div>
+        </div>
+        <p></p>
+        <div class="row" align="center">
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary btn-lg cashButton three">3</button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary btn-lg cashButton two">2</button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary btn-lg cashButton one">1</button>
             </div>
         </div>
         <p></p>
         <div class="row">
             <div class="col-sm" align="center">
-                <button type="button" class="btn btn-primary btn-lg cashButton oneP">1p</button>
+                <button type="button" class="btn btn-primary btn-lg cashButton clear">Clear</button>
             </div>
+            <div class="col-sm" align="center">
+                <button type="button" class="btn btn-primary btn-lg cashButton zero">0</button>
+            </div>
+            <div class="col-sm" align="center">
+                <button type="button" class="btn btn-primary btn-lg cashButton delete"><-</button>
+            </div>
+
         </div>
         <p></p>
 
