@@ -42,7 +42,7 @@ class ReservationForm(forms.Form):
 
         # match expiry date with regex to accept only dates with format MM/YY, where MM can take
         # values between 01 - 12 (i.e. Jan - Dec), and YY between 21-29 (i.e. 2021 - 2029)
-        regex = r'^(0[1-9]{1})|(1[0-2]{1})\/(2[1-9]{1})$'
+        regex = r'(\b0[1-9]\/2[1-9]\b)|(\b1[0-2]\/2[1-9]\b)'
         match = re.search(regex, data)
         if match is None:
             raise ValidationError('Invalid card expiry format - not MM/YY, with MM between 01-12 '
