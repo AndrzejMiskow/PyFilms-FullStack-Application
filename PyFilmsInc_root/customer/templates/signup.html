@@ -7,6 +7,8 @@
 {% endif %}
 
 {% block content %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
 <div class="container d-flex flex-column justify-content-center align-items-center">
     <h2>Sign up</h2>
     <form method="post" class="needs-validation">
@@ -46,20 +48,29 @@
         <div class="row">
             <div class="col-sm">
                 <label for="password1">Password</label>
-                <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" required>
-                <small id="passwordHelp" class="form-text text-muted">
-                    Your password must contain at least 8 characters long, contain letters and numbers,
-                    and must not contain spaces, special characters, or emoji.
-                </small>
-                <div id="errorPassword1"></div>
+                <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" data-error="wrong" data-success="right"  required>
+                <div class="col-md-5">
             </div>
         </div>
+        </div>
+        <div class="row">
+                <div id="password_info">
+                    <h4>Password requirements</h4>
+                    <ul>
+                        <li id="letter" class="invalid">At least <strong>one letter</strong></li>
+                        <li id="capital" class="invalid">At least <strong>one capital letter</strong></li>
+                        <li id="number" class="invalid">At least <strong>one number</strong></li>
+                        <li id="length" class="invalid">Be at least <strong>8 characters</strong></li>
+                        <li id="space" class="invalid">be<strong> use [~,!,@,#,$,%,^,&,*,-,=,.,;,']</strong></li>
+                    </ul>
+                </div>
+            </div>
       <br>
         <div class="row">
             <div class="col-sm">
                 <label for="password2">Password Confirmation</label>
-                <input type="password" class="form-control" name="password2" id="password2" placeholder="Password confirmation" required>
-                <div id="errorPassword2"></div>
+                <input type="password" class="form-control" name="password2" id="password2" placeholder="Password confirmation" onkeyup="checkPass(); return false;" required>
+                    <span id="confirmMessage" class="confirmMessage"></span>
             </div>
         </div>
 
