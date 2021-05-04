@@ -105,5 +105,14 @@ function minusChild(){
 
 function addChild(){
     document.getElementById("qChild").value++;
-    }
+}
+
+//Will remove required fields from card details
+function payLatter(){
+    document.getElementById("cExpiration").required = false;
+    document.getElementById("cCVV").required = false;
+    document.getElementById("cNumber").required = false;
+    document.getElementById("cName").required = false;
+}
+
 
