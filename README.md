@@ -22,6 +22,7 @@ To test that it works , go to your browser and enter in the url http://127.0.0.1
 
 ### Prequisties needed 
 
+All required softwares are listed inside requirements.txt and can be installed with `pip install -r requirements.txt`
 
 1. **Python3 (Verison 3.7.5)**
 - Django 1.1 installation supports python 2.7 however if using pip to install package would lead to issues hence the use of python3 
