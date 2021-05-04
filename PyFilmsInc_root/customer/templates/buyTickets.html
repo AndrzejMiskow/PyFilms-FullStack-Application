@@ -81,7 +81,7 @@ Checkout
         <!-- Used to get the total number of tickets selected above this is sent to takeData() function-->
         <button type="button" class="btn btn-primary" onclick="takeData(); return false;">Confirm Number of Tickets</button>
 
-  
+
 
         <h3>Select Seats</h3>
         <div class="container p-3 my-3 border">
@@ -118,7 +118,7 @@ Checkout
         <!-- We need a submit function which will add items to the database updateSelected () can be used for this-->
         <label for="SelectedSeatsID">Selected Seats</label>
         <input type="text" class="form-control" id="SelectedSeatsID" name="SelectedSeatsID" placeholder="" required="">
-        
+
         <button type="button" class="btn btn-primary" onclick="confirmSeats()">Confirm Selected Seats</button>
 
         {% load static %}
@@ -135,14 +135,6 @@ Checkout
          -->
         <h3>Checkout</h3>
 
-            <div class="row mb-6">
-                <div class="col-md-6 mb-3">
-                <a id="payByCard" class="btn btn-primary" data-toggle="collapse" href="#card" role="button" aria-expanded="false">Pay by card now</a>
-                <button id="pay-later" name="pay-later" class="btn btn-primary" type="submit">Pay when you arrive</button>
-                </div>
-            </div>
-
-            <div class="collapse"  id="card">
             <div class="row mb-6">
                 <div class="col-md-6 mb-3">
                     <label for="cName">Name on card</label>
