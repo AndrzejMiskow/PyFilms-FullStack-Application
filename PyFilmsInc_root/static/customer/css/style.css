@@ -240,3 +240,20 @@ a:hover {
     height: auto;
     max-height: 400px;
 }
+
+label
+{
+    width: 100px;
+}
+
+.valid {
+    color: green;
+    line-height: 21px;
+    padding-left: 22px;
+}
+
+.invalid {
+    color: red;
+    line-height: 21px;
+    padding-left: 22px;
+}
