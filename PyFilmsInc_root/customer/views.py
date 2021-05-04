@@ -159,6 +159,8 @@ def render_ticket_views(request, screening_id, user_id):
             'poster': reservation.screening_id.movie_id.poster_img,
         }
 
+        print(context)
+
         # create file to contain the pdf
         filename = "ticket" + str(reservation.pk) + ".pdf"
         ticket = open("static/customer/tickets/" + filename, "w+b")
@@ -166,6 +168,8 @@ def render_ticket_views(request, screening_id, user_id):
         # Find the template and render it
         template = get_template(template_path)
         html = template.render(context)
+
+        print(html)
 
         # Create a pdf
         pisa_status = pisa.CreatePDF(html, dest=ticket)
